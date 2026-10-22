@@ -93,8 +93,16 @@
 
       </section>
 
+      <!-- أخطاء تحميل البيانات -->
+      <div
+        class="error-banner"
+        id="dashboard-error"
+        role="alert"
+        aria-live="polite"
+      ></div>
+
+      <!-- الجلسة الحالية -->
     
-     
 
       <!-- إحصائيات اليوم -->
       <section class="stats-section" aria-labelledby="stats-title">
@@ -168,12 +176,91 @@
         </div>
       </section>
 
-    
-    
+      <!-- محتوى لوحة المتابعة -->
+      <section class="dashboard-grid">
+
+       
+
+        <!-- العمود الجانبي -->
+        <div class="side-column">
+
+          <!-- إجراءات سريعة -->
+          <article class="content-card quick-actions-card">
+
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">وصول سريع</p>
+                <h2>إجراءات سريعة</h2>
+                <p class="card-description">انتقل مباشرة إلى المهمة المطلوبة.</p>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+
+              <a class="quick-action" href="scan.html">
+                <span class="quick-action-icon scan-action-icon" aria-hidden="true">
+                  <span class="material-symbols-outlined">qr_code_scanner</span>
+                </span>
+                <span class="quick-action-copy">
+                  <strong>مسح رمز العضو</strong>
+                  <small>تسجيل حضور سريع</small>
+                </span>
+                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              </a>
+
+              <a class="quick-action" href="add-member.html">
+                <span class="quick-action-icon member-action-icon" aria-hidden="true">
+                  <span class="material-symbols-outlined">person_add</span>
+                </span>
+                <span class="quick-action-copy">
+                  <strong>إضافة عضو</strong>
+                  <small>تسجيل عضو جديد</small>
+                </span>
+                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              </a>
+
+              <a class="quick-action" href="members.html">
+                <span class="quick-action-icon list-action-icon" aria-hidden="true">
+                  <span class="material-symbols-outlined">groups</span>
+                </span>
+                <span class="quick-action-copy">
+                  <strong>إدارة الأعضاء</strong>
+                  <small>عرض قائمة الأعضاء</small>
+                </span>
+                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              </a>
+
+              <a class="quick-action" href="excuses.html">
+                <span class="quick-action-icon excuse-action-icon" aria-hidden="true">
+                  <span class="material-symbols-outlined">assignment</span>
+                </span>
+                <span class="quick-action-copy">
+                  <strong>الأعذار</strong>
+                  <small>متابعة الأعذار المقدمة</small>
+                </span>
+                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              </a>
+
+            </div>
+          </article>
+
+   
+        </div>
+      </section>
+
+      <!-- التذييل -->
+      <footer class="dashboard-footer">
+        <div class="footer-brand">
+          <span class="footer-brand-mark">ح</span>
+          <span>حاضر</span>
+        </div>
+        <span class="footer-message">تنظيم أسهل، ومتابعة أدق</span>
+      </footer>
+
     </main>
   </div>
 
- 
+
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>

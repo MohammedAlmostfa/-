@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5D1820">
+  <meta name="description" content="عرض سجل حضور أعضاء فرقة القديس جاورجيوس حسب التاريخ">
+  <title>سجل الحضور | حاضر</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/log.css">
+
+  <script src="js/config.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/log.js" defer></script>
+</head>
+
+<body class="log-page">
+  <main class="log-container">
+
+    <header class="log-header">
+      <a class="back-link" href="home.html" aria-label="العودة إلى الرئيسية">
+        <span aria-hidden="true">→</span>
+        <span>الرئيسية</span>
+      </a>
+
+      <div class="header-title">
+        <span class="eyebrow">نظام حاضر</span>
+        <h1>سجل الحضور</h1>
+        <p>راجع تسجيلات الحضور حسب اليوم المحدد.</p>
+      </div>
+    </header>
+
+    <section class="filter-card" aria-labelledby="filter-title">
+      <div class="section-heading">
+        <div class="heading-icon" aria-hidden="true">▦</div>
+        <div>
+          <h2 id="filter-title">تحديد التاريخ</h2>
+          <p>اختر اليوم الذي تريد عرض تسجيلاته.</p>
+        </div>
+      </div>
+
+      <form id="date-form" class="date-form">
+        <label for="attendance-date">تاريخ الحضور</label>
+
+        <div class="date-controls">
+          <input
+            type="date"
+            id="attendance-date"
+            name="date"
+            required
+          >
+
+          <button type="submit" id="search-button" class="primary-button">
+            عرض السجل
+          </button>
+        </div>
+      </form>
+
+      <div class="quick-dates" aria-label="اختيارات سريعة للتاريخ">
+        <button type="button" class="quick-date" data-date="today">اليوم</button>
+        <button type="button" class="quick-date" data-date="yesterday">أمس</button>
+      </div>
+    </section>
+
+    <section class="results-section" aria-labelledby="results-title">
+      <div class="results-heading">
+        <div>
+          <span class="eyebrow">التقرير اليومي</span>
+          <h2 id="results-title">نتائج الحضور</h2>
+        </div>
+
+        <span id="selected-date-label" class="date-badge">لم يُحدد التاريخ</span>
+      </div>
+
+      <div id="status-message" class="status-message" role="status" aria-live="polite">
+        اختر التاريخ ثم اضغط على «عرض السجل».
+      </div>
+
+      <div id="report-content" hidden>
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span class="summary-label">إجمالي التسجيلات</span>
+            <strong id="total-count">0</strong>
+            <span class="summary-note">تسجيل في هذا اليوم</span>
+          </article>
+
+          <article class="summary-card present-card">
+            <span class="summary-label">الحضور</span>
+            <strong id="present-count">0</strong>
+            <span class="summary-note">مسجلون حضوراً</span>
+          </article>
+
+          <article class="summary-card excused-card">
+            <span class="summary-label">المعذورون</span>
+            <strong id="excused-count">0</strong>
+            <span class="summary-note">حضور مع عذر مسجل</span>
+          </article>
+
+          <article class="summary-card late-card">
+            <span class="summary-label">المتأخرون</span>
+            <strong id="late-count">0</strong>
+            <span class="summary-note">بحسب بيانات الخادم</span>
+          </article>
+        </div>
+
+        <div class="table-card">
+          <div class="table-heading">
+            <div>
+              <h3>تفاصيل التسجيلات</h3>
+              <p id="records-description">سجل الحضور للتاريخ المحدد</p>
+            </div>
+
+            <button type="button" id="print-button" class="secondary-button">
+              طباعة السجل
+            </button>
+          </div>
+
+          <div id="empty-results" class="empty-state" hidden>
+            <div class="empty-icon" aria-hidden="true">▤</div>
+            <h3>لا توجد تسجيلات</h3>
+            <p>لم يتم العثور على تسجيلات حضور لهذا التاريخ.</p>
+          </div>
+
+          <div id="table-wrapper" class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">رقم العضو</th>
+                  <th scope="col">اسم العضو</th>
+                  <th scope="col">وقت التسجيل</th>
+                  <th scope="col">الحالة</th>
+                </tr>
+              </thead>
+
+              <tbody id="attendance-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="log-footer">
+      <span>حاضر</span>
+      <span>نظام تسجيل حضور الفرقة</span>
+    </footer>
+
+  </main>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+
+/* =========================================================
+   حاضر | سجل الحضور حسب التاريخ
+   File: css/log.css
+   ========================================================= */
+
+/* ---------- Design Tokens ---------- */
+
+.log-page {
+  --log-primary: #7A2E35;
+  --log-primary-dark: #5D1820;
+  --log-gold: #C9A24B;
+  --log-background: #FAF7F2;
+  --log-text: #302729;
+  --log-muted: #817579;
+  --log-border: #E8DFD7;
+  --log-green: #26734D;
+  --log-yellow: #93651D;
+  --log-red: #B94A3A;
+  --log-radius: 18px;
+  --log-shadow: 0 8px 28px rgb(74 36 36 / 5%);
+
+  min-height: 100vh;
+  margin: 0;
+  background: var(--log-background);
+  color: var(--log-text);
+  font-family: "Cairo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.log-page *,
+.log-page *::before,
+.log-page *::after {
+  box-sizing: border-box;
+}
+
+.log-page button,
+.log-page input {
+  font: inherit;
+}
+
+.log-page button,
+.log-page a,
+.log-page input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.log-page button {
+  color: inherit;
+}
+
+.log-page [hidden] {
+  display: none !important;
+}
+
+/* ---------- Main Container ---------- */
+
+.log-page .log-container {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+  padding: 28px 24px 20px;
+}
+
+/* ---------- Header ---------- */
+
+.log-page .log-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.log-page .back-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  color: var(--log-primary-dark);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.log-page .back-link:hover {
+  color: var(--log-primary);
+}
+
+.log-page .back-link span:first-child {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #EADBDD;
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: var(--log-primary-dark);
+  font-size: 21px;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.log-page .back-link:hover span:first-child {
+  border-color: var(--log-primary);
+  background: var(--log-primary);
+  color: #FFFFFF;
+}
+
+.log-page .header-title {
+  min-width: 0;
+}
+
+.log-page .eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: #94704B;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.log-page .header-title h1,
+.log-page .results-heading h2 {
+  margin: 0;
+  color: var(--log-primary-dark);
+  font-size: clamp(25px, 4vw, 34px);
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.log-page .header-title p,
+.log-page .section-heading p,
+.log-page .table-heading p {
+  margin: 7px 0 0;
+  color: var(--log-muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* ---------- Shared Cards ---------- */
+
+.log-page .filter-card,
+.log-page .table-card {
+  border: 1px solid #EEE4E1;
+  border-radius: 20px;
+  background: #FFFFFF;
+  box-shadow: var(--log-shadow);
+}
+
+.log-page .filter-card {
+  margin-bottom: 32px;
+  padding: 24px;
+}
+
+/* ---------- Section Headings ---------- */
+
+.log-page .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.log-page .heading-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  place-items: center;
+  border: 1px solid #F0DEDC;
+  border-radius: 14px;
+  background: #F8ECEB;
+  color: var(--log-primary-dark);
+  font-size: 23px;
+}
+
+.log-page .section-heading h2,
+.log-page .table-heading h3 {
+  margin: 0;
+  color: #3C292D;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+/* ---------- Date Form ---------- */
+
+.log-page .date-form label {
+  display: block;
+  margin-bottom: 9px;
+  color: #59494C;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.log-page .date-controls {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.log-page .date-controls input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #E5D9D7;
+  border-radius: 12px;
+  outline: none;
+  background: #FDFBFA;
+  color: var(--log-text);
+  font-size: 14px;
+  line-height: 1.6;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.log-page .date-controls input:hover {
+  border-color: #D6C1BE;
+}
+
+.log-page .date-controls input:focus {
+  border-color: #8A4148;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgb(93 24 32 / 9%);
+}
+
+.log-page .date-controls input:focus-visible {
+  outline: none;
+}
+
+.log-page .date-controls input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+/* ---------- Buttons ---------- */
+
+.log-page .primary-button,
+.log-page .secondary-button,
+.log-page .quick-date {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.log-page .primary-button {
+  flex-shrink: 0;
+  border: 1px solid var(--log-primary-dark);
+  background: var(--log-primary-dark);
+  color: #FFFFFF;
+}
+
+.log-page .primary-button:hover:not(:disabled) {
+  border-color: #741F29;
+  background: #741F29;
+  box-shadow: 0 4px 12px rgb(93 24 32 / 13%);
+}
+
+.log-page .primary-button:active:not(:disabled),
+.log-page .secondary-button:active,
+.log-page .quick-date:active {
+  transform: scale(0.98);
+}
+
+.log-page .primary-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  box-shadow: none;
+}
+
+/* ---------- Quick Date Buttons ---------- */
+
+.log-page .quick-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.log-page .quick-date {
+  min-height: 36px;
+  padding: 7px 15px;
+  border: 1px solid #EADCD9;
+  background: #FFFFFF;
+  color: var(--log-primary-dark);
+  font-size: 12px;
+}
+
+.log-page .quick-date:hover {
+  border-color: #D8B9B6;
+  background: #F9EEEE;
+}
+
+/* ---------- Results Heading ---------- */
+
+.log-page .results-section {
+  margin-bottom: 32px;
+}
+
+.log-page .results-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.log-page .results-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.log-page .results-heading h2 {
+  font-size: clamp(22px, 3vw, 27px);
+}
+
+.log-page .date-badge {
+  display: inline-flex;
+  min-height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 13px;
+  border: 1px solid #EADCD9;
+  border-radius: 11px;
+  background: #FFFFFF;
+  color: var(--log-primary-dark);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* ---------- Status Message ---------- */
+
+.log-page .status-message {
+  margin-bottom: 18px;
+  padding: 15px 17px;
+  border: 1px solid #EADCD9;
+  border-radius: 13px;
+  background: #FFFFFF;
+  color: #746367;
+  font-size: 13px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.log-page .status-message:empty {
+  display: none;
+}
+
+.log-page .status-message.is-error {
+  border-color: #EFC5C5;
+  background: #FFF4F4;
+  color: #A12626;
+}
+
+.log-page .status-message.is-success {
+  border-color: #C9E7D2;
+  background: #F0FAF3;
+  color: #246C3A;
+}
+
+/* ---------- Summary Statistics ---------- */
+
+.log-page .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.log-page .summary-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 136px;
+  flex-direction: column;
+  padding: 19px;
+  overflow: hidden;
+  border: 1px solid #EEE4E1;
+  border-radius: 17px;
+  background: #FFFFFF;
+  box-shadow: 0 3px 12px rgb(74 36 36 / 2%);
+}
+
+.log-page .summary-card::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--log-gold);
+  content: "";
+  opacity: 0.8;
+}
+
+.log-page .present-card::after {
+  background: var(--log-green);
+}
+
+.log-page .excused-card::after {
+  background: #D4A23D;
+}
+
+.log-page .late-card::after {
+  background: var(--log-red);
+}
+
+.log-page .summary-label {
+  color: var(--log-muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.log-page .summary-card strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--log-primary-dark);
+  font-size: clamp(25px, 3vw, 31px);
+  font-weight: 800;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-page .summary-note {
+  margin-top: auto;
+  padding-top: 6px;
+  color: #9B8D90;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.log-page .present-card strong {
+  color: var(--log-green);
+}
+
+.log-page .excused-card strong {
+  color: #A87824;
+}
+
+.log-page .late-card strong {
+  color: var(--log-red);
+}
+
+/* ---------- Attendance Table Card ---------- */
+
+.log-page .table-card {
+  overflow: hidden;
+}
+
+.log-page .table-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 21px 22px;
+  border-bottom: 1px solid #F0E8E6;
+}
+
+.log-page .table-heading > div {
+  min-width: 0;
+}
+
+.log-page .table-heading h3 {
+  font-size: 16px;
+}
+
+.log-page .table-heading p {
+  font-size: 12px;
+}
+
+/* ---------- Secondary Button ---------- */
+
+.log-page .secondary-button {
+  min-height: 39px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: 1px solid #E7D9D7;
+  background: #FFFFFF;
+  color: var(--log-primary-dark);
+  font-size: 12px;
+}
+
+.log-page .secondary-button:hover {
+  border-color: #D8B9B6;
+  background: #FBF3F2;
+}
+
+/* ---------- Table ---------- */
+
+.log-page .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.log-page .table-wrapper[hidden],
+.log-page #report-content[hidden],
+.log-page #empty-results[hidden] {
+  display: none !important;
+}
+
+.log-page table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+.log-page thead {
+  background: #FBF7F5;
+}
+
+.log-page th,
+.log-page td {
+  padding: 15px 18px;
+  border-bottom: 1px solid #F2EAE8;
+  font-size: 13px;
+  line-height: 1.8;
+  vertical-align: middle;
+}
+
+.log-page th {
+  color: #79666A;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.log-page td {
+  color: #46383B;
+}
+
+.log-page tbody tr {
+  transition: background-color 150ms ease;
+}
+
+.log-page tbody tr:hover {
+  background: #FDFAF9;
+}
+
+.log-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.log-page .member-id {
+  color: #80666B;
+  font-weight: 700;
+  direction: ltr;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-page .member-name {
+  color: #3C292D;
+  font-weight: 700;
+}
+
+.log-page .time-value {
+  direction: ltr;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Attendance Status Pills ---------- */
+
+.log-page .status-pill {
+  display: inline-flex;
+  min-width: 76px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.log-page .status-pill.present {
+  border-color: #D5EBDD;
+  background: #EAF7EF;
+  color: #26734D;
+}
+
+.log-page .status-pill.excused {
+  border-color: #F1E1BC;
+  background: #FFF4DF;
+  color: #93651D;
+}
+
+.log-page .status-pill.late {
+  border-color: #F1D8D1;
+  background: #FFF0EC;
+  color: #B94A3A;
+}
+
+.log-page .status-pill.unknown {
+  border-color: #E5DEDF;
+  background: #F0EDED;
+  color: #6E6265;
+}
+
+/* ---------- Empty State ---------- */
+
+.log-page .empty-state {
+  padding: 42px 20px;
+  text-align: center;
+}
+
+.log-page .empty-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  margin: 0 auto 14px;
+  border: 1px solid #EEDDDD;
+  border-radius: 18px;
+  background: #F8EEEE;
+  color: var(--log-primary-dark);
+  font-size: 26px;
+}
+
+.log-page .empty-state h3 {
+  margin: 0;
+  color: var(--log-primary-dark);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.log-page .empty-state p {
+  margin: 8px 0 0;
+  color: #897B7E;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* ---------- Footer ---------- */
+
+.log-page .log-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 0 8px;
+  border-top: 1px solid #EADFDD;
+  color: #958588;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.log-page .log-footer span:first-child {
+  color: var(--log-primary-dark);
+  font-weight: 800;
+}
+
+/* ---------- Keyboard Focus ---------- */
+
+.log-page .back-link:focus-visible,
+.log-page .primary-button:focus-visible,
+.log-page .secondary-button:focus-visible,
+.log-page .quick-date:focus-visible {
+  outline: 3px solid rgb(201 162 75 / 75%);
+  outline-offset: 3px;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+  .log-page .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .log-page .summary-card {
+    min-height: 125px;
+  }
+}
+
+@media (max-width: 760px) {
+  .log-page .log-container {
+    padding: 21px 16px 18px;
+  }
+
+  .log-page .log-header {
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .log-page .filter-card {
+    margin-bottom: 25px;
+    padding: 19px;
+    border-radius: 17px;
+  }
+
+  .log-page .section-heading {
+    gap: 11px;
+    margin-bottom: 18px;
+  }
+
+  .log-page .date-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .log-page .date-controls input,
+  .log-page .date-controls .primary-button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .log-page .results-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+
+  .log-page .date-badge {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .log-page .table-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .log-page .table-heading .secondary-button {
+    width: 100%;
+  }
+
+  .log-page .table-wrapper table {
+    min-width: 610px;
+  }
+
+  .log-page th,
+  .log-page td {
+    padding: 13px 14px;
+    font-size: 12px;
+  }
+
+  .log-page .log-footer {
+    padding-top: 16px;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 480px) {
+  .log-page .log-container {
+    padding: 17px 12px 16px;
+  }
+
+  .log-page .log-header {
+    gap: 17px;
+    margin-bottom: 21px;
+  }
+
+  .log-page .back-link {
+    min-height: 36px;
+    font-size: 12px;
+  }
+
+  .log-page .back-link span:first-child {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .log-page .eyebrow {
+    font-size: 11px;
+  }
+
+  .log-page .header-title h1 {
+    font-size: 27px;
+  }
+
+  .log-page .header-title p {
+    font-size: 12px;
+  }
+
+  .log-page .filter-card {
+    margin-bottom: 23px;
+    padding: 15px;
+    border-radius: 16px;
+  }
+
+  .log-page .heading-icon {
+    width: 41px;
+    height: 41px;
+    flex-basis: 41px;
+    border-radius: 12px;
+    font-size: 21px;
+  }
+
+  .log-page .section-heading h2 {
+    font-size: 15px;
+  }
+
+  .log-page .section-heading p {
+    margin-top: 4px;
+    font-size: 11px;
+  }
+
+  .log-page .date-form label {
+    font-size: 12px;
+  }
+
+  .log-page .date-controls input {
+    font-size: 13px;
+  }
+
+  .log-page .primary-button {
+    font-size: 13px;
+  }
+
+  .log-page .quick-dates {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .log-page .quick-date {
+    min-height: 36px;
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+
+  .log-page .results-heading h2 {
+    font-size: 23px;
+  }
+
+  .log-page .date-badge {
+    font-size: 11px;
+  }
+
+  .log-page .status-message {
+    margin-bottom: 14px;
+    padding: 12px 13px;
+    font-size: 12px;
+  }
+
+  .log-page .summary-grid {
+    gap: 9px;
+    margin-bottom: 17px;
+  }
+
+  .log-page .summary-card {
+    min-height: 118px;
+    padding: 13px;
+    border-radius: 14px;
+  }
+
+  .log-page .summary-label {
+    font-size: 11px;
+  }
+
+  .log-page .summary-card strong {
+    margin-top: 6px;
+    font-size: 26px;
+  }
+
+  .log-page .summary-note {
+    font-size: 10px;
+  }
+
+  .log-page .table-card {
+    border-radius: 15px;
+  }
+
+  .log-page .table-heading {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .log-page .table-heading h3 {
+    font-size: 15px;
+  }
+
+  .log-page .table-heading p {
+    font-size: 11px;
+  }
+
+  .log-page .table-heading .secondary-button {
+    min-height: 42px;
+  }
+
+  .log-page .empty-state {
+    padding: 32px 14px;
+  }
+
+  .log-page .empty-icon {
+    width: 51px;
+    height: 51px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+  }
+
+  .log-page .empty-state h3 {
+    font-size: 15px;
+  }
+
+  .log-page .empty-state p {
+    font-size: 12px;
+  }
+
+  .log-page .log-footer {
+    align-items: flex-start;
+    font-size: 10px;
+  }
+}
+
+/* ---------- Very Small Phones ---------- */
+
+@media (max-width: 340px) {
+  .log-page .log-container {
+    padding-inline: 9px;
+  }
+
+  .log-page .filter-card {
+    padding: 12px;
+  }
+
+  .log-page .summary-grid {
+    gap: 7px;
+  }
+
+  .log-page .summary-card {
+    min-height: 112px;
+    padding: 10px;
+  }
+
+  .log-page .summary-label {
+    font-size: 10px;
+  }
+
+  .log-page .summary-card strong {
+    font-size: 24px;
+  }
+
+  .log-page .summary-note {
+    font-size: 9px;
+  }
+}
+
+/* ---------- Reduced Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .log-page *,
+  .log-page *::before,
+  .log-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 12mm;
+  }
+
+  .log-page {
+    min-height: 0;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 10pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .log-page .log-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .log-page .log-header {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .log-page .back-link,
+  .log-page .filter-card,
+  .log-page .log-footer,
+  .log-page .secondary-button,
+  .log-page .status-message {
+    display: none !important;
+  }
+
+  .log-page .results-section {
+    margin-bottom: 0;
+  }
+
+  .log-page .results-heading {
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 12px;
+  }
+
+  .log-page .results-heading h2 {
+    font-size: 22px;
+  }
+
+  .log-page .date-badge {
+    background: #FFFFFF !important;
+  }
+
+  .log-page .summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .log-page .summary-card {
+    min-height: 95px;
+    padding: 12px;
+    border: 1px solid #DDD5D2;
+    border-radius: 8px;
+    box-shadow: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .log-page .summary-card strong {
+    font-size: 23px;
+  }
+
+  .log-page .summary-note {
+    font-size: 9px;
+  }
+
+  .log-page .table-card {
+    overflow: visible;
+    border: 1px solid #DDD5D2;
+    border-radius: 8px;
+    box-shadow: none;
+    break-inside: auto;
+  }
+
+  .log-page .table-heading {
+    padding: 12px 14px;
+    border-bottom: 1px solid #DDD5D2;
+  }
+
+  .log-page .table-wrapper {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .log-page .table-wrapper table {
+    width: 100%;
+    min-width: 0;
+    border-collapse: collapse;
+    white-space: normal;
+  }
+
+  .log-page thead {
+    display: table-header-group;
+  }
+
+  .log-page tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .log-page th,
+  .log-page td {
+    padding: 7px 9px;
+    border: 1px solid #DDD5D2;
+    font-size: 9pt;
+  }
+
+  .log-page th {
+    background: #F7F1EE !important;
+  }
+
+  .log-page .status-pill {
+    border: 1px solid #DDD5D2;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .log-page .empty-state {
+    padding: 22px;
+    break-inside: avoid;
+  }
+}
