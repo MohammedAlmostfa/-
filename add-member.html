@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full">
 <head>
@@ -11,288 +11,26 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap"
+    rel="stylesheet"
+  >
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="js/tailwind-config.js"></script>
+
   <link rel="stylesheet" href="css/app.css">
-
-  <style>
-    :root {
-      --primary: #7A2E35;
-      --primary-dark: #5D1820;
-      --secondary: #C9A24B;
-      --background: #FAF7F2;
-      --surface: #FFFFFF;
-      --surface-soft: #F6F3EE;
-      --border: #EBE8E3;
-      --border-strong: #DAC1C1;
-      --text: #1C1C19;
-      --text-secondary: #544243;
-      --muted: #858585;
-      --success: #3E8E3E;
-      --error: #BA1A1A;
-    }
-
-    body {
-      font-family: "Cairo", sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .material-symbols-outlined {
-      font-family: "Material Symbols Outlined";
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      direction: ltr;
-      -webkit-font-smoothing: antialiased;
-      font-feature-settings: "liga";
-    }
-
-    .member-card-shadow {
-      box-shadow:
-        0 4px 20px -2px rgba(93, 24, 32, 0.05),
-        0 2px 8px -2px rgba(30, 27, 24, 0.04);
-    }
-
-    .field-shell {
-      min-width: 0;
-      border: 1px solid var(--border-strong);
-      background: #FCF9F4;
-      transition:
-        border-color 150ms ease,
-        box-shadow 150ms ease,
-        background 150ms ease;
-    }
-
-    .field-shell:focus-within {
-      border-color: var(--primary);
-      background: var(--surface);
-      box-shadow: 0 0 0 3px rgba(122, 46, 53, 0.12);
-    }
-
-    .field-input {
-      min-height: 52px;
-      width: 100%;
-      min-width: 0;
-      border: 0;
-      background: transparent;
-      padding: 12px 14px;
-      color: var(--text);
-      text-align: right;
-      font: inherit;
-      font-size: 14px;
-      outline: none;
-      box-shadow: none !important;
-    }
-
-    .field-input::placeholder {
-      color: #A49A98;
-    }
-
-    .field-input:focus {
-      outline: none;
-      border: 0;
-    }
-
-    .instrument-card {
-      position: relative;
-      display: flex;
-      min-width: 0;
-      min-height: 136px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      border: 2px solid #F0EDE9;
-      border-radius: 16px;
-      padding: 12px 6px;
-      background: #FCF9F4;
-      cursor: pointer;
-      user-select: none;
-      transition:
-        border-color 160ms ease,
-        background 160ms ease,
-        transform 160ms ease,
-        box-shadow 160ms ease;
-    }
-
-    .instrument-card:active {
-      transform: scale(0.98);
-    }
-
-    .instrument-card[aria-checked="true"] {
-      border-color: var(--primary);
-      background: var(--surface);
-      box-shadow: 0 3px 10px rgba(93, 24, 32, 0.07);
-    }
-
-    .instrument-card:focus-visible {
-      outline: 3px solid rgba(122, 46, 53, 0.25);
-      outline-offset: 3px;
-    }
-
-    .instrument-icon {
-      display: flex;
-      width: 44px;
-      height: 44px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #F0EDE9;
-      color: var(--text-secondary);
-      transition: background 160ms ease, color 160ms ease;
-    }
-
-    .instrument-card[aria-checked="true"] .instrument-icon {
-      background: #FFF0CC;
-      color: var(--primary-dark);
-    }
-
-    .instrument-title {
-      color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .instrument-card[aria-checked="true"] .instrument-title {
-      color: var(--primary);
-      font-weight: 800;
-    }
-
-    .instrument-check {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      display: none;
-      width: 21px;
-      height: 21px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #FFFFFF;
-    }
-
-    .instrument-card[aria-checked="true"] .instrument-check {
-      display: flex;
-    }
-
-    .form-notice {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .form-notice[hidden] {
-      display: none !important;
-    }
-
-    .form-notice.info {
-      border: 1px solid var(--border-strong);
-      background: var(--surface-soft);
-      color: var(--text-secondary);
-    }
-
-    .form-notice.error {
-      border: 1px solid #F3CECA;
-      background: #FFF0EF;
-      color: var(--error);
-    }
-
-    .form-notice.success {
-      border: 1px solid #B9DCC0;
-      background: #EFF8F0;
-      color: #27632C;
-    }
-
-    .primary-action {
-      min-height: 54px;
-      background: var(--primary);
-      color: #FFFFFF;
-      transition: background 150ms ease, transform 150ms ease;
-    }
-
-    .primary-action:hover {
-      background: var(--primary-dark);
-    }
-
-    .primary-action:active {
-      transform: scale(0.99);
-    }
-
-    .primary-action:disabled {
-      cursor: not-allowed;
-      opacity: 0.65;
-    }
-
-    .page-header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.97);
-      box-shadow: 0 2px 8px rgba(30, 27, 24, 0.025);
-    }
-
-    .section-label {
-      color: #795902;
-    }
-
-    .form-panel {
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background: var(--surface);
-      box-shadow:
-        0 4px 20px -2px rgba(93, 24, 32, 0.05),
-        0 2px 8px -2px rgba(30, 27, 24, 0.04);
-    }
-
-    .bottom-action {
-      border-top: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 -4px 16px rgba(30, 27, 24, 0.04);
-    }
-
-    @media (max-width: 360px) {
-      .instrument-card {
-        min-height: 126px;
-        padding-inline: 3px;
-      }
-
-      .instrument-title {
-        font-size: 12px;
-      }
-
-      .instrument-icon {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/add-member.css">
 </head>
 
 <body class="min-h-full bg-[#FAF7F2] text-[#1C1C19] antialiased">
 
-  <!-- Header -->
   <header class="page-header sticky top-0 z-40">
     <div class="mx-auto flex w-full max-w-xl items-center justify-between gap-3 px-4 py-3">
 
@@ -321,8 +59,9 @@
           src="assets/logo.png"
           alt="شعار الفرقة"
           class="h-full w-full rounded-full object-contain"
-          onerror="this.style.display='none'"
+          onerror="this.style.display='none';document.getElementById('logoFallback').hidden=false"
         >
+
         <span
           class="material-symbols-outlined absolute text-[#7A2E35]"
           aria-hidden="true"
@@ -334,7 +73,6 @@
     </div>
   </header>
 
-  <!-- Main -->
   <main class="mx-auto w-full max-w-xl px-4 pb-40 pt-5">
 
     <div class="mb-5 flex items-center justify-between gap-3">
@@ -356,7 +94,6 @@
       novalidate
     >
 
-      <!-- Full name -->
       <div class="space-y-2">
         <div class="flex flex-wrap items-center justify-between gap-1">
           <label for="fullName" class="text-sm font-bold text-[#1C1C19]">
@@ -366,9 +103,8 @@
         </div>
 
         <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">
-            person
-          </span>
+          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">person</span>
+
           <input
             id="fullName"
             name="fullName"
@@ -388,16 +124,14 @@
         </p>
       </div>
 
-      <!-- Family name -->
       <div class="space-y-2">
         <label for="familyName" class="block text-sm font-bold text-[#1C1C19]">
           الكنية (اسم العائلة) <span class="text-[#7A2E35]">*</span>
         </label>
 
         <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">
-            badge
-          </span>
+          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">badge</span>
+
           <input
             id="familyName"
             name="familyName"
@@ -411,16 +145,14 @@
         </div>
       </div>
 
-      <!-- Mother's name -->
       <div class="space-y-2">
         <label for="motherName" class="block text-sm font-bold text-[#1C1C19]">
           اسم الأم <span class="text-[#7A2E35]">*</span>
         </label>
 
         <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">
-            family_restroom
-          </span>
+          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">family_restroom</span>
+
           <input
             id="motherName"
             name="motherName"
@@ -437,7 +169,6 @@
         </p>
       </div>
 
-      <!-- Instrument -->
       <fieldset class="space-y-3 pt-1">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <legend class="text-sm font-bold text-[#1C1C19]">
@@ -514,20 +245,17 @@
         <input id="instrument" name="instrument" type="hidden" value="ترومبيت">
       </fieldset>
 
-      <!-- Informational note -->
       <div class="flex items-start gap-3 rounded-2xl border border-[#EBE8E3] bg-[#F6F3EE]/80 p-3.5">
-        <span class="material-symbols-outlined mt-0.5 shrink-0 text-xl text-[#795902]" aria-hidden="true">
-          verified_user
-        </span>
+        <span class="material-symbols-outlined mt-0.5 shrink-0 text-xl text-[#795902]" aria-hidden="true">verified_user</span>
+
         <div class="text-xs leading-6 text-[#544243]">
           <strong class="mb-0.5 block font-extrabold text-[#1C1C19]">
             إنشاء سجل العضو
           </strong>
-          بعد ربط النظام بقاعدة البيانات، سيُنشأ رقم خاص بالعضو ويمكن توليد رمز QR لاستخدامه في تسجيل الحضور.
+          بعد حفظ البيانات بنجاح، سيُنشأ رقم خاص بالعضو ويمكن توليد رمز QR لاستخدامه في تسجيل الحضور.
         </div>
       </div>
 
-      <!-- Form feedback -->
       <div id="formNotice" class="form-notice info" role="status" aria-live="polite" hidden>
         <span id="noticeIcon" class="material-symbols-outlined mt-0.5 shrink-0">info</span>
         <p id="noticeText"></p>
@@ -536,7 +264,6 @@
     </form>
   </main>
 
-  <!-- Bottom action -->
   <footer class="bottom-action fixed inset-x-0 bottom-0 z-30 px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-4">
     <div class="mx-auto flex w-full max-w-xl flex-col items-center">
 
@@ -546,208 +273,14 @@
         form="addMemberForm"
         class="primary-action flex w-full items-center justify-center gap-3 rounded-2xl px-4 text-base font-bold shadow-md focus:outline-none focus:ring-4 focus:ring-[#7A2E35]/20"
       >
-        <span class="material-symbols-outlined text-2xl text-[#FFDF9E]" aria-hidden="true">
-          qr_code_2
-        </span>
+        <span class="material-symbols-outlined text-2xl text-[#FFDF9E]" aria-hidden="true">qr_code_2</span>
         <span id="saveButtonText">حفظ وإنشاء QR</span>
-        <span class="material-symbols-outlined text-xl" aria-hidden="true">
-          arrow_back
-        </span>
+        <span class="material-symbols-outlined text-xl" aria-hidden="true">arrow_back</span>
       </button>
 
       <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs leading-5 text-[#544243]/85">
-        <span class="material-symbols-outlined text-base text-[#C9A24B]" aria-hidden="true">
-          info
-        </span>
-        لن يُحفظ العضو فعلياً قبل ربط قاعدة البيانات.
+        <span class="material-symbols-outlined text-base text-[#C9A24B]" aria-hidden="true">info</span>
+        سيتم حفظ العضو في قاعدة البيانات عند نجاح العملية.
       </p>
 
-    </div>
-  </footer>
-
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/nav.js"></script>
-
-  <script>
-    "use strict";
-
-    const addMemberForm = document.getElementById("addMemberForm");
-    const fullNameInput = document.getElementById("fullName");
-    const familyNameInput = document.getElementById("familyName");
-    const motherNameInput = document.getElementById("motherName");
-    const instrumentInput = document.getElementById("instrument");
-    const instrumentGroup = document.getElementById("instrumentGroup");
-    const saveMemberButton = document.getElementById("saveMemberButton");
-    const saveButtonText = document.getElementById("saveButtonText");
-    const formNotice = document.getElementById("formNotice");
-    const noticeText = document.getElementById("noticeText");
-    const noticeIcon = document.getElementById("noticeIcon");
-
-    function showFormNotice(message, type = "info") {
-      formNotice.className = "form-notice " + type;
-      noticeText.textContent = message;
-
-      noticeIcon.textContent =
-        type === "error" ? "error" :
-        type === "success" ? "check_circle" :
-        "info";
-
-      formNotice.hidden = false;
-    }
-
-    function clearFormNotice() {
-      formNotice.hidden = true;
-      noticeText.textContent = "";
-    }
-
-    function selectInstrument(selectedButton) {
-      const buttons = instrumentGroup.querySelectorAll("[data-instrument]");
-
-      buttons.forEach(function (button) {
-        const isSelected = button === selectedButton;
-        button.setAttribute("aria-checked", String(isSelected));
-        button.tabIndex = isSelected ? 0 : -1;
-      });
-
-      instrumentInput.value = selectedButton.dataset.instrument;
-      clearFormNotice();
-    }
-
-    const instrumentButtons = Array.from(
-      instrumentGroup.querySelectorAll("[data-instrument]")
-    );
-
-    instrumentButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        selectInstrument(button);
-      });
-
-      button.addEventListener("keydown", function (event) {
-        const currentIndex = instrumentButtons.indexOf(button);
-        let nextIndex = currentIndex;
-
-        if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-          nextIndex = (currentIndex + 1) % instrumentButtons.length;
-        } else if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-          nextIndex =
-            (currentIndex - 1 + instrumentButtons.length) %
-            instrumentButtons.length;
-        } else {
-          return;
-        }
-
-        event.preventDefault();
-        instrumentButtons[nextIndex].focus();
-        selectInstrument(instrumentButtons[nextIndex]);
-      });
-    });
-
-    [
-      fullNameInput,
-      familyNameInput,
-      motherNameInput
-    ].forEach(function (input) {
-      input.addEventListener("input", clearFormNotice);
-    });
-
-    addMemberForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      clearFormNotice();
-
-      const fullName = fullNameInput.value.trim();
-      const familyName = familyNameInput.value.trim();
-      const motherName = motherNameInput.value.trim();
-      const instrument = instrumentInput.value;
-
-      if (!fullName || !familyName || !motherName) {
-        showFormNotice(
-          "يرجى تعبئة الاسم الثلاثي والكنية واسم الأم قبل المتابعة.",
-          "error"
-        );
-
-        if (!fullName) {
-          fullNameInput.focus();
-        } else if (!familyName) {
-          familyNameInput.focus();
-        } else {
-          motherNameInput.focus();
-        }
-
-        return;
-      }
-
-      if (!instrument) {
-        showFormNotice("يرجى اختيار الآلة أو الرتبة.", "error");
-        return;
-      }
-
-      if (typeof API_URL === "undefined" || !API_URL.trim()) {
-        showFormNotice(
-          "الواجهة جاهزة والبيانات مكتملة، لكن الحفظ غير مفعّل بعد لأن قاعدة البيانات لم تُربط. لم تتم إضافة أي عضو.",
-          "info"
-        );
-        return;
-      }
-
-      saveMemberButton.disabled = true;
-      saveButtonText.textContent = "جارٍ حفظ العضو...";
-
-      try {
-        const result = await api("addMember", {
-          fullName: fullName,
-          familyName: familyName,
-          motherName: motherName,
-          instrument: instrument
-        });
-
-        if (result && result.id) {
-          showFormNotice(
-            "تمت إضافة العضو بنجاح. رقم العضو: " + result.id,
-            "success"
-          );
-
-          window.setTimeout(function () {
-            window.location.href =
-              "member-card.html?id=" + encodeURIComponent(result.id);
-          }, 900);
-        } else {
-          showFormNotice(
-            "وصل رد من الخادم، لكن لم يُرجع رقم العضو. تحقق من استجابة عملية الإضافة.",
-            "error"
-          );
-        }
-      } catch (error) {
-        showFormNotice(
-          error && error.message
-            ? error.message
-            : "تعذّر حفظ العضو. حاول مجدداً.",
-          "error"
-        );
-      } finally {
-        saveMemberButton.disabled = false;
-        saveButtonText.textContent = "حفظ وإنشاء QR";
-      }
-    });
-
-    document.getElementById("backButton").addEventListener("click", function () {
-      window.location.href = "members.html";
-    });
-
-    const logoImage = document.querySelector('img[src="assets/logo.png"]');
-    const logoFallback = document.getElementById("logoFallback");
-
-    if (logoImage && logoFallback) {
-      logoImage.addEventListener("error", function () {
-        logoFallback.hidden = false;
-      });
-    }
-
-    if (typeof guard === "function") {
-      guard(["owner"]);
-    }
-  </script>
-
-</body>
-</html>
+    </div
