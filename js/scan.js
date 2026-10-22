@@ -27,6 +27,7 @@
   let qrScanner = null;
   let isScanning = false;
   let isProcessing = false;
+  let isManualSubmitting = false;
   let flashEnabled = false;
   let cameraTrack = null;
   let lastScannedText = "";
@@ -50,15 +51,29 @@
 
   function showResult(type, title, message, memberName = "") {
     const config = {
-      success: { className: "result-success", icon: "check_circle" },
-      warning: { className: "result-warning", icon: "warning" },
-      error: { className: "result-error", icon: "error" },
-      neutral: { className: "result-neutral", icon: "info" }
+      success: {
+        className: "result-success",
+        icon: "check_circle"
+      },
+      warning: {
+        className: "result-warning",
+        icon: "warning"
+      },
+      error: {
+        className: "result-error",
+        icon: "error"
+      },
+      neutral: {
+        className: "result-neutral",
+        icon: "info"
+      }
     };
 
     const chosen = config[type] || config.neutral;
 
-    elements.result.className = "scan-result " + chosen.className;
+    elements.result.className =
+      "scan-result " + chosen.className;
+
     elements.resultIcon.textContent = chosen.icon;
     elements.resultTitle.textContent = title;
     elements.resultMessage.textContent = message;
@@ -80,15 +95,10 @@
         title: "تم تسجيل الحضور",
         message: "تم تسجيل حضور العضو بنجاح."
       },
-      autoExcused: {
+      success: {
         type: "success",
-        title: "تم التسجيل بعذر",
-        message: "العضو متأخر، ويوجد عذر مسجل مسبقاً."
-      },
-      rejectedLate: {
-        type: "warning",
-        title: "متأخر بدون عذر",
-        message: "لم يتم تسجيل الحضور. يرجى مراجعة صاحب النظام للتسجيل اليدوي."
+        title: "تم تسجيل الحضور",
+        message: "تم تسجيل حضور العضو بنجاح."
       },
       duplicate: {
         type: "neutral",
@@ -98,7 +108,7 @@
       notFound: {
         type: "error",
         title: "العضو غير موجود",
-        message: "لم يتم العثور على عضو مطابق لرمز QR."
+        message: "لم يتم العثور على عضو مطابق لرقم العضو أو رمز QR."
       },
       disabled: {
         type: "error",
@@ -109,15 +119,29 @@
 
     const info = statuses[result.status] || {
       type: "neutral",
-      title: "نتيجة المسح",
-      message: "استلم النظام نتيجة غير معروفة."
+      title: "نتيجة التسجيل",
+      message: result.message || "استلم النظام نتيجة غير معروفة."
     };
 
     return {
       ...info,
-      name: result.name || "",
+      name: result.name || result.memberName || "",
       time: result.time || ""
     };
+  }
+
+  function displayScanResult(result) {
+    const display = normalizeScanResponse(result || {});
+
+    showResult(
+      display.type,
+      display.title,
+      display.message +
+        (display.time ? " الوقت: " + display.time : ""),
+      display.name ? "العضو: " + display.name : ""
+    );
+
+    return display;
   }
 
   async function registerScannedMember(decodedText) {
@@ -138,7 +162,7 @@
     lastScannedAt = now;
     isProcessing = true;
 
-    setCameraStatus("جارٍ التحقق من العضو...", "info");
+    setCameraStatus("جارٍ تسجيل حضور العضو...", "info");
 
     try {
       const memberId = String(decodedText).trim();
@@ -155,25 +179,21 @@
         return;
       }
 
-      const result = await api("scan", { id: memberId });
-      const display = normalizeScanResponse(result || {});
+      const result = await api("scan", {
+        id: memberId
+      });
 
-      showResult(
-        display.type,
-        display.title,
-        display.message + (display.time ? " الوقت: " + display.time : ""),
-        display.name ? "العضو: " + display.name : ""
+      const display = displayScanResult(result);
+
+      setCameraStatus(
+        "جاهز لمسح الرمز التالي",
+        display.type === "error" ? "error" : "success"
       );
-
-      setCameraStatus("جاهز لمسح الرمز التالي", "success");
 
       if (display.type === "success") {
         playFeedbackSound("success");
         vibrateDevice(100);
-      } else if (
-        display.type === "error" ||
-        display.type === "warning"
-      ) {
+      } else if (display.type === "error") {
         playFeedbackSound("error");
         vibrateDevice([100, 60, 100]);
       }
@@ -186,7 +206,11 @@
           : "حدث خطأ أثناء الاتصال بالنظام."
       );
 
-      setCameraStatus("المسح متوقف مؤقتاً عن التحقق", "error");
+      setCameraStatus(
+        "تعذّر تسجيل الحضور. يمكنك المحاولة مجدداً.",
+        "error"
+      );
+
       playFeedbackSound("error");
     } finally {
       isProcessing = false;
@@ -215,7 +239,12 @@
 
     elements.startButton.disabled = true;
     elements.startButton.textContent = "جارٍ تشغيل الكاميرا...";
-    setCameraStatus("يرجى السماح للمتصفح باستخدام الكاميرا", "info");
+
+    setCameraStatus(
+      "يرجى السماح للمتصفح باستخدام الكاميرا",
+      "info"
+    );
+
     hideResult();
 
     try {
@@ -246,23 +275,29 @@
       isScanning = true;
       elements.placeholder.hidden = true;
 
-      elements.startButton.replaceChildren();
-
       const stopIcon = document.createElement("span");
       stopIcon.className = "material-symbols-outlined";
       stopIcon.textContent = "videocam_off";
 
-      elements.startButton.append(stopIcon, "إيقاف الكاميرا");
+      elements.startButton.replaceChildren(
+        stopIcon,
+        "إيقاف الكاميرا"
+      );
+
       elements.startButton.disabled = false;
 
-      setCameraStatus("الكاميرا تعمل. وجّهها نحو رمز QR.", "success");
+      setCameraStatus(
+        "الكاميرا تعمل. وجّهها نحو رمز QR.",
+        "success"
+      );
 
       elements.flashToggle.disabled = true;
       flashEnabled = false;
       elements.flashIcon.textContent = "flashlight_on";
 
       try {
-        cameraTrack = qrScanner.getRunningTrackCameraCapabilities();
+        cameraTrack =
+          qrScanner.getRunningTrackCameraCapabilities();
 
         elements.flashToggle.disabled = !(
           cameraTrack &&
@@ -270,20 +305,28 @@
         );
       } catch (error) {
         cameraTrack = null;
+        elements.flashToggle.disabled = true;
       }
     } catch (error) {
       isScanning = false;
+
+      if (qrScanner) {
+        try {
+          await qrScanner.clear();
+        } catch (clearError) {
+          // متابعة تنظيف الحالة.
+        }
+      }
+
       qrScanner = null;
       elements.placeholder.hidden = false;
       elements.startButton.disabled = false;
-
-      elements.startButton.replaceChildren();
 
       const retryIcon = document.createElement("span");
       retryIcon.className = "material-symbols-outlined";
       retryIcon.textContent = "refresh";
 
-      elements.startButton.append(
+      elements.startButton.replaceChildren(
         retryIcon,
         "إعادة محاولة تشغيل الكاميرا"
       );
@@ -302,13 +345,16 @@
   }
 
   async function stopScanner() {
-    if (!qrScanner || !isScanning) {
+    if (!qrScanner) {
       isScanning = false;
       return;
     }
 
     try {
-      await qrScanner.stop();
+      if (isScanning) {
+        await qrScanner.stop();
+      }
+
       await qrScanner.clear();
     } catch (error) {
       // نكمل تنظيف الحالة حتى لو تعذّر إيقاف القارئ.
@@ -322,16 +368,22 @@
     elements.placeholder.hidden = false;
     elements.flashToggle.disabled = true;
     elements.flashIcon.textContent = "flashlight_on";
-    elements.flashToggle.setAttribute("aria-label", "تشغيل الفلاش");
-    elements.startButton.disabled = false;
 
-    elements.startButton.replaceChildren();
+    elements.flashToggle.setAttribute(
+      "aria-label",
+      "تشغيل الفلاش"
+    );
+
+    elements.startButton.disabled = false;
 
     const startIcon = document.createElement("span");
     startIcon.className = "material-symbols-outlined";
     startIcon.textContent = "photo_camera";
 
-    elements.startButton.append(startIcon, "تشغيل الكاميرا");
+    elements.startButton.replaceChildren(
+      startIcon,
+      "تشغيل الكاميرا"
+    );
 
     setCameraStatus("الكاميرا متوقفة.", "info");
   }
@@ -350,7 +402,8 @@
     }
 
     try {
-      const capabilities = qrScanner.getRunningTrackCameraCapabilities();
+      const capabilities =
+        qrScanner.getRunningTrackCameraCapabilities();
 
       if (
         !capabilities ||
@@ -366,6 +419,7 @@
       }
 
       await capabilities.torchFeature().apply(!flashEnabled);
+
       flashEnabled = !flashEnabled;
 
       elements.flashIcon.textContent = flashEnabled
@@ -403,6 +457,10 @@
   async function submitManualEntry(event) {
     event.preventDefault();
 
+    if (isManualSubmitting) {
+      return;
+    }
+
     const memberId = elements.memberIdInput.value.trim();
 
     if (!/^[A-Za-z0-9_-]{1,20}$/.test(memberId)) {
@@ -412,19 +470,68 @@
         "أدخل رقم عضو صحيحاً مثل M001."
       );
 
+      elements.memberIdInput.focus();
       return;
     }
 
-    showResult(
-      "neutral",
-      "التسجيل اليدوي يحتاج صلاحية صاحب النظام",
-      "افتح صفحة العضو من حساب صاحب النظام لإتمام التسجيل اليدوي. لم يتم تسجيل الحضور من هذه الشاشة."
-    );
+    isManualSubmitting = true;
+    elements.manualSubmit.disabled = true;
+
+    const originalButtonText =
+      elements.manualSubmit.textContent;
+
+    elements.manualSubmit.textContent =
+      "جارٍ تسجيل الحضور...";
 
     setCameraStatus(
-      "لم يتم تسجيل حضور يدوي من هذه الشاشة.",
+      "جارٍ تسجيل الحضور يدوياً...",
       "info"
     );
+
+    try {
+      const result = await api("manualCheckIn", {
+        id: memberId
+      });
+
+      const display = displayScanResult(result);
+
+      if (display.type === "success") {
+        playFeedbackSound("success");
+        vibrateDevice(100);
+
+        elements.manualForm.reset();
+        toggleManualPanel(false);
+      } else if (display.type === "error") {
+        playFeedbackSound("error");
+        vibrateDevice([100, 60, 100]);
+      }
+
+      setCameraStatus(
+        display.type === "error"
+          ? "تعذّر تسجيل الحضور."
+          : "تمت معالجة طلب التسجيل اليدوي.",
+        display.type === "error" ? "error" : "success"
+      );
+    } catch (error) {
+      showResult(
+        "error",
+        "تعذّر تسجيل الحضور",
+        error && error.message
+          ? error.message
+          : "حدث خطأ أثناء الاتصال بالنظام."
+      );
+
+      setCameraStatus(
+        "تعذّر إتمام التسجيل اليدوي.",
+        "error"
+      );
+
+      playFeedbackSound("error");
+    } finally {
+      isManualSubmitting = false;
+      elements.manualSubmit.disabled = false;
+      elements.manualSubmit.textContent = originalButtonText;
+    }
   }
 
   async function loadSessionInfo() {
@@ -441,14 +548,17 @@
       } else if (type) {
         elements.sessionLabel.textContent = type;
       } else {
-        elements.sessionLabel.textContent = "معلومات الجلسة غير متاحة";
+        elements.sessionLabel.textContent =
+          "معلومات الجلسة غير متاحة";
       }
     } catch (error) {
-      elements.sessionLabel.textContent = "بانتظار ربط النظام";
+      elements.sessionLabel.textContent =
+        "بانتظار ربط النظام";
     }
   }
 
   function initialize() {
+    // الإبقاء على التحقق الأصلي كما هو، دون تغييره.
     if (
       typeof guard === "function" &&
       !guard(["observer", "owner"])
@@ -464,8 +574,15 @@
       }
     });
 
-    elements.startButton.addEventListener("click", toggleScanner);
-    elements.flashToggle.addEventListener("click", toggleFlash);
+    elements.startButton.addEventListener(
+      "click",
+      toggleScanner
+    );
+
+    elements.flashToggle.addEventListener(
+      "click",
+      toggleFlash
+    );
 
     elements.manualButton.addEventListener("click", function () {
       toggleManualPanel();
@@ -475,7 +592,10 @@
       toggleManualPanel(false);
     });
 
-    elements.manualForm.addEventListener("submit", submitManualEntry);
+    elements.manualForm.addEventListener(
+      "submit",
+      submitManualEntry
+    );
 
     loadSessionInfo();
   }
@@ -487,7 +607,10 @@
   });
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initialize);
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize
+    );
   } else {
     initialize();
   }

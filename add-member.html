@@ -1,189 +1,141 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="h-full">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#FAF7F2">
   <meta name="description" content="إضافة عضو جديد إلى فرقة القديس جاورجيوس الموسيقية">
 
   <title>حاضر | إضافة عضو جديد</title>
 
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap"
-    rel="stylesheet"
-  >
-
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/add-member.css">
 </head>
 
-<body class="min-h-full bg-[#FAF7F2] text-[#1C1C19] antialiased">
+<body class="add-member-page">
 
-  <header class="page-header sticky top-0 z-40">
-    <div class="mx-auto flex w-full max-w-xl items-center justify-between gap-3 px-4 py-3">
+  <noscript>
+    <p class="noscript-note">هذه الصفحة تحتاج تفعيل جافاسكربت في المتصفح.</p>
+  </noscript>
 
-      <div class="flex min-w-0 items-center gap-3">
-        <button
-          id="backButton"
-          type="button"
-          aria-label="الرجوع إلى قائمة الأعضاء"
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F0EDE9] text-[#544243] transition hover:bg-[#E5E2DD] active:scale-95"
-        >
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
+  <!-- الشريط العلوي -->
+  <header class="page-header">
+    <div class="page-header-inner">
 
-        <div class="min-w-0">
-          <h1 class="text-lg font-extrabold leading-7 tracking-tight text-[#7A2E35]">
-            إضافة عضو جديد
-          </h1>
-          <p class="text-xs leading-5 text-[#544243]">
-            فرقة القديس جاورجيوس الموسيقية
-          </p>
-        </div>
+      <button
+        id="backButton"
+        class="back-button"
+        type="button"
+        aria-label="الرجوع إلى قائمة الأعضاء">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </button>
+
+      <div class="header-copy">
+        <h1>إضافة عضو جديد</h1>
+        <p>فرقة القديس جاورجيوس الموسيقية</p>
       </div>
 
-      <div class="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#C9A24B]/50 bg-white p-1">
+      <div class="header-logo">
         <img
           src="assets/logo.png"
           alt="شعار الفرقة"
-          class="h-full w-full rounded-full object-contain"
-          onerror="this.style.display='none';document.getElementById('logoFallback').hidden=false"
-        >
-
-        <span
-          class="material-symbols-outlined absolute text-[#7A2E35]"
-          aria-hidden="true"
-          id="logoFallback"
-          hidden
-        >music_note</span>
+          width="44"
+          height="44"
+          onerror="this.hidden=true;document.getElementById('logoFallback').hidden=false;">
+        <span class="material-symbols-outlined" id="logoFallback" aria-hidden="true" hidden>music_note</span>
       </div>
 
     </div>
   </header>
 
-  <main class="mx-auto w-full max-w-xl px-4 pb-40 pt-5">
+  <main class="am-main">
 
-    <div class="mb-5 flex items-center justify-between gap-3">
-      <div class="flex min-w-0 items-center gap-2">
-        <span class="h-2 w-2 shrink-0 rounded-full bg-[#C9A24B]"></span>
-        <span class="section-label text-xs font-bold tracking-wide">
-          تسجيل عضو جديد
-        </span>
+    <form id="addMemberForm" class="form-panel" novalidate>
+
+      <div class="panel-heading">
+        <span class="panel-dot" aria-hidden="true"></span>
+        <h2 class="section-label">بيانات العضو</h2>
       </div>
 
-      <span class="shrink-0 text-xs text-[#544243]">
-        البيانات الأساسية
-      </span>
-    </div>
-
-    <form
-      id="addMemberForm"
-      class="form-panel space-y-6 p-5 sm:p-7"
-      novalidate
-    >
-
-      <div class="space-y-2">
-        <div class="flex flex-wrap items-center justify-between gap-1">
-          <label for="fullName" class="text-sm font-bold text-[#1C1C19]">
-            الاسم الثلاثي <span class="text-[#7A2E35]">*</span>
-          </label>
-          <span class="text-xs text-[#858585]">مطلوب</span>
-        </div>
-
-        <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">person</span>
-
+      <!-- الاسم الثلاثي -->
+      <div class="field-group">
+        <label for="fullName">الاسم الثلاثي <span class="req" aria-hidden="true">*</span></label>
+        <div class="field-shell">
+          <span class="field-icon material-symbols-outlined" aria-hidden="true">person</span>
           <input
             id="fullName"
             name="fullName"
             class="field-input"
             type="text"
-            autocomplete="name"
-            placeholder="أدخل الاسم الثلاثي"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="next"
+            placeholder="مثال: يوسف سمير جورج"
             maxlength="100"
-            required
-            aria-describedby="fullNameHint"
-          >
+            required>
         </div>
-
-        <p id="fullNameHint" class="flex items-start gap-1.5 pr-1 text-xs leading-6 text-[#544243]/80">
-          <span class="material-symbols-outlined mt-1 text-sm text-[#C9A24B]" aria-hidden="true">info</span>
-          أدخل الاسم كما تريد ظهوره في سجلات الفرقة.
-        </p>
       </div>
 
-      <div class="space-y-2">
-        <label for="familyName" class="block text-sm font-bold text-[#1C1C19]">
-          الكنية (اسم العائلة) <span class="text-[#7A2E35]">*</span>
-        </label>
-
-        <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">badge</span>
-
+      <!-- الكنية -->
+      <div class="field-group">
+        <label for="familyName">الكنية <span class="req" aria-hidden="true">*</span></label>
+        <div class="field-shell">
+          <span class="field-icon material-symbols-outlined" aria-hidden="true">badge</span>
           <input
             id="familyName"
             name="familyName"
             class="field-input"
             type="text"
-            autocomplete="family-name"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="next"
             placeholder="أدخل الكنية"
             maxlength="100"
-            required
-          >
+            required>
         </div>
       </div>
 
-      <div class="space-y-2">
-        <label for="motherName" class="block text-sm font-bold text-[#1C1C19]">
-          اسم الأم <span class="text-[#7A2E35]">*</span>
-        </label>
-
-        <div class="field-shell flex items-center rounded-xl">
-          <span class="material-symbols-outlined mr-3 shrink-0 text-xl text-[#877272]" aria-hidden="true">family_restroom</span>
-
+      <!-- اسم الأم -->
+      <div class="field-group">
+        <label for="motherName">اسم الأم <span class="req" aria-hidden="true">*</span></label>
+        <div class="field-shell">
+          <span class="field-icon material-symbols-outlined" aria-hidden="true">family_restroom</span>
           <input
             id="motherName"
             name="motherName"
             class="field-input"
             type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="go"
             placeholder="أدخل اسم الأم"
             maxlength="100"
             required
-          >
+            aria-describedby="motherHint">
         </div>
-
-        <p class="text-xs leading-5 text-[#858585]">
-          يُستخدم اسم الأم لاحقاً للمساعدة في التحقق من طلبات الأعذار.
-        </p>
+        <p id="motherHint" class="field-hint">يُستخدم اسم الأم للتحقق من هوية العضو عند تقديم الأعذار.</p>
       </div>
 
-      <fieldset class="space-y-3 pt-1">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <legend class="text-sm font-bold text-[#1C1C19]">
-            الآلة أو الرتبة <span class="text-[#7A2E35]">*</span>
-          </legend>
-          <span class="text-xs font-semibold text-[#795902]">
-            اختر خياراً واحداً
-          </span>
-        </div>
+      <!-- الآلة -->
+      <fieldset class="field-group instrument-fieldset">
+        <legend>الآلة التي يعزف عليها <span class="req" aria-hidden="true">*</span></legend>
 
         <div
           id="instrumentGroup"
-          class="grid grid-cols-3 gap-2.5"
+          class="instrument-grid"
           role="radiogroup"
-          aria-label="اختر الآلة أو الرتبة"
-        >
+          aria-label="اختر الآلة">
 
           <button
             type="button"
@@ -191,16 +143,14 @@
             data-instrument="ترومبيت"
             role="radio"
             aria-checked="true"
-            tabindex="0"
-          >
+            tabindex="0">
             <span class="instrument-check" aria-hidden="true">
-              <span class="material-symbols-outlined text-sm">check</span>
+              <span class="material-symbols-outlined">check</span>
             </span>
-            <span class="instrument-icon">
-              <span class="material-symbols-outlined text-2xl">music_note</span>
+            <span class="instrument-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">music_note</span>
             </span>
             <span class="instrument-title">ترومبيت</span>
-            <span class="text-center text-[10px] leading-4 text-[#858585]">آلات نحاسية</span>
           </button>
 
           <button
@@ -209,16 +159,14 @@
             data-instrument="طنبور"
             role="radio"
             aria-checked="false"
-            tabindex="-1"
-          >
+            tabindex="-1">
             <span class="instrument-check" aria-hidden="true">
-              <span class="material-symbols-outlined text-sm">check</span>
+              <span class="material-symbols-outlined">check</span>
             </span>
-            <span class="instrument-icon">
-              <span class="material-symbols-outlined text-2xl">graphic_eq</span>
+            <span class="instrument-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">graphic_eq</span>
             </span>
             <span class="instrument-title">طنبور</span>
-            <span class="text-center text-[10px] leading-4 text-[#858585]">إيقاع وضبط</span>
           </button>
 
           <button
@@ -227,16 +175,14 @@
             data-instrument="مراسم"
             role="radio"
             aria-checked="false"
-            tabindex="-1"
-          >
+            tabindex="-1">
             <span class="instrument-check" aria-hidden="true">
-              <span class="material-symbols-outlined text-sm">check</span>
+              <span class="material-symbols-outlined">check</span>
             </span>
-            <span class="instrument-icon">
-              <span class="material-symbols-outlined text-2xl">military_tech</span>
+            <span class="instrument-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">military_tech</span>
             </span>
             <span class="instrument-title">مراسم</span>
-            <span class="text-center text-[10px] leading-4 text-[#858585]">شرف ورايات</span>
           </button>
 
         </div>
@@ -244,44 +190,33 @@
         <input id="instrument" name="instrument" type="hidden" value="ترومبيت">
       </fieldset>
 
-      <div class="flex items-start gap-3 rounded-2xl border border-[#EBE8E3] bg-[#F6F3EE]/80 p-3.5">
-        <span class="material-symbols-outlined mt-0.5 shrink-0 text-xl text-[#795902]" aria-hidden="true">verified_user</span>
-
-        <div class="text-xs leading-6 text-[#544243]">
-          <strong class="mb-0.5 block font-extrabold text-[#1C1C19]">
-            إنشاء سجل العضو
-          </strong>
-          بعد حفظ البيانات بنجاح، سيُنشأ رقم خاص بالعضو ويمكن توليد رمز QR لاستخدامه في تسجيل الحضور.
-        </div>
+      <!-- ملاحظة -->
+      <div class="info-card">
+        <span class="material-symbols-outlined" aria-hidden="true">qr_code_2</span>
+        <p>بعد الحفظ سيظهر رمز QR الخاص بالعضو، ويمكنك تحميله أو مشاركته.</p>
       </div>
 
+      <!-- رسائل النجاح والخطأ -->
       <div id="formNotice" class="form-notice info" role="status" aria-live="polite" hidden>
-        <span id="noticeIcon" class="material-symbols-outlined mt-0.5 shrink-0">info</span>
+        <span id="noticeIcon" class="material-symbols-outlined" aria-hidden="true">info</span>
         <p id="noticeText"></p>
       </div>
 
     </form>
   </main>
 
-  <footer class="bottom-action fixed inset-x-0 bottom-0 z-30 px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-4">
-    <div class="mx-auto flex w-full max-w-xl flex-col items-center">
-
+  <!-- زر الحفظ الثابت -->
+  <footer class="bottom-action">
+    <div class="bottom-action-inner">
       <button
         id="saveMemberButton"
+        class="primary-action"
         type="submit"
-        form="addMemberForm"
-        class="primary-action flex w-full items-center justify-center gap-3 rounded-2xl px-4 text-base font-bold shadow-md focus:outline-none focus:ring-4 focus:ring-[#7A2E35]/20"
-      >
-        <span class="material-symbols-outlined text-2xl text-[#FFDF9E]" aria-hidden="true">qr_code_2</span>
+        form="addMemberForm">
+        <span class="btn-lead material-symbols-outlined" aria-hidden="true">qr_code_2</span>
         <span id="saveButtonText">حفظ وإنشاء QR</span>
-        <span class="material-symbols-outlined text-xl" aria-hidden="true">arrow_back</span>
+        <span class="btn-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
       </button>
-
-      <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs leading-5 text-[#544243]/85">
-        <span class="material-symbols-outlined text-base text-[#C9A24B]" aria-hidden="true">info</span>
-        سيتم حفظ العضو في قاعدة البيانات عند نجاح العملية.
-      </p>
-
     </div>
   </footer>
 

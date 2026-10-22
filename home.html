@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#FAF7F2">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="description" content="لوحة متابعة الحضور والغياب - نظام حاضر">
 
   <title>الرئيسية | حاضر</title>
@@ -14,7 +13,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght@400;500;600;700&display=block" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/home.css">
@@ -24,7 +24,7 @@
 
   <div class="dashboard-shell">
 
-    <!-- رأس الصفحة -->
+    <!-- الشريط العلوي -->
     <header class="topbar">
 
       <a class="brand" href="home.html" aria-label="حاضر - الرئيسية">
@@ -33,10 +33,9 @@
             class="brand-logo"
             src="assets/logo.png"
             alt=""
-            width="48"
-            height="48"
-            onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-          >
+            width="44"
+            height="44"
+            onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
           <span class="brand-fallback" aria-hidden="true" hidden>ح</span>
         </span>
 
@@ -46,24 +45,14 @@
         </span>
       </a>
 
-      <div class="topbar-actions">
-
-        <div class="date-chip">
-          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
-          <span id="today-date">جاري تحميل التاريخ...</span>
-        </div>
-
-        <button
-          class="icon-button"
-          id="refresh-button"
-          type="button"
-          aria-label="تحديث البيانات"
-          title="تحديث البيانات"
-        >
-          <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
-        </button>
-
-      </div>
+      <button
+        class="icon-button"
+        id="refresh-button"
+        type="button"
+        aria-label="تحديث البيانات"
+        title="تحديث البيانات">
+        <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+      </button>
 
     </header>
 
@@ -73,12 +62,12 @@
       <section class="welcome-section">
 
         <div class="welcome-copy">
-          <div class="welcome-eyebrow">
-            <span class="welcome-eyebrow-dot"></span>
-            لوحة المتابعة اليومية
-          </div>
+          <p class="welcome-date">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+            <span id="today-date">…</span>
+          </p>
 
-          <h1>أهلاً وسهلاً بك 👋</h1>
+          <h1>أهلاً وسهلاً بك</h1>
 
           <p class="welcome-description">
             كل ما تحتاجه لمتابعة الحضور وتنظيم شؤون الفرقة، في مكان واحد.
@@ -88,21 +77,13 @@
         <a class="primary-button" href="scan.html">
           <span class="material-symbols-outlined" aria-hidden="true">qr_code_scanner</span>
           <span>تسجيل الحضور</span>
-          <span class="primary-button-arrow" aria-hidden="true">←</span>
+          <span class="primary-button-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
         </a>
 
       </section>
 
       <!-- أخطاء تحميل البيانات -->
-      <div
-        class="error-banner"
-        id="dashboard-error"
-        role="alert"
-        aria-live="polite"
-      ></div>
-
-      <!-- الجلسة الحالية -->
-    
+      <div class="error-banner" id="dashboard-error" role="alert" aria-live="polite"></div>
 
       <!-- إحصائيات اليوم -->
       <section class="stats-section" aria-labelledby="stats-title">
@@ -110,155 +91,114 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">نظرة سريعة</p>
-            <h2 id="stats-title">إحصائيات الحضور</h2>
+            <h2 id="stats-title">إحصائيات اليوم</h2>
           </div>
-
-          <span class="section-heading-note">
-            <span class="section-heading-dot"></span>
-            ملخص اليوم
-          </span>
         </div>
 
         <div class="stats-grid">
 
-          <article class="stat-card stat-present-card">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">
-                <span class="material-symbols-outlined">how_to_reg</span>
-              </span>
-              <span class="stat-trend-label">حضور</span>
-            </div>
+          <article class="stat-card stat-present">
+            <span class="stat-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">how_to_reg</span>
+            </span>
             <p class="stat-value" id="stat-present">—</p>
             <h3 class="stat-label">الحاضرون</h3>
             <p class="stat-caption">تم تسجيل حضورهم</p>
-            <span class="stat-card-decoration" aria-hidden="true"></span>
           </article>
 
-          <article class="stat-card stat-late-card">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">
-                <span class="material-symbols-outlined">schedule</span>
-              </span>
-              <span class="stat-trend-label">تأخير</span>
-            </div>
+          <article class="stat-card stat-late">
+            <span class="stat-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">schedule</span>
+            </span>
             <p class="stat-value" id="stat-late">—</p>
             <h3 class="stat-label">المتأخرون</h3>
             <p class="stat-caption">وصلوا بعد بداية الجلسة</p>
-            <span class="stat-card-decoration" aria-hidden="true"></span>
           </article>
 
-          <article class="stat-card stat-absent-card">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">
-                <span class="material-symbols-outlined">person_off</span>
-              </span>
-              <span class="stat-trend-label">غياب</span>
-            </div>
+          <article class="stat-card stat-absent">
+            <span class="stat-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">person_off</span>
+            </span>
             <p class="stat-value" id="stat-absent">—</p>
             <h3 class="stat-label">الغائبون</h3>
             <p class="stat-caption">لم يسجلوا الحضور</p>
-            <span class="stat-card-decoration" aria-hidden="true"></span>
           </article>
 
-          <article class="stat-card stat-excuses-card">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">
-                <span class="material-symbols-outlined">description</span>
-              </span>
-              <span class="stat-trend-label">أعذار</span>
-            </div>
+          <article class="stat-card stat-excuses">
+            <span class="stat-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">description</span>
+            </span>
             <p class="stat-value" id="stat-excuses">—</p>
-            <h3 class="stat-label">الأعذار اليوم</h3>
+            <h3 class="stat-label">الأعذار</h3>
             <p class="stat-caption">الأعذار المقدمة اليوم</p>
-            <span class="stat-card-decoration" aria-hidden="true"></span>
           </article>
 
         </div>
       </section>
 
-      <!-- محتوى لوحة المتابعة -->
-      <section class="dashboard-grid">
+      <!-- إجراءات سريعة -->
+      <section class="actions-section" aria-labelledby="actions-title">
 
-       
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">وصول سريع</p>
+            <h2 id="actions-title">إجراءات سريعة</h2>
+          </div>
+        </div>
 
-        <!-- العمود الجانبي -->
-        <div class="side-column">
+        <div class="actions-grid">
 
-          <!-- إجراءات سريعة -->
-          <article class="content-card quick-actions-card">
+          <a class="action-tile tone-green" href="add-member.html">
+            <span class="action-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">person_add</span>
+            </span>
+            <strong>إضافة عضو</strong>
+            <small>تسجيل عضو جديد وإنشاء رمزه</small>
+            <span class="action-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          </a>
 
-            <div class="card-heading">
-              <div>
-                <p class="eyebrow">وصول سريع</p>
-                <h2>إجراءات سريعة</h2>
-                <p class="card-description">انتقل مباشرة إلى المهمة المطلوبة.</p>
-              </div>
-            </div>
+          <a class="action-tile tone-blue" href="members.html">
+            <span class="action-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">groups</span>
+            </span>
+            <strong>إدارة الأعضاء</strong>
+            <small>عرض الأعضاء وسجل كل عضو</small>
+            <span class="action-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          </a>
 
-            <div class="quick-actions">
+          <a class="action-tile tone-orange" href="excuses.html">
+            <span class="action-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">assignment</span>
+            </span>
+            <strong>الأعذار</strong>
+            <small>متابعة الأعذار المقدمة</small>
+            <span class="action-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          </a>
 
-              <a class="quick-action" href="scan.html">
-                <span class="quick-action-icon scan-action-icon" aria-hidden="true">
-                  <span class="material-symbols-outlined">qr_code_scanner</span>
-                </span>
-                <span class="quick-action-copy">
-                  <strong>مسح رمز العضو</strong>
-                  <small>تسجيل حضور سريع</small>
-                </span>
-                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
-              </a>
+          <a class="action-tile tone-maroon" href="log.html">
+            <span class="action-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">history</span>
+            </span>
+            <strong>سجل الحضور</strong>
+            <small>الحضور والعمليات السابقة</small>
+            <span class="action-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          </a>
 
-              <a class="quick-action" href="add-member.html">
-                <span class="quick-action-icon member-action-icon" aria-hidden="true">
-                  <span class="material-symbols-outlined">person_add</span>
-                </span>
-                <span class="quick-action-copy">
-                  <strong>إضافة عضو</strong>
-                  <small>تسجيل عضو جديد</small>
-                </span>
-                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
-              </a>
-
-              <a class="quick-action" href="members.html">
-                <span class="quick-action-icon list-action-icon" aria-hidden="true">
-                  <span class="material-symbols-outlined">groups</span>
-                </span>
-                <span class="quick-action-copy">
-                  <strong>إدارة الأعضاء</strong>
-                  <small>عرض قائمة الأعضاء</small>
-                </span>
-                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
-              </a>
-
-              <a class="quick-action" href="excuses.html">
-                <span class="quick-action-icon excuse-action-icon" aria-hidden="true">
-                  <span class="material-symbols-outlined">assignment</span>
-                </span>
-                <span class="quick-action-copy">
-                  <strong>الأعذار</strong>
-                  <small>متابعة الأعذار المقدمة</small>
-                </span>
-                <span class="quick-arrow material-symbols-outlined" aria-hidden="true">arrow_back</span>
-              </a>
-
-            </div>
-          </article>
-
-   
         </div>
       </section>
 
       <!-- التذييل -->
       <footer class="dashboard-footer">
-        <div class="footer-brand">
+        <span class="footer-brand">
           <span class="footer-brand-mark">ح</span>
           <span>حاضر</span>
-        </div>
+        </span>
         <span class="footer-message">تنظيم أسهل، ومتابعة أدق</span>
       </footer>
 
     </main>
   </div>
+
 
 
   <script src="js/config.js"></script>

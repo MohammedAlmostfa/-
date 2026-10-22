@@ -1,34 +1,26 @@
-
 /* =========================================================
    حاضر | إضافة عضو جديد
-   Visual identity: Maroon · Gold · Cream
-   Mobile-first · RTL · Cairo
+   عنابي · ذهبي · كريمي — موبايل أولاً · RTL · Cairo
    ========================================================= */
 
-/* ---------- Design Tokens ---------- */
-
 :root {
-  --primary: #7A2E35;
-  --primary-light: #8E3A44;
-  --primary-dark: #5D1820;
-  --primary-deep: #43101A;
+  --maroon: #7A2E35;
+  --maroon-light: #8E3A44;
+  --maroon-dark: #5D1820;
+  --maroon-deep: #43101A;
 
   --gold: #C9A24B;
   --gold-light: #EBD9A6;
-  --gold-dark: #795902;
+  --gold-dark: #8A6A1F;
 
-  --background: #FAF7F2;
-  --surface: #FFFFFF;
-  --surface-soft: #F6F3EE;
-  --surface-warm: #FFFCF8;
-
-  --text: #1C1C19;
-  --muted: #544243;
-  --muted-light: #858585;
-  --icon: #877272;
+  --cream: #FAF7F2;
+  --field: #FBF9F6;
+  --white: #FFFFFF;
 
   --border: #E2D3D3;
-  --border-soft: #EBE8E3;
+  --text: #1C1C19;
+  --muted: #6B5A5B;
+  --icon: #877272;
 
   --success: #2F7334;
   --success-bg: #F0F8F0;
@@ -38,26 +30,10 @@
   --danger-bg: #FFF2F1;
   --danger-border: #F1C7C4;
 
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 26px;
-
-  --shadow-sm:
-    0 2px 8px rgba(67, 16, 26, 0.04);
-
-  --shadow-md:
-    0 8px 24px rgba(93, 24, 32, 0.07);
-
-  --shadow-lg:
-    0 16px 44px rgba(93, 24, 32, 0.10);
-
-  --transition:
-    180ms ease;
+  --ease: 160ms ease;
 }
 
-/* ---------- Base ---------- */
-
+/* ---------- الأساس ---------- */
 *,
 *::before,
 *::after {
@@ -66,56 +42,54 @@
 
 html {
   min-height: 100%;
-  background: var(--background);
-  scroll-behavior: smooth;
+  background: var(--cream);
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
-body {
+body.add-member-page {
   min-width: 320px;
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
-  background:
-    radial-gradient(
-      ellipse at 100% 0%,
-      rgba(201, 162, 75, 0.07),
-      transparent 34rem
-    ),
-    var(--background);
   color: var(--text);
-  font-family: "Cairo", sans-serif;
-  font-size: 14px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(201, 162, 75, 0.08), transparent 34rem),
+    var(--cream);
+  font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+  font-size: 15px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-button,
-input,
-textarea,
-select {
+.add-member-page button,
+.add-member-page input {
   font: inherit;
 }
 
-button {
+.add-member-page button {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  outline: 3px solid rgba(201, 162, 75, 0.75);
+.add-member-page button:focus-visible {
+  outline: 3px solid rgba(201, 162, 75, 0.8);
   outline-offset: 3px;
 }
 
-::selection {
-  background: rgba(201, 162, 75, 0.28);
-  color: var(--primary-dark);
+.add-member-page ::selection {
+  background: rgba(201, 162, 75, 0.3);
+  color: var(--maroon-dark);
 }
 
-.material-symbols-outlined {
+.add-member-page .material-symbols-outlined {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Material Symbols Outlined", sans-serif;
   font-weight: normal;
   font-style: normal;
+  font-size: 24px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -124,191 +98,198 @@ input:focus-visible {
   font-feature-settings: "liga";
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-/* ---------- Header ---------- */
+[hidden] {
+  display: none !important;
+}
 
+.noscript-note {
+  margin: 0;
+  padding: 12px;
+  text-align: center;
+  color: var(--danger);
+  background: var(--danger-bg);
+  font-size: 14px;
+}
+
+/* ---------- الشريط العلوي ---------- */
 .page-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  border-bottom: 1px solid rgba(226, 211, 211, 0.8);
-  background: rgba(250, 247, 242, 0.94);
-  box-shadow: 0 3px 16px rgba(67, 16, 26, 0.035);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(122, 46, 53, 0.08);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
 }
 
-.page-header > div {
-  min-height: 76px;
+.page-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 10px)
+    16px
+    10px;
 }
 
-.page-header h1 {
-  overflow-wrap: anywhere;
-  margin: 0;
-  color: var(--primary-dark);
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.65;
-  letter-spacing: -0.35px;
-}
-
-.page-header p {
-  margin: 1px 0 0;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.7;
-}
-
-/* Back button */
-
-#backButton {
-  border: 1px solid rgba(226, 211, 211, 0.8);
-  background: #F0EDE9;
-  color: var(--primary);
+.back-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--maroon);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
   cursor: pointer;
-  transition:
-    background var(--transition),
-    border-color var(--transition),
-    transform var(--transition);
+  transition: background var(--ease), border-color var(--ease), transform var(--ease);
 }
 
-#backButton .material-symbols-outlined {
-  font-size: 23px;
+.back-button:hover {
+  background: var(--cream);
+  border-color: rgba(201, 162, 75, 0.7);
 }
 
-#backButton:hover {
-  border-color: rgba(201, 162, 75, 0.65);
-  background: #EAE3DA;
-}
-
-#backButton:active {
+.back-button:active {
   transform: scale(0.95);
 }
 
-/* Header logo */
-
-.page-header img {
-  display: block;
+.header-copy {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.4;
 }
 
-#logoFallback:not([hidden]) {
-  display: block;
-  font-size: 23px;
+.header-copy h1 {
+  margin: 0;
+  color: var(--maroon);
+  font-size: 19px;
+  font-weight: 800;
 }
 
-/* ---------- Main Layout ---------- */
+.header-copy p {
+  margin: 1px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
 
-main.mx-auto {
+.header-logo {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  padding: 3px;
+  overflow: hidden;
+  background: var(--white);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px rgba(201, 162, 75, 0.85), 0 4px 10px rgba(67, 16, 26, 0.1);
+}
+
+.header-logo img {
+  display: block;
   width: 100%;
-  max-width: 576px;
-  margin-inline: auto;
-  padding-top: 25px;
-  padding-bottom: 190px;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-/* Section introduction */
+.header-logo .material-symbols-outlined {
+  color: var(--maroon);
+}
 
-main > div:first-child {
-  min-height: 30px;
+/* ---------- المحتوى ---------- */
+.am-main {
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
+  padding: 20px 16px calc(7.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---------- بطاقة النموذج ---------- */
+.form-panel {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  padding: 26px 20px 22px;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid rgba(226, 211, 211, 0.9);
+  border-radius: 24px;
+  box-shadow:
+    0 2px 6px rgba(67, 16, 26, 0.03),
+    0 18px 40px -18px rgba(67, 16, 26, 0.22);
+}
+
+/* خط ذهبي رفيع أعلى البطاقة */
+.form-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.panel-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(201, 162, 75, 0.16);
 }
 
 .section-label {
-  color: var(--primary-dark);
-  font-size: 12px;
+  margin: 0;
+  color: var(--maroon-dark);
+  font-size: 15px;
   font-weight: 800;
 }
 
-main > div:first-child > span:last-child {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-/* ---------- Form Panel ---------- */
-
-.form-panel {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(226, 211, 211, 0.88);
-  border-radius: var(--radius-xl);
-  background: var(--surface);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Fine gold accent at the top of the form */
-
-.form-panel::before {
-  position: absolute;
-  top: 0;
-  right: 24px;
-  left: 24px;
-  height: 3px;
-  border-radius: 0 0 4px 4px;
-  background: linear-gradient(
-    90deg,
-    rgba(201, 162, 75, 0.25),
-    var(--gold),
-    rgba(201, 162, 75, 0.25)
-  );
-  content: "";
-  pointer-events: none;
-}
-
-/* Keep form sections above the decorative accent */
-
-.form-panel > div,
-.form-panel > fieldset {
+/* ---------- الحقول ---------- */
+.field-group {
   min-width: 0;
 }
 
-/* ---------- Labels & Hints ---------- */
-
-.form-panel label,
-.form-panel legend {
+.field-group label,
+.field-group legend {
+  display: block;
+  margin-bottom: 8px;
+  padding: 0;
   color: var(--text);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.form-panel label span {
-  color: var(--primary);
+.req {
+  color: var(--maroon);
+  margin-inline-start: 2px;
 }
-
-.form-panel label + span,
-.form-panel legend + span {
-  font-size: 11px;
-}
-
-#fullNameHint {
-  margin: 0;
-  padding-inline: 3px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.9;
-}
-
-#fullNameHint .material-symbols-outlined {
-  flex-shrink: 0;
-  margin-top: 5px;
-  font-size: 15px;
-}
-
-/* ---------- Input Fields ---------- */
 
 .field-shell {
-  position: relative;
-  width: 100%;
-  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-height: 54px;
-  overflow: hidden;
-  border: 1px solid var(--border);
+  padding-inline: 14px;
+  background: var(--field);
+  border: 1.5px solid var(--border);
   border-radius: 14px;
-  background: #FFFEFC;
-  transition:
-    border-color var(--transition),
-    background var(--transition),
-    box-shadow var(--transition);
+  transition: border-color var(--ease), background var(--ease), box-shadow var(--ease);
 }
 
 .field-shell:hover {
@@ -316,59 +297,47 @@ main > div:first-child > span:last-child {
 }
 
 .field-shell:focus-within {
-  border-color: var(--primary);
-  background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(122, 46, 53, 0.09);
+  background: var(--white);
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 4px rgba(122, 46, 53, 0.1);
 }
 
-.field-shell > .material-symbols-outlined {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 24px;
-  margin-inline-start: 13px;
-  margin-inline-end: 10px;
+.field-icon {
+  flex: 0 0 auto;
+  font-size: 22px !important;
   color: var(--icon);
-  font-size: 21px;
-  transition: color var(--transition);
+  transition: color var(--ease);
 }
 
-.field-shell:focus-within > .material-symbols-outlined {
-  color: var(--primary);
+.field-shell:focus-within .field-icon {
+  color: var(--maroon);
 }
 
 .field-input {
+  flex: 1;
   display: block;
   width: 100%;
   min-width: 0;
-  min-height: 52px;
-  padding: 12px 0;
-  border: 0 !important;
-  border-radius: 0 !important;
-  outline: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
+  min-height: 50px;
+  padding: 0;
   color: var(--text);
-  font-family: "Cairo", sans-serif;
-  font-size: 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 16px; /* يمنع تكبير الصفحة تلقائياً على iOS */
   font-weight: 600;
-  line-height: 1.6;
-  text-align: right;
-  caret-color: var(--primary);
+  text-align: start;
+  caret-color: var(--maroon);
 }
 
 .field-input::placeholder {
   color: #A49A94;
-  font-size: 12px;
   font-weight: 500;
   opacity: 1;
-}
-
-.field-input:focus {
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 .field-input:disabled {
@@ -383,400 +352,362 @@ main > div:first-child > span:last-child {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* Validation styles, usable by JS or native validation */
+.field-hint {
+  margin: 7px 0 0;
+  padding-inline: 2px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
 
-.field-shell:has(.field-input:invalid:not(:placeholder-shown)) {
+/* حالة الخطأ (بتشتغل بـ aria-invalid أو كلاس is-invalid) */
+.field-shell.is-invalid,
+.field-shell:has(.field-input[aria-invalid="true"]) {
+  background: #FFF8F7;
   border-color: var(--danger);
 }
 
-.field-shell:has(.field-input:invalid:not(:placeholder-shown)):focus-within {
-  box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.08);
+.field-shell.is-invalid .field-icon,
+.field-shell:has(.field-input[aria-invalid="true"]) .field-icon {
+  color: var(--danger);
 }
 
-/* ---------- Instrument Selection ---------- */
+.field-shell.is-invalid:focus-within,
+.field-shell:has(.field-input[aria-invalid="true"]):focus-within {
+  box-shadow: 0 0 0 4px rgba(186, 26, 26, 0.1);
+}
 
-.form-panel fieldset {
+/* ---------- اختيار الآلة ---------- */
+.instrument-fieldset {
   min-width: 0;
   margin: 0;
-  padding-inline: 0;
+  padding: 0;
   border: 0;
 }
 
-.form-panel legend {
-  padding: 0;
-}
-
-#instrumentGroup {
+.instrument-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  width: 100%;
 }
-
-/* Each instrument is a complete selectable card */
 
 .instrument-card {
   position: relative;
   display: flex;
-  min-width: 0;
-  min-height: 126px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  overflow: hidden;
-  padding: 15px 5px 11px;
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  background: linear-gradient(
-    180deg,
-    #FFFFFF 0%,
-    #FFFCF8 100%
-  );
+  gap: 9px;
+  min-width: 0;
+  min-height: 118px;
+  padding: 16px 6px 14px;
   color: var(--text);
-  cursor: pointer;
+  background: linear-gradient(180deg, #FFFFFF, #FFFCF8);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
   text-align: center;
-  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
   transition:
-    transform var(--transition),
-    border-color var(--transition),
-    background var(--transition),
-    box-shadow var(--transition);
+    transform var(--ease),
+    border-color var(--ease),
+    background var(--ease),
+    box-shadow var(--ease);
 }
 
 .instrument-card:hover {
   transform: translateY(-2px);
   border-color: #CDAE76;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 6px 16px -8px rgba(93, 24, 32, 0.25);
 }
 
 .instrument-card:active {
   transform: scale(0.98);
 }
 
-.instrument-card:focus-visible {
-  outline: 3px solid rgba(201, 162, 75, 0.7);
-  outline-offset: 3px;
-}
-
-/* Instrument icon container */
-
 .instrument-icon {
   display: grid;
-  width: 43px;
-  height: 43px;
-  flex-shrink: 0;
   place-items: center;
-  border: 1px solid #F0E4D0;
-  border-radius: 14px;
+  width: 46px;
+  height: 46px;
+  color: var(--maroon);
   background: #F8F1E5;
-  color: var(--primary);
-  transition:
-    background var(--transition),
-    color var(--transition),
-    border-color var(--transition);
+  border: 1px solid #F0E4D0;
+  border-radius: 15px;
+  transition: background var(--ease), color var(--ease), border-color var(--ease);
 }
 
 .instrument-icon .material-symbols-outlined {
-  font-size: 25px;
+  font-size: 26px;
 }
 
 .instrument-title {
   max-width: 100%;
-  overflow-wrap: anywhere;
-  color: var(--primary-dark);
-  font-size: 12px;
+  color: var(--maroon-dark);
+  font-size: 14px;
   font-weight: 800;
-  line-height: 1.6;
-}
-
-.instrument-card > span:last-child {
-  color: var(--muted-light);
-  font-size: 10px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
-
-/* Selection indicator */
 
 .instrument-check {
   position: absolute;
-  top: 7px;
-  left: 7px;
+  top: 8px;
+  inset-inline-start: 8px;
   display: grid;
-  width: 20px;
-  height: 20px;
   place-items: center;
-  border: 1px solid #DED3C8;
-  border-radius: 50%;
-  background: #FFFFFF;
+  width: 21px;
+  height: 21px;
   color: transparent;
-  transition:
-    background var(--transition),
-    border-color var(--transition),
-    color var(--transition);
+  background: var(--white);
+  border: 1.5px solid #DED3C8;
+  border-radius: 50%;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
 }
 
 .instrument-check .material-symbols-outlined {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 20;
 }
 
-/* Selected card */
-
+/* البطاقة المختارة */
 .instrument-card[aria-checked="true"] {
-  border-color: var(--primary);
-  background: linear-gradient(
-    155deg,
-    #FFFDF9 0%,
-    #F8F0E5 100%
-  );
+  background: linear-gradient(155deg, #FFFDF9, #F8F0E5);
+  border-color: var(--maroon);
   box-shadow:
-    inset 0 0 0 1px rgba(122, 46, 53, 0.07),
-    0 5px 16px rgba(93, 24, 32, 0.08);
+    0 0 0 3px rgba(122, 46, 53, 0.08),
+    0 8px 18px -8px rgba(93, 24, 32, 0.3);
 }
 
 .instrument-card[aria-checked="true"] .instrument-icon {
-  border-color: rgba(201, 162, 75, 0.65);
-  background: var(--primary);
-  color: #FFFFFF;
-}
-
-.instrument-card[aria-checked="true"] .instrument-title {
-  color: var(--primary-dark);
+  color: #fff;
+  background: var(--maroon);
+  border-color: rgba(201, 162, 75, 0.7);
 }
 
 .instrument-card[aria-checked="true"] .instrument-check {
-  border-color: var(--gold);
+  color: var(--maroon-deep);
   background: var(--gold);
-  color: var(--primary-deep);
+  border-color: var(--gold);
 }
 
-/* ---------- Information Notice ---------- */
-
-.form-panel > div.rounded-2xl {
+/* ---------- بطاقة الملاحظة ---------- */
+.info-card {
+  display: flex;
   align-items: flex-start;
-  border-color: #EBE2D5;
-  border-radius: 17px;
+  gap: 12px;
+  padding: 13px 14px;
   background: #FAF6EE;
+  border: 1px solid #EBE2D5;
+  border-radius: 16px;
 }
 
-.form-panel > div.rounded-2xl > .material-symbols-outlined {
+.info-card .material-symbols-outlined {
+  flex: 0 0 auto;
+  margin-top: 1px;
   color: var(--gold-dark);
+  font-size: 24px;
 }
 
-.form-panel > div.rounded-2xl strong {
-  color: var(--primary-dark);
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.form-panel > div.rounded-2xl > div {
+.info-card p {
+  margin: 0;
   color: var(--muted);
-  font-size: 11px;
-  line-height: 2;
+  font-size: 13px;
+  line-height: 1.9;
 }
 
-/* ---------- Form Feedback ---------- */
-
+/* ---------- رسائل النجاح والخطأ ---------- */
 .form-notice {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 13px 14px;
+  color: #76550B;
+  background: #FFF9E9;
   border: 1px solid #E8D8AE;
   border-radius: 14px;
-  background: #FFF9E9;
-  color: #76550B;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.9;
   overflow-wrap: anywhere;
 }
 
-.form-notice[hidden] {
-  display: none !important;
+.form-notice:not([hidden]) {
+  animation: am-fade-in 180ms ease-out;
 }
 
 .form-notice .material-symbols-outlined {
-  flex-shrink: 0;
-  font-size: 21px;
+  flex: 0 0 auto;
+  margin-top: 3px;
+  font-size: 20px;
 }
 
 .form-notice p {
+  flex: 1;
   min-width: 0;
   margin: 0;
 }
 
 .form-notice.info {
-  border-color: #E8D8AE;
-  background: #FFF9E9;
   color: #76550B;
+  background: #FFF9E9;
+  border-color: #E8D8AE;
 }
 
 .form-notice.success {
-  border-color: var(--success-border);
-  background: var(--success-bg);
   color: var(--success);
+  background: var(--success-bg);
+  border-color: var(--success-border);
 }
 
 .form-notice.error {
-  border-color: var(--danger-border);
-  background: var(--danger-bg);
   color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
 }
 
-/* ---------- Fixed Bottom Action ---------- */
+.form-notice.error:not([hidden]) {
+  animation: am-shake 0.4s ease-in-out;
+}
 
+/* ---------- زر الحفظ الثابت ---------- */
 .bottom-action {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
   z-index: 30;
-  padding-top: 15px;
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(226, 211, 211, 0.72);
-  background: rgba(250, 247, 242, 0.96);
-  box-shadow: 0 -8px 28px rgba(67, 16, 26, 0.055);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: rgba(250, 247, 242, 0.92);
+  border-top: 1px solid rgba(226, 211, 211, 0.8);
+  box-shadow: 0 -10px 28px -14px rgba(67, 16, 26, 0.25);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition: transform 200ms ease;
 }
 
-.bottom-action > div {
+.bottom-action-inner {
   width: 100%;
-  max-width: 544px;
+  max-width: 36rem;
+  margin-inline: auto;
 }
-
-/* Primary save button */
 
 .primary-action {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
   min-height: 56px;
-  border: 1px solid var(--primary-dark);
-  background: linear-gradient(
-    135deg,
-    var(--primary-light) 0%,
-    var(--primary) 48%,
-    var(--primary-dark) 100%
-  );
+  padding: 0 16px;
+  color: #fff;
+  background: linear-gradient(180deg, var(--maroon-light), var(--maroon) 55%, var(--maroon-dark));
+  border: 0;
+  border-radius: 16px;
   box-shadow:
-    0 6px 16px rgba(93, 24, 32, 0.19),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
-  font-family: "Cairo", sans-serif;
-  font-size: 14px;
+    0 10px 20px -10px rgba(93, 24, 32, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  font-size: 17px;
   font-weight: 800;
   cursor: pointer;
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition),
-    filter var(--transition),
-    opacity var(--transition);
+  transition: transform var(--ease), filter var(--ease), box-shadow var(--ease), opacity var(--ease);
 }
 
-.primary-action:hover {
-  filter: brightness(1.05);
-  box-shadow:
-    0 8px 20px rgba(93, 24, 32, 0.23),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+.primary-action .btn-lead {
+  color: var(--gold-light);
+  font-size: 26px;
 }
 
-.primary-action:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: 0 3px 9px rgba(93, 24, 32, 0.16);
-}
-
-.primary-action:disabled {
-  transform: none;
-  box-shadow: none;
-  cursor: not-allowed;
-  filter: grayscale(0.15);
-  opacity: 0.65;
-}
-
-.primary-action > span:first-child {
-  color: #FFDF9E;
-}
-
-.primary-action > span:last-child {
+.primary-action .btn-arrow {
+  font-size: 22px;
   opacity: 0.9;
+  transition: transform var(--ease);
 }
 
-/* Footer helper text */
-
-.bottom-action p {
-  max-width: 100%;
-  margin-bottom: 0;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.8;
+.primary-action:hover:not(:disabled) {
+  filter: brightness(1.06);
 }
 
-.bottom-action p .material-symbols-outlined {
-  flex-shrink: 0;
-  color: var(--gold-dark);
-  font-size: 16px;
+.primary-action:hover:not(:disabled) .btn-arrow {
+  transform: translateX(-4px);
 }
 
-/* ---------- Responsive: Small Phones ---------- */
+.primary-action:active:not(:disabled) {
+  transform: scale(0.99);
+}
 
+.primary-action:focus-visible {
+  outline: 3px solid rgba(201, 162, 75, 0.75);
+  outline-offset: 3px;
+}
+
+/* أثناء الحفظ: دوّارة بدل السهم */
+.primary-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.primary-action:disabled .btn-arrow {
+  display: none;
+}
+
+.primary-action:disabled::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: am-spin 0.7s linear infinite;
+}
+
+/* على الموبايل: الزر بيختفي أثناء الكتابة حتى ما يغطي الحقول،
+   وزر "تم" بالكيبورد بيحفظ */
+@media (max-width: 640px) and (pointer: coarse) {
+  .add-member-page:has(.field-input:focus) .bottom-action {
+    transform: translateY(110%);
+  }
+}
+
+/* ---------- هواتف صغيرة ---------- */
 @media (max-width: 380px) {
-  .page-header > div {
+  .page-header-inner {
     gap: 9px;
     padding-inline: 12px;
   }
 
-  .page-header h1 {
-    font-size: 16px;
+  .header-copy h1 {
+    font-size: 17px;
   }
 
-  .page-header p {
-    font-size: 10px;
+  .header-copy p {
+    font-size: 11px;
   }
 
-  #backButton {
-    width: 38px;
-    height: 38px;
-  }
-
-  main.mx-auto {
+  .am-main {
     padding-inline: 12px;
-    padding-top: 20px;
-    padding-bottom: 185px;
   }
 
   .form-panel {
-    padding: 21px 15px;
-    border-radius: 21px;
+    gap: 20px;
+    padding: 22px 15px 18px;
+    border-radius: 20px;
   }
 
-  .form-panel.space-y-6 > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 21px;
-  }
-
-  #instrumentGroup {
+  .instrument-grid {
     gap: 7px;
   }
 
   .instrument-card {
-    min-height: 117px;
+    min-height: 108px;
     padding-inline: 3px;
   }
 
   .instrument-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-  }
-
-  .instrument-icon .material-symbols-outlined {
-    font-size: 23px;
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
   }
 
   .instrument-title {
-    font-size: 11px;
-  }
-
-  .instrument-check {
-    top: 5px;
-    left: 5px;
-    width: 18px;
-    height: 18px;
+    font-size: 13px;
   }
 
   .bottom-action {
@@ -784,58 +715,44 @@ main > div:first-child > span:last-child {
   }
 
   .primary-action {
-    min-height: 53px;
-    gap: 9px;
-    padding-inline: 10px;
-    font-size: 13px;
+    font-size: 16px;
   }
 }
 
-/* ---------- Responsive: Larger Screens ---------- */
-
+/* ---------- شاشات أكبر ---------- */
 @media (min-width: 640px) {
-  main.mx-auto {
-    padding-top: 30px;
-    padding-bottom: 175px;
-  }
-
-  .page-header > div {
-    min-height: 82px;
+  .am-main {
+    padding-top: 32px;
   }
 
   .form-panel {
-    padding: 30px;
+    gap: 24px;
+    padding: 32px 30px 28px;
     border-radius: 28px;
   }
 
-  .form-panel.space-y-6 > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 27px;
-  }
-
-  .field-shell,
-  .field-input {
-    min-height: 56px;
-  }
-
   .instrument-card {
-    min-height: 140px;
-  }
-
-  .instrument-icon {
-    width: 47px;
-    height: 47px;
-  }
-
-  .instrument-title {
-    font-size: 13px;
-  }
-
-  .bottom-action > div {
-    max-width: 544px;
+    min-height: 130px;
   }
 }
 
-/* ---------- Reduced Motion ---------- */
+/* ---------- حركات ---------- */
+@keyframes am-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes am-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes am-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,

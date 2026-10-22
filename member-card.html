@@ -1,64 +1,71 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#7A2E35">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="description" content="بطاقة عضوية فرقة القديس جاورجيوس الموسيقية">
 
   <title>بطاقة العضوية | حاضر</title>
 
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/member-card.css">
 </head>
 
-<body>
-  <header class="page-header">
-    <a href="members.html" class="back-button" aria-label="العودة إلى الأعضاء">
-      ‹
-    </a>
+<body class="member-card-page">
 
-    <div>
-      <h1 class="header-title">بطاقة العضوية</h1>
-      <p class="header-subtitle">فرقة القديس جاورجيوس الموسيقية</p>
+  <noscript>
+    <p class="noscript-note">هذه الصفحة تحتاج تفعيل جافاسكربت في المتصفح.</p>
+  </noscript>
+
+  <!-- الشريط العلوي -->
+  <header class="page-header">
+    <div class="header-inner">
+
+      <a href="members.html" class="back-button" aria-label="العودة إلى الأعضاء">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </a>
+
+      <div class="header-copy">
+        <h1 class="header-title">بطاقة العضوية</h1>
+        <p class="header-subtitle">فرقة القديس جاورجيوس الموسيقية</p>
+      </div>
+
     </div>
   </header>
 
   <main class="page-container">
-    <section class="page-intro">
-      <h2>بطاقة العضو</h2>
-      <p>يمكنك طباعة البطاقة أو تنزيلها بعد تحميل بيانات العضو.</p>
-    </section>
 
     <div
       id="statusMessage"
       class="status-message"
       role="status"
-      aria-live="polite"
-    ></div>
+      aria-live="polite"></div>
 
-    <div id="loadingState" class="loading">
+    <div id="loadingState" class="loading" role="status">
       <div class="loading-spinner" aria-hidden="true"></div>
-      جارٍ تجهيز بطاقة العضوية...
+      <span>جارٍ تجهيز بطاقة العضوية...</span>
     </div>
 
+    <!-- البطاقة (هاي اللي بتنزل كصورة وبتنطبع) -->
     <section id="membershipCard" class="membership-card hidden">
+
       <div class="card-header">
         <div class="card-logo">
-          <img src="assets/logo.png" alt="شعار الفرقة" id="cardLogo">
-          <span
-            id="logoFallback"
-            class="card-logo-fallback"
-            aria-hidden="true"
-          >ح</span>
+          <img
+            src="assets/logo.png"
+            alt="شعار الفرقة"
+            id="cardLogo"
+            onerror="this.style.display='none';this.parentNode.classList.add('logo-failed');">
+          <span id="logoFallback" class="card-logo-fallback" aria-hidden="true">ح</span>
         </div>
 
         <h3>فرقة القديس جاورجيوس</h3>
@@ -68,11 +75,13 @@
       <div class="card-gold-line"></div>
 
       <div class="card-content" id="cardContent">
+
         <p class="member-label">اسم العضو</p>
         <h2 class="member-name" id="memberName">—</h2>
         <p class="member-family" id="memberFamily"></p>
 
         <div class="member-info-grid">
+
           <div class="info-box">
             <span class="info-label">رقم العضوية</span>
             <span class="info-value" id="memberId">—</span>
@@ -92,6 +101,7 @@
             <span class="info-label">اسم الأم</span>
             <span class="info-value" id="memberMother">—</span>
           </div>
+
         </div>
 
         <div class="member-status" id="memberStatus">
@@ -101,7 +111,7 @@
 
         <div class="qr-section">
           <h4>رمز QR الخاص بالعضو</h4>
-          <p>يُستخدم الرمز لتحديد العضو عند تسجيل الحضور.</p>
+          <p class="qr-hint">يُستخدم الرمز لتسجيل حضور العضو.</p>
 
           <div class="qr-frame">
             <div id="qrcode" aria-label="رمز QR للعضو"></div>
@@ -110,29 +120,28 @@
           <div class="qr-member-id" id="qrMemberId"></div>
           <p class="qr-warning hidden" id="qrWarning"></p>
         </div>
+
       </div>
 
       <div class="card-footer">
-        هذه البطاقة مخصصة لعضوية فرقة القديس جاورجيوس الموسيقية.
-        يرجى المحافظة عليها وإبرازها عند الحاجة.
+        هذه البطاقة خاصة بالعضو. يرجى المحافظة عليها وإبرازها عند الحاجة.
       </div>
+
     </section>
 
+    <!-- أزرار التنزيل والطباعة (ثابتة بأسفل الشاشة) -->
     <div id="actions" class="actions hidden">
       <button class="action-button" id="downloadBtn" type="button">
-        <span aria-hidden="true">↓</span>
-        تنزيل البطاقة
+        <span class="material-symbols-outlined" aria-hidden="true">download</span>
+        <span>تنزيل البطاقة</span>
       </button>
 
-      <button
-        class="action-button secondary"
-        id="printBtn"
-        type="button"
-      >
-        <span aria-hidden="true">▣</span>
-        طباعة البطاقة
+      <button class="action-button secondary" id="printBtn" type="button">
+        <span class="material-symbols-outlined" aria-hidden="true">print</span>
+        <span>طباعة</span>
       </button>
     </div>
+
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>

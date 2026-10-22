@@ -1,32 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#7A2E35">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="description" content="إدارة أعضاء فرقة القديس جاورجيوس الموسيقية">
 
   <title>الأعضاء | حاضر</title>
 
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/members.css">
 </head>
 
-<body>
+<body class="members-page">
+
+  <noscript>
+    <p class="noscript-note">هذه الصفحة تحتاج تفعيل جافاسكربت في المتصفح.</p>
+  </noscript>
+
+  <!-- الشريط العلوي -->
   <header class="page-header">
     <div class="header-inner">
+
       <div class="header-info">
         <button
           class="back-button"
@@ -47,71 +50,74 @@
         <img
           src="assets/logo.png"
           alt="شعار الفرقة"
-          id="headerLogo">
-
+          id="headerLogo"
+          width="44"
+          height="44"
+          onerror="this.hidden=true;document.getElementById('logoFallback').hidden=false;">
         <span
           class="material-symbols-outlined logo-fallback"
           id="logoFallback"
           aria-hidden="true"
           hidden>music_note</span>
       </div>
+
     </div>
   </header>
 
   <main class="page-container">
-    <section class="page-intro">
-      <div class="intro-actions">
-        <div>
-          <h2>قائمة الأعضاء</h2>
-          <p>ابحث عن أي عضو، وفلتر القائمة، واضغط على بطاقته لعرض رمز QR الخاص به.</p>
-        </div>
 
-        <a class="add-button" href="add-member.html">
-          <span aria-hidden="true">＋</span>
-          إضافة عضو
-        </a>
-      </div>
-    </section>
-
+    <!-- إحصائيات الأعضاء -->
     <section class="stats-grid" aria-label="إحصائيات الأعضاء">
+
       <div class="stat-card">
-        <span class="stat-label">إجمالي الأعضاء</span>
+        <span class="stat-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">groups</span>
+        </span>
         <strong class="stat-value" id="totalCount">—</strong>
+        <span class="stat-label">الإجمالي</span>
       </div>
 
       <div class="stat-card">
-        <span class="stat-label">الأعضاء الفعّالون</span>
-        <strong class="stat-value green" id="activeCount">—</strong>
+        <span class="stat-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">how_to_reg</span>
+        </span>
+        <strong class="stat-value" id="activeCount">—</strong>
+        <span class="stat-label">فعّال</span>
       </div>
 
       <div class="stat-card">
-        <span class="stat-label">الأعضاء المعطّلون</span>
-        <strong class="stat-value red" id="disabledCount">—</strong>
+        <span class="stat-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">person_off</span>
+        </span>
+        <strong class="stat-value" id="disabledCount">—</strong>
+        <span class="stat-label">معطّل</span>
       </div>
+
     </section>
 
-    <section class="filters-card">
-      <h2 class="filters-title">البحث والتصفية</h2>
+    <!-- البحث والتصفية -->
+    <section class="filters-card" aria-label="البحث والتصفية">
 
       <div class="filters-grid">
+
         <div class="search-field">
           <label class="field-label" for="searchInput">البحث عن عضو</label>
-
           <div class="search-wrapper">
-            <span class="search-icon" aria-hidden="true">⌕</span>
-
+            <span class="search-icon material-symbols-outlined" aria-hidden="true">search</span>
             <input
               class="filter-input search-input"
               id="searchInput"
               type="search"
-              placeholder="الاسم أو الكنية أو رقم العضوية..."
-              autocomplete="off">
+              placeholder="الاسم أو الكنية أو رقم العضوية"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="search">
           </div>
         </div>
 
         <div>
-          <label class="field-label" for="instrumentFilter">الآلة الموسيقية</label>
-
+          <label class="field-label" for="instrumentFilter">الآلة</label>
           <select class="filter-input" id="instrumentFilter">
             <option value="">كل الآلات</option>
             <option value="ترومبيت">ترومبيت</option>
@@ -121,14 +127,14 @@
         </div>
 
         <div>
-          <label class="field-label" for="statusFilter">حالة العضو</label>
-
+          <label class="field-label" for="statusFilter">الحالة</label>
           <select class="filter-input" id="statusFilter">
             <option value="">كل الحالات</option>
             <option value="active">فعّال</option>
             <option value="disabled">معطّل</option>
           </select>
         </div>
+
       </div>
 
       <div class="filter-actions">
@@ -140,9 +146,12 @@
           مسح الفلاتر
         </button>
       </div>
+
     </section>
 
+    <!-- قائمة الأعضاء -->
     <section aria-labelledby="membersHeading">
+
       <div class="list-heading">
         <h2 id="membersHeading">الأعضاء المسجّلون</h2>
       </div>
@@ -154,27 +163,41 @@
       </div>
 
       <div id="errorState" class="state-panel hidden" role="alert">
-        <div class="state-icon" aria-hidden="true">!</div>
+        <div class="state-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">error</span>
+        </div>
         <h3>تعذّر تحميل الأعضاء</h3>
         <p id="errorText">تحقق من الاتصال ثم حاول مجدداً.</p>
-
-        <button class="state-retry" id="retryBtn" type="button">
-          إعادة المحاولة
-        </button>
+        <button class="state-retry" id="retryBtn" type="button">إعادة المحاولة</button>
       </div>
 
       <div id="emptyState" class="state-panel hidden">
-        <div class="state-icon" aria-hidden="true">♬</div>
+        <div class="state-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">person_search</span>
+        </div>
         <h3 id="emptyTitle">لا يوجد أعضاء</h3>
         <p id="emptyText">لم نعثر على أعضاء يطابقون البحث والفلاتر الحالية.</p>
       </div>
 
       <div id="memberList" class="member-list"></div>
+
     </section>
+
   </main>
+
+  <!-- زر إضافة عضو (عائم) -->
+  <a class="add-fab" href="add-member.html">
+    <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+    <span>إضافة عضو</span>
+  </a>
+
+
+
 
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/nav.js"></script>
   <script src="js/members.js"></script>
 </body>
 </html>

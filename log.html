@@ -1,16 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#5D1820">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="description" content="عرض سجل حضور أعضاء فرقة القديس جاورجيوس حسب التاريخ">
   <title>سجل الحضور | حاضر</title>
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/log.css">
@@ -21,24 +24,49 @@
 </head>
 
 <body class="log-page">
-  <main class="log-container">
 
-    <header class="log-header">
-      <a class="back-link" href="home.html" aria-label="العودة إلى الرئيسية">
-        <span aria-hidden="true">→</span>
-        <span>الرئيسية</span>
-      </a>
+  <!-- الشريط العلوي (نفس صفحة الأعضاء) -->
+  <header class="page-header">
+    <div class="header-inner">
 
-      <div class="header-title">
-        <span class="eyebrow">نظام حاضر</span>
-        <h1>سجل الحضور</h1>
-        <p>راجع تسجيلات الحضور حسب اليوم المحدد.</p>
+      <div class="header-info">
+        <a class="back-button" href="home.html"
+           aria-label="الرجوع إلى الصفحة الرئيسية"
+           title="الرجوع إلى الصفحة الرئيسية">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </a>
+
+        <div class="header-copy">
+          <h1 class="header-title">سجل الحضور</h1>
+          <p class="header-subtitle">مراجعة التسجيلات حسب اليوم</p>
+        </div>
       </div>
-    </header>
+
+      <div class="header-logo">
+        <img
+          src="assets/logo.png"
+          alt="شعار الفرقة"
+          id="headerLogo"
+          width="44"
+          height="44"
+          onerror="this.hidden=true;document.getElementById('logoFallback').hidden=false;">
+        <span
+          class="material-symbols-outlined logo-fallback"
+          id="logoFallback"
+          aria-hidden="true"
+          hidden>music_note</span>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="log-container">
 
     <section class="filter-card" aria-labelledby="filter-title">
       <div class="section-heading">
-        <div class="heading-icon" aria-hidden="true">▦</div>
+        <div class="heading-icon" aria-hidden="true">
+          <span class="material-symbols-outlined">calendar_month</span>
+        </div>
         <div>
           <h2 id="filter-title">تحديد التاريخ</h2>
           <p>اختر اليوم الذي تريد عرض تسجيلاته.</p>
@@ -122,7 +150,9 @@
           </div>
 
           <div id="empty-results" class="empty-state" hidden>
-            <div class="empty-icon" aria-hidden="true">▤</div>
+            <div class="empty-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">event_busy</span>
+            </div>
             <h3>لا توجد تسجيلات</h3>
             <p>لم يتم العثور على تسجيلات حضور لهذا التاريخ.</p>
           </div>
