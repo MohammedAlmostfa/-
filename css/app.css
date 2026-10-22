@@ -1,0 +1,346 @@
+
+:root {
+  --color-primary: #7A2E35;
+  --color-primary-dark: #5D1820;
+  --color-gold: #C9A24B;
+  --color-background: #FAF7F2;
+  --color-surface: #FFFFFF;
+  --color-surface-low: #F6F3EE;
+  --color-surface-high: #EBE8E3;
+  --color-text: #1C1C19;
+  --color-text-muted: #544243;
+  --color-outline: #877272;
+  --color-outline-variant: #DAC1C1;
+  --color-success: #3E8E3E;
+  --color-error: #C62828;
+  --color-warning: #F2A900;
+  --color-muted: #858585;
+
+  --radius-card: 16px;
+  --radius-control: 12px;
+  --control-height: 52px;
+
+  --shadow-card:
+    0 10px 24px -6px rgba(122, 46, 53, 0.06),
+    0 4px 8px -2px rgba(30, 27, 24, 0.03);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--color-background);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Cairo", sans-serif;
+  color: var(--color-text);
+  background: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[hidden],
+.hidden {
+  display: none !important;
+}
+
+.screen {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(201, 162, 75, 0.75);
+  outline-offset: 3px;
+}
+
+.app-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.app-button {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.app-button:active {
+  transform: scale(0.99);
+}
+
+.app-button-primary {
+  color: #FFFFFF;
+  background: var(--color-primary);
+}
+
+.app-button-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.app-button-secondary {
+  color: var(--color-primary);
+  background: #FFFFFF;
+  border-color: var(--color-outline-variant);
+}
+
+.app-button-secondary:hover {
+  background: var(--color-surface-low);
+}
+
+.app-input {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: 12px 14px;
+  color: var(--color-text);
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-control);
+}
+
+.app-input::placeholder {
+  color: var(--color-outline);
+  opacity: 0.8;
+}
+
+.app-input:focus {
+  background: #FFFFFF;
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(122, 46, 53, 0.12);
+}
+
+.app-notice {
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.app-notice-success {
+  color: #246B2B;
+  background: #EAF5E8;
+  border: 1px solid #C7E5C3;
+}
+
+.app-notice-error {
+  color: #BA1A1A;
+  background: #FFF0EF;
+  border: 1px solid #F3CECA;
+}
+
+.app-notice-warning {
+  color: #795902;
+  background: #FFF6DF;
+  border: 1px solid #F2D68D;
+}
+
+.app-notice-info {
+  color: var(--color-text-muted);
+  background: var(--color-surface-low);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-error {
+  color: var(--color-error);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+/* مساحة آمنة أسفل المحتوى عند وجود التنقل السفلي */
+.has-bottom-nav {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+
+/* التنقل السفلي المشترك */
+#bottom-nav {
+  position: fixed;
+  z-index: 40;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 4px;
+  padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.97);
+  border-top: 1px solid #E8DFD8;
+  box-shadow: 0 -4px 18px rgba(60, 30, 30, 0.04);
+}
+
+#bottom-nav a,
+#bottom-nav button {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px 2px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#bottom-nav a[aria-current="page"],
+#bottom-nav button[aria-current="page"] {
+  color: var(--color-primary);
+  background: #F6F3EE;
+}
+
+#bottom-nav .material-symbols-outlined {
+  font-size: 22px;
+}
+
+/* رسائل التنبيه */
+.toast-container {
+  position: fixed;
+  z-index: 100;
+  top: 16px;
+  right: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast-message {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  color: #FFFFFF;
+  background: #333333;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  line-height: 1.7;
+  pointer-events: auto;
+}
+
+.toast-message.success {
+  background: #246B2B;
+}
+
+.toast-message.error {
+  background: #BA1A1A;
+}
+
+.toast-message.warning {
+  color: #332400;
+  background: #F2A900;
+}
+
+/* شاشات الموبايل */
+@media (max-width: 480px) {
+  .app-card {
+    border-radius: 14px;
+  }
+
+  .app-button {
+    width: 100%;
+  }
+}
+
+/* احترام إعداد تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

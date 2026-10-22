@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF7F2">
+  <meta name="description" content="حاضر - نظام تسجيل حضور فرقة القديس جاورجيوس الموسيقية">
+
+  <title>حاضر | تسجيل الدخول</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/app.css">
+
+  <style>
+    .login-background {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(122, 46, 53, 0.09), transparent 42%),
+        var(--color-background, #FAF7F2);
+    }
+
+    .login-decoration {
+      position: absolute;
+      top: -8rem;
+      left: 50%;
+      width: 24rem;
+      height: 24rem;
+      border: 1px solid rgba(201, 162, 75, 0.2);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .login-logo {
+      width: 7rem;
+      height: 7rem;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .login-card {
+      border: 1px solid rgba(218, 193, 193, 0.65);
+      box-shadow:
+        0 10px 24px -6px rgba(122, 46, 53, 0.06),
+        0 4px 8px -2px rgba(30, 27, 24, 0.03);
+    }
+
+    .login-input {
+      min-height: 52px;
+      background: #F6F3EE;
+      border: 1px solid #DAC1C1;
+      transition: border-color 150ms ease, background 150ms ease;
+    }
+
+    .login-input:focus {
+      background: #FFFFFF;
+      border-color: #7A2E35;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(122, 46, 53, 0.12);
+    }
+
+    .login-button {
+      min-height: 52px;
+      background: #7A2E35;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+
+    .login-button:hover:not(:disabled) {
+      background: #5D1820;
+    }
+
+    .login-button:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    .login-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    .auth-notice {
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .auth-notice.error {
+      color: #BA1A1A;
+      background: #FFF0EF;
+      border: 1px solid #F3CECA;
+    }
+
+    .auth-notice.info {
+      color: #544243;
+      background: #F6F3EE;
+      border: 1px solid #DAC1C1;
+    }
+
+    .material-symbols-outlined {
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      font-feature-settings: "liga";
+      -webkit-font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+
+  <div class="relative min-h-screen flex flex-col justify-between overflow-hidden login-background">
+
+    <div
+      class="absolute top-0 inset-x-0 h-80 pointer-events-none"
+      style="background: linear-gradient(to bottom, rgba(122,46,53,0.10), rgba(122,46,53,0.02), transparent);"
+      aria-hidden="true">
+    </div>
+
+    <div class="login-decoration" aria-hidden="true"></div>
+
+    <main class="relative z-10 w-full max-w-sm mx-auto px-5 py-10 sm:py-12 flex-1 flex flex-col justify-center">
+
+      <header class="flex flex-col items-center text-center mb-8">
+
+        <div class="relative mb-5">
+
+          <div
+            class="absolute -inset-1 rounded-full blur-sm opacity-70"
+            style="background: linear-gradient(to top right, rgba(201,162,75,0.4), rgba(122,46,53,0.3));"
+            aria-hidden="true">
+          </div>
+
+          <div class="relative w-28 h-28 rounded-full p-1 bg-white shadow-lg ring-1 ring-yellow-700/20 flex items-center justify-center overflow-hidden">
+            <img
+              id="bandLogo"
+              alt="شعار فرقة القديس جاورجيوس الموسيقية"
+              class="login-logo"
+              src="assets/logo.png">
+          </div>
+
+        </div>
+
+        <h1 class="text-3xl sm:text-[32px] leading-tight font-extrabold tracking-tight mb-2" style="color:#7A2E35;">
+          حاضر
+        </h1>
+
+        <p class="text-sm font-semibold flex items-center justify-center gap-2" style="color:#544243;">
+          <span class="inline-block w-4 h-px" style="background:#C9A24B;" aria-hidden="true"></span>
+          <span>فرقة القديس جاورجيوس الموسيقية</span>
+          <span class="inline-block w-4 h-px" style="background:#C9A24B;" aria-hidden="true"></span>
+        </p>
+
+      </header>
+
+      <section class="bg-white rounded-2xl p-6 sm:p-7 login-card">
+
+        <form id="loginForm" class="space-y-5" novalidate>
+
+          <div class="space-y-2">
+
+            <label for="passwordField" class="block text-sm font-semibold" style="color:#1C1C19;">
+              كلمة السر
+            </label>
+
+            <div class="relative flex items-center">
+
+              <span class="absolute right-3.5 flex items-center pointer-events-none" style="color:#877272;" aria-hidden="true">
+                <span class="material-symbols-outlined text-xl">key</span>
+              </span>
+
+              <input
+                id="passwordField"
+                name="band_password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="أدخل كلمة السر"
+                required
+                maxlength="256"
+                class="login-input w-full pr-11 pl-12 rounded-xl text-sm"
+                aria-describedby="errorMsg">
+
+              <button
+                id="togglePasswordBtn"
+                type="button"
+                aria-label="إظهار كلمة السر"
+                aria-pressed="false"
+                class="absolute left-2.5 p-1.5 rounded-lg hover:bg-gray-100 flex items-center justify-center"
+                style="color:#877272;">
+
+                <span class="material-symbols-outlined text-[22px]" id="eyeIcon">visibility</span>
+              </button>
+
+            </div>
+
+            <div
+              id="errorMsg"
+              class="auth-notice error mt-3"
+              role="alert"
+              hidden>
+
+              <div class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-base mt-1" aria-hidden="true">error</span>
+                <p id="errorText">يرجى إدخال كلمة السر.</p>
+              </div>
+
+            </div>
+
+            <div
+              id="loginNotice"
+              class="auth-notice info mt-3"
+              role="status"
+              aria-live="polite"
+              hidden>
+
+              <p id="loginNoticeText"></p>
+            </div>
+
+          </div>
+
+          <button
+            id="submitBtn"
+            type="submit"
+            class="login-button w-full text-white font-semibold text-lg rounded-xl shadow-sm flex items-center justify-center gap-2">
+
+            <span id="submitBtnText">دخول</span>
+            <span id="submitBtnIcon" class="material-symbols-outlined text-xl" aria-hidden="true">arrow_forward</span>
+          </button>
+
+        </form>
+
+      </section>
+
+      <p class="text-center text-xs mt-6" style="color:#544243; opacity:0.75;">
+        نظام تسجيل حضور فرقة القديس جاورجيوس الموسيقية
+      </p>
+
+      <p class="text-center text-xs mt-2" style="color:#858585;">
+        تسجيل دخول آمن للمراقب وصاحب النظام
+      </p>
+
+    </main>
+
+  </div>
+
+  <!-- تحميل إعدادات الاتصال وأدوات الجلسة قبل تشغيل تسجيل الدخول -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    "use strict";
+
+    const loginForm = document.getElementById("loginForm");
+    const passwordField = document.getElementById("passwordField");
+    const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+    const eyeIcon = document.getElementById("eyeIcon");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitBtnText = document.getElementById("submitBtnText");
+    const submitBtnIcon = document.getElementById("submitBtnIcon");
+    const errorMsg = document.getElementById("errorMsg");
+    const errorText = document.getElementById("errorText");
+    const loginNotice = document.getElementById("loginNotice");
+    const loginNoticeText = document.getElementById("loginNoticeText");
+    const bandLogo = document.getElementById("bandLogo");
+
+    function showError(message) {
+      errorText.textContent = message;
+      errorMsg.hidden = false;
+      loginNotice.hidden = true;
+    }
+
+    function showNotice(message) {
+      loginNoticeText.textContent = message;
+      loginNotice.hidden = false;
+      errorMsg.hidden = true;
+    }
+
+    function clearMessages() {
+      errorMsg.hidden = true;
+      loginNotice.hidden = true;
+    }
+
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      passwordField.disabled = isLoading;
+      togglePasswordBtn.disabled = isLoading;
+
+      submitBtnText.textContent = isLoading ? "جارٍ التحقق..." : "دخول";
+      submitBtnIcon.textContent = isLoading ? "hourglass_top" : "arrow_forward";
+    }
+
+    function togglePasswordVisibility() {
+      const isPassword = passwordField.type === "password";
+
+      passwordField.type = isPassword ? "text" : "password";
+      eyeIcon.textContent = isPassword ? "visibility_off" : "visibility";
+      togglePasswordBtn.setAttribute("aria-pressed", String(isPassword));
+      togglePasswordBtn.setAttribute(
+        "aria-label",
+        isPassword ? "إخفاء كلمة السر" : "إظهار كلمة السر"
+      );
+
+      passwordField.focus();
+    }
+
+    function getLoginErrorMessage(error) {
+      const message = String(error && error.message ? error.message : "");
+
+      if (/unauthorized|invalid password|wrong password/i.test(message)) {
+        return "كلمة السر غير صحيحة. تأكد منها وحاول مرة أخرى.";
+      }
+
+      if (/locked|too many|rate limit/i.test(message)) {
+        return "تم إيقاف محاولات الدخول مؤقتاً. حاول مرة أخرى بعد قليل.";
+      }
+
+      if (/failed to fetch|network|fetch/i.test(message)) {
+        return "تعذّر الاتصال بالخادم. تحقق من الإنترنت ورابط الخدمة المنشور.";
+      }
+
+      return "تعذّر تسجيل الدخول. تحقق من كلمة السر وحاول مرة أخرى.";
+    }
+
+    togglePasswordBtn.addEventListener("click", togglePasswordVisibility);
+
+    passwordField.addEventListener("input", clearMessages);
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      clearMessages();
+
+      const password = passwordField.value;
+
+      if (!password.trim()) {
+        showError("يرجى إدخال كلمة السر.");
+        passwordField.focus();
+        return;
+      }
+
+      if (typeof API_URL === "undefined" || !API_URL) {
+        showError("رابط الخدمة غير مضبوط. تحقق من ملف js/config.js.");
+        return;
+      }
+
+      if (typeof api !== "function" || typeof saveSession !== "function") {
+        showError("تعذّر تحميل ملفات الاتصال. حدّث الصفحة وتحقق من js/api.js.");
+        return;
+      }
+
+      setLoading(true);
+      showNotice("يتم التحقق من كلمة السر والصلاحيات...");
+
+      try {
+        const result = await api("login", { password: password });
+
+        if (!result || !result.token || !result.role) {
+          throw new Error("invalid_response");
+        }
+
+        if (
+          result.role !== APP_ROLES.OBSERVER &&
+          result.role !== APP_ROLES.OWNER
+        ) {
+          throw new Error("invalid_role");
+        }
+
+        saveSession(result.token, result.role);
+        passwordField.value = "";
+
+        if (result.role === APP_ROLES.OWNER) {
+          window.location.replace(APP_PAGES.home);
+          return;
+        }
+
+        window.location.replace(APP_PAGES.scan);
+
+      } catch (error) {
+        console.error("Login request failed.");
+
+        showError(getLoginErrorMessage(error));
+        passwordField.value = "";
+        passwordField.focus();
+
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    bandLogo.addEventListener("error", function () {
+      bandLogo.alt = "الشعار غير متوفر حالياً";
+      bandLogo.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7A2E35">
+  <title>بطاقة العضوية | حاضر</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/app.css">
+
+  <style>
+    :root {
+      --primary: #7A2E35;
+      --primary-dark: #5D1820;
+      --gold: #C9A24B;
+      --background: #FAF7F2;
+      --text: #282321;
+      --muted: #766D69;
+      --border: #E8DFD7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding-bottom: 35px;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #FAF7F2;
+    }
+
+    .back-button {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 25px;
+    }
+
+    .header-title {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .header-subtitle {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .page-container {
+      width: min(100% - 28px, 540px);
+      margin: 26px auto;
+    }
+
+    .page-intro {
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .page-intro h2 {
+      margin: 0 0 5px;
+      color: var(--primary-dark);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .page-intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .membership-card {
+      overflow: hidden;
+      border: 1px solid #E4D7C9;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 15px 40px rgba(93, 24, 32, 0.09);
+    }
+
+    .card-header {
+      position: relative;
+      overflow: hidden;
+      padding: 24px 20px 22px;
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+    }
+
+    .card-header::before,
+    .card-header::after {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .card-header::before {
+      top: -100px;
+      right: -40px;
+    }
+
+    .card-header::after {
+      bottom: -120px;
+      left: -35px;
+    }
+
+    .card-logo {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 12px;
+      overflow: hidden;
+      border: 2px solid rgba(201, 162, 75, 0.8);
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .card-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .card-logo-fallback {
+      display: none;
+      color: var(--primary);
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .card-header h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .card-header p {
+      position: relative;
+      z-index: 1;
+      margin: 4px 0 0;
+      color: #F3E5D0;
+      font-size: 12px;
+    }
+
+    .card-gold-line {
+      height: 4px;
+      background: var(--gold);
+    }
+
+    .card-content {
+      padding: 24px 22px;
+    }
+
+    .member-label {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .member-name {
+      overflow-wrap: anywhere;
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 25px;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .member-family {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .member-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-box {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #EEE5DD;
+      border-radius: 14px;
+      background: #FFFCF8;
+    }
+
+    .info-label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .info-value {
+      display: block;
+      overflow-wrap: anywhere;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .member-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 17px;
+      padding: 6px 12px;
+      border: 1px solid #CFE5D0;
+      border-radius: 999px;
+      background: #F0F8F0;
+      color: #2F7334;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .member-status.disabled {
+      border-color: #F0C7C7;
+      background: #FFF1F1;
+      color: #A32626;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .qr-section {
+      margin-top: 23px;
+      padding-top: 21px;
+      border-top: 1px dashed #D9C9BA;
+      text-align: center;
+    }
+
+    .qr-section h4 {
+      margin: 0 0 5px;
+      color: var(--primary-dark);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .qr-section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .qr-frame {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      min-height: 180px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: #fff;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .qr-member-id {
+      margin-top: 12px;
+      color: var(--primary-dark);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      direction: ltr;
+    }
+
+    .qr-warning {
+      margin: 12px 0 0;
+      color: #9B2424;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .card-footer {
+      padding: 13px 18px;
+      background: #F8F2E9;
+      color: #76614C;
+      font-size: 11px;
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-button {
+      display: flex;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px;
+      border: 1px solid var(--primary);
+      border-radius: 13px;
+      background: var(--primary);
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .action-button.secondary {
+      background: #fff;
+      color: var(--primary);
+    }
+
+    .action-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .status-message {
+      display: none;
+      margin-bottom: 17px;
+      padding: 13px 15px;
+      border: 1px solid #E8D8AE;
+      border-radius: 12px;
+      background: #FFF9E9;
+      color: #76550B;
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .status-message.visible {
+      display: block;
+    }
+
+    .status-message.error {
+      border-color: #F1C7C4;
+      background: #FFF2F1;
+      color: #9B2424;
+    }
+
+    .loading {
+      padding: 28px 16px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 2;
+    }
+
+    .loading-spinner {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 12px;
+      border: 3px solid #E9DCD5;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .card-content {
+        padding: 20px 15px;
+      }
+
+      .member-name {
+        font-size: 22px;
+      }
+
+      .member-info-grid {
+        gap: 8px;
+      }
+
+      .info-box {
+        padding: 10px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A5 portrait;
+        margin: 8mm;
+      }
+
+      body {
+        padding: 0;
+        background: #fff;
+      }
+
+      .page-header,
+      .page-intro,
+      .actions,
+      #statusMessage,
+      #loadingState {
+        display: none !important;
+      }
+
+      .page-container {
+        width: 100%;
+        margin: 0;
+      }
+
+      .membership-card {
+        border: 1px solid #D8C8B9;
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .card-header {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .card-gold-line,
+      .card-footer,
+      .info-box,
+      .member-status {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="page-header">
+    <a href="members.html" class="back-button" aria-label="العودة إلى الأعضاء">‹</a>
+    <div>
+      <h1 class="header-title">بطاقة العضوية</h1>
+      <p class="header-subtitle">فرقة القديس جاورجيوس الموسيقية</p>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="page-intro">
+      <h2>بطاقة العضو</h2>
+      <p>يمكنك طباعة البطاقة أو تنزيلها بعد تحميل بيانات العضو.</p>
+    </section>
+
+    <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+
+    <div id="loadingState" class="loading">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      جارٍ تجهيز بطاقة العضوية...
+    </div>
+
+    <section id="membershipCard" class="membership-card hidden">
+      <div class="card-header">
+        <div class="card-logo">
+          <img
+            src="assets/logo.png"
+            alt="شعار الفرقة"
+            id="cardLogo"
+          >
+          <span id="logoFallback" class="card-logo-fallback" aria-hidden="true">ح</span>
+        </div>
+        <h3>فرقة القديس جاورجيوس</h3>
+        <p>بطاقة العضوية الرسمية</p>
+      </div>
+
+      <div class="card-gold-line"></div>
+
+      <div class="card-content" id="cardContent">
+        <p class="member-label">اسم العضو</p>
+        <h2 class="member-name" id="memberName">—</h2>
+        <p class="member-family" id="memberFamily"></p>
+
+        <div class="member-info-grid">
+          <div class="info-box">
+            <span class="info-label">رقم العضوية</span>
+            <span class="info-value" id="memberId">—</span>
+          </div>
+
+          <div class="info-box">
+            <span class="info-label">الآلة الموسيقية</span>
+            <span class="info-value" id="memberInstrument">—</span>
+          </div>
+
+          <div class="info-box">
+            <span class="info-label">تاريخ الانضمام</span>
+            <span class="info-value" id="memberJoinDate">—</span>
+          </div>
+
+          <div class="info-box">
+            <span class="info-label">اسم الأم</span>
+            <span class="info-value" id="memberMother">—</span>
+          </div>
+        </div>
+
+        <div class="member-status" id="memberStatus">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="memberStatusText">فعّال</span>
+        </div>
+
+        <div class="qr-section">
+          <h4>رمز QR الخاص بالعضو</h4>
+          <p>يُستخدم الرمز لتحديد العضو عند تسجيل الحضور.</p>
+
+          <div class="qr-frame">
+            <div id="qrcode" aria-label="رمز QR للعضو"></div>
+          </div>
+
+          <div class="qr-member-id" id="qrMemberId"></div>
+          <p class="qr-warning hidden" id="qrWarning"></p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        هذه البطاقة مخصصة لعضوية فرقة القديس جاورجيوس الموسيقية.
+        يرجى المحافظة عليها وإبرازها عند الحاجة.
+      </div>
+    </section>
+
+    <div id="actions" class="actions hidden">
+      <button class="action-button" id="downloadBtn" type="button">
+        <span aria-hidden="true">↓</span>
+        تنزيل البطاقة
+      </button>
+
+      <button class="action-button secondary" id="printBtn" type="button">
+        <span aria-hidden="true">▣</span>
+        طباعة البطاقة
+      </button>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    "use strict";
+
+    const statusMessage = document.getElementById("statusMessage");
+    const loadingState = document.getElementById("loadingState");
+    const membershipCard = document.getElementById("membershipCard");
+    const actions = document.getElementById("actions");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const printBtn = document.getElementById("printBtn");
+
+    let loadedMemberId = "";
+
+    function showMessage(message, isError = false) {
+      statusMessage.textContent = message;
+      statusMessage.className = "status-message visible";
+
+      if (isError) {
+        statusMessage.classList.add("error");
+      }
+    }
+
+    function hideMessage() {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent =
+        value === undefined || value === null || value === ""
+          ? "—"
+          : String(value);
+    }
+
+    function firstValue(object, keys, fallback = "") {
+      for (const key of keys) {
+        if (
+          object &&
+          object[key] !== undefined &&
+          object[key] !== null &&
+          object[key] !== ""
+        ) {
+          return object[key];
+        }
+      }
+
+      return fallback;
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "—";
+      }
+
+      const raw = String(value);
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        const parts = raw.split("-");
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
+      }
+
+      return raw;
+    }
+
+    function normalizeInstrument(value) {
+      const instruments = {
+        trumpet: "ترومبيت",
+        tanbour: "طنبور",
+        drum: "طنبور",
+        ceremonial: "مراسم"
+      };
+
+      return instruments[value] || value || "—";
+    }
+
+    function normalizeStatus(value) {
+      if (value === "disabled" || value === "معطّل") {
+        return {
+          text: "معطّل",
+          disabled: true
+        };
+      }
+
+      return {
+        text: "فعّال",
+        disabled: false
+      };
+    }
+
+    function renderQr(memberId) {
+      const qrContainer = document.getElementById("qrcode");
+      const qrWarning = document.getElementById("qrWarning");
+
+      qrContainer.replaceChildren();
+      qrWarning.classList.add("hidden");
+      qrWarning.textContent = "";
+
+      if (typeof QRCode === "undefined") {
+        qrWarning.textContent =
+          "تعذّر تحميل مكتبة QR. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.";
+        qrWarning.classList.remove("hidden");
+        return false;
+      }
+
+      // يحتوي الرمز على رقم العضو فقط، وليس على بياناته الشخصية.
+      new QRCode(qrContainer, {
+        text: memberId,
+        width: 156,
+        height: 156,
+        colorDark: "#282321",
+        colorLight: "#FFFFFF",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      document.getElementById("qrMemberId").textContent = memberId;
+      return true;
+    }
+
+    function renderMember(member) {
+      const id = firstValue(member, ["id", "ID", "memberId"]);
+      const fullName = firstValue(member, [
+        "fullName",
+        "name",
+        "الاسم الثلاثي"
+      ]);
+
+      const familyName = firstValue(member, [
+        "familyName",
+        "family",
+        "الكنية"
+      ]);
+
+      const motherName = firstValue(member, [
+        "motherName",
+        "mother",
+        "اسم الأم"
+      ]);
+
+      const instrument = firstValue(member, [
+        "instrument",
+        "الآلة"
+      ]);
+
+      const status = firstValue(member, [
+        "status",
+        "الحالة"
+      ], "فعّال");
+
+      const joinDate = firstValue(member, [
+        "joinDate",
+        "createdAt",
+        "addedAt",
+        "تاريخ الإضافة"
+      ]);
+
+      if (!id || !fullName) {
+        throw new Error(
+          "بيانات العضو وصلت، لكنها لا تتضمن رقم العضوية والاسم بالشكل المتوقع."
+        );
+      }
+
+      loadedMemberId = String(id);
+
+      setText("memberName", fullName);
+      setText("memberFamily", familyName ? "الكنية: " + familyName : "");
+      setText("memberId", id);
+      setText("memberInstrument", normalizeInstrument(instrument));
+      setText("memberJoinDate", formatDate(joinDate));
+      setText("memberMother", motherName);
+
+      const normalizedStatus = normalizeStatus(status);
+      const statusElement = document.getElementById("memberStatus");
+
+      setText("memberStatusText", normalizedStatus.text);
+      statusElement.classList.toggle("disabled", normalizedStatus.disabled);
+
+      renderQr(String(id));
+
+      loadingState.classList.add("hidden");
+      membershipCard.classList.remove("hidden");
+      actions.classList.remove("hidden");
+    }
+
+    async function loadMember() {
+      hideMessage();
+
+      const params = new URLSearchParams(window.location.search);
+      const memberId = (params.get("id") || "").trim();
+
+      if (!memberId) {
+        loadingState.classList.add("hidden");
+        showMessage(
+          "لم يتم تحديد رقم العضو. افتح الصفحة من بطاقة عضو محدد، مثل member-card.html?id=M001.",
+          true
+        );
+        return;
+      }
+
+      if (typeof API_URL === "undefined" || !API_URL) {
+        loadingState.classList.add("hidden");
+        showMessage(
+          "عرض البطاقة يحتاج إلى بيانات العضو من Google Sheets. الربط غير مفعّل بعد، لذلك لم نعرض بيانات تجريبية."
+        );
+        return;
+      }
+
+      try {
+        const result = await api("getMember", { id: memberId });
+
+        // تقبل الصفحة بيانات العضو داخل result.member أو مباشرة داخل result.
+        const member =
+          result && result.member && typeof result.member === "object"
+            ? result.member
+            : result;
+
+        if (!member || typeof member !== "object") {
+          throw new Error("لم تصل بيانات صالحة لهذا العضو.");
+        }
+
+        renderMember(member);
+      } catch (error) {
+        loadingState.classList.add("hidden");
+
+        showMessage(
+          error && error.message
+            ? error.message
+            : "تعذّر تحميل بيانات العضو. حاول مرة أخرى.",
+          true
+        );
+      }
+    }
+
+    async function downloadCard() {
+      if (!loadedMemberId) {
+        showMessage("لا توجد بطاقة محمّلة لتنزيلها.", true);
+        return;
+      }
+
+      if (typeof html2canvas === "undefined") {
+        showMessage(
+          "تعذّر تحميل أداة تنزيل البطاقة. تحقق من اتصال الإنترنت.",
+          true
+        );
+        return;
+      }
+
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "جارٍ تجهيز الصورة...";
+
+      try {
+        const canvas = await html2canvas(membershipCard, {
+          scale: 2,
+          backgroundColor: "#FFFFFF",
+          useCORS: true,
+          logging: false
+        });
+
+        const link = document.createElement("a");
+        link.download = "hadir-member-" + loadedMemberId + ".png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } catch (error) {
+        showMessage(
+          "تعذّر إنشاء صورة البطاقة. جرّب الطباعة أو أعد المحاولة.",
+          true
+        );
+      } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML =
+          '<span aria-hidden="true">↓</span> تنزيل البطاقة';
+      }
+    }
+
+    downloadBtn.addEventListener("click", downloadCard);
+
+    printBtn.addEventListener("click", function () {
+      if (!loadedMemberId) {
+        showMessage("لا توجد بطاقة محمّلة للطباعة.", true);
+        return;
+      }
+
+      window.print();
+    });
+
+    document.getElementById("cardLogo").addEventListener("error", function () {
+      this.style.display = "none";
+      document.getElementById("logoFallback").style.display = "block";
+    });
+
+    loadMember();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7A2E35">
+  <title>الأعضاء | حاضر</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet>
+
+  <link rel="stylesheet" href="css/app.css">
+
+  <style>
+    :root {
+      --primary: #7A2E35;
+      --primary-dark: #5D1820;
+      --gold: #C9A24B;
+      --background: #FAF7F2;
+      --text: #282321;
+      --muted: #766D69;
+      --border: #E8DFD7;
+      --green: #347A3B;
+      --red: #A32626;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding-bottom: 100px;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 2px 8px rgba(30, 27, 24, 0.025);
+      backdrop-filter: blur(8px);
+    }
+
+    .header-inner {
+      display: flex;
+      width: min(100%, 960px);
+      min-height: 70px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 auto;
+      padding: 12px 18px;
+    }
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .back-button {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 50%;
+      background: #F0EDE9;
+      color: var(--text-secondary, #544243);
+      cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+
+    .back-button:hover {
+      background: #E5E2DD;
+    }
+
+    .back-button:active {
+      transform: scale(0.95);
+    }
+
+    .header-copy {
+      min-width: 0;
+    }
+
+    .header-title {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .header-subtitle {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .header-logo {
+      display: flex;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(201, 162, 75, 0.5);
+      border-radius: 50%;
+      background: #fff;
+      padding: 3px;
+    }
+
+    .header-logo img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: contain;
+    }
+
+    .header-logo .logo-fallback {
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .material-symbols-outlined {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "liga";
+    }
+
+    .intro-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .page-container {
+      width: min(100% - 30px, 960px);
+      margin: 24px auto;
+    }
+
+    .page-intro {
+      margin-bottom: 22px;
+    }
+
+    .page-intro h2 {
+      margin: 0 0 5px;
+      color: var(--primary-dark);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .page-intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: #fff;
+    }
+
+    .stat-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary-dark);
+      font-size: 25px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .stat-value.green {
+      color: var(--green);
+    }
+
+    .stat-value.red {
+      color: var(--red);
+    }
+
+    .filters-card {
+      margin-bottom: 20px;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: #fff;
+      box-shadow: 0 7px 22px rgba(93, 24, 32, 0.035);
+    }
+
+    .filters-title {
+      margin: 0 0 13px;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #4D423D;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      right: 13px;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 19px;
+      pointer-events: none;
+    }
+
+    .filter-input {
+      display: block;
+      width: 100%;
+      min-height: 49px;
+      padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: #FFFEFC;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .search-input {
+      padding-right: 42px;
+    }
+
+    .filter-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(122, 46, 53, 0.09);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .results-count {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .clear-button {
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .list-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .list-heading h3 {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .member-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .member-card {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: #fff;
+      color: inherit;
+      text-align: right;
+      cursor: pointer;
+      transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+
+    .member-card:hover {
+      transform: translateY(-2px);
+      border-color: #D2B4B1;
+      box-shadow: 0 8px 20px rgba(93, 24, 32, 0.07);
+    }
+
+    .member-card:focus-visible {
+      outline: 3px solid rgba(201, 162, 75, 0.7);
+      outline-offset: 2px;
+    }
+
+    .member-avatar {
+      display: grid;
+      place-items: center;
+      width: 49px;
+      height: 49px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      background: #F1E4E1;
+      color: var(--primary);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .member-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-name {
+      overflow: hidden;
+      margin: 0 0 4px;
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .member-id {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .member-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .member-instrument {
+      color: #665850;
+      font-size: 11px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #EEF7EF;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .status-pill.disabled {
+      background: #FFF0F0;
+      color: var(--red);
+    }
+
+    .status-pill::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .member-arrow {
+      flex-shrink: 0;
+      color: #A18D83;
+      font-size: 23px;
+    }
+
+    .state-panel {
+      padding: 32px 18px;
+      border: 1px dashed #DCCDC2;
+      border-radius: 18px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .state-icon {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      background: #F4ECE8;
+      color: var(--primary);
+      font-size: 25px;
+    }
+
+    .state-panel h3 {
+      margin: 0 0 6px;
+      color: var(--primary-dark);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .state-panel p {
+      max-width: 440px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .state-retry {
+      margin-top: 15px;
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading-spinner {
+      width: 27px;
+      height: 27px;
+      margin: 0 auto 12px;
+      border: 3px solid #E9DCD5;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .filters-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-field {
+        grid-column: 1 / -1;
+      }
+
+      .member-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page-container {
+        width: calc(100% - 22px);
+        margin-top: 19px;
+      }
+
+      .header-inner {
+        padding-inline: 11px;
+      }
+
+      .header-title {
+        font-size: 16px;
+      }
+
+      .header-subtitle {
+        font-size: 11px;
+      }
+
+      .header-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .intro-actions {
+        align-items: flex-start;
+      }
+
+      .intro-actions .add-button {
+        padding-inline: 10px;
+        font-size: 12px;
+      }
+
+      .stats-grid {
+        gap: 7px;
+      }
+
+      .stat-card {
+        padding: 11px 9px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .stat-value {
+        font-size: 22px;
+      }
+
+      .filters-card {
+        padding: 13px;
+      }
+
+      .filters-grid {
+        gap: 9px;
+      }
+
+      .intro-actions {
+        flex-direction: column;
+      }
+
+      .intro-actions .add-button {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="header-info">
+        <button
+          class="back-button"
+          id="backButton"
+          type="button"
+          aria-label="الرجوع إلى الصفحة الرئيسية"
+          title="الرجوع إلى الصفحة الرئيسية"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </button>
+
+        <div class="header-copy">
+          <h1 class="header-title">الأعضاء</h1>
+          <p class="header-subtitle">إدارة أعضاء الفرقة وبطاقاتهم</p>
+        </div>
+      </div>
+
+      <div class="header-logo">
+        <img
+          src="assets/logo.png"
+          alt="شعار الفرقة"
+          id="headerLogo"
+        >
+        <span class="material-symbols-outlined logo-fallback" id="logoFallback" aria-hidden="true" hidden>music_note</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="page-intro">
+      <div class="intro-actions">
+        <div>
+          <h2>قائمة الأعضاء</h2>
+          <p>ابحث عن أي عضو، وفلتر القائمة، واضغط على بطاقته لعرض رمز QR الخاص به.</p>
+        </div>
+
+        <a class="add-button" href="add-member.html">
+          <span aria-hidden="true">＋</span>
+          إضافة عضو
+        </a>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="إحصائيات الأعضاء">
+      <div class="stat-card">
+        <span class="stat-label">إجمالي الأعضاء</span>
+        <strong class="stat-value" id="totalCount">—</strong>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-label">الأعضاء الفعّالون</span>
+        <strong class="stat-value green" id="activeCount">—</strong>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-label">الأعضاء المعطّلون</span>
+        <strong class="stat-value red" id="disabledCount">—</strong>
+      </div>
+    </section>
+
+    <section class="filters-card">
+      <h2 class="filters-title">البحث والتصفية</h2>
+
+      <div class="filters-grid">
+        <div class="search-field">
+          <label class="field-label" for="searchInput">البحث عن عضو</label>
+          <div class="search-wrapper">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input
+              class="filter-input search-input"
+              id="searchInput"
+              type="search"
+              placeholder="الاسم أو الكنية أو رقم العضوية..."
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="field-label" for="instrumentFilter">الآلة الموسيقية</label>
+          <select class="filter-input" id="instrumentFilter">
+            <option value="">كل الآلات</option>
+            <option value="ترومبيت">ترومبيت</option>
+            <option value="طنبور">طنبور</option>
+            <option value="مراسم">مراسم</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="statusFilter">حالة العضو</label>
+          <select class="filter-input" id="statusFilter">
+            <option value="">كل الحالات</option>
+            <option value="active">فعّال</option>
+            <option value="disabled">معطّل</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <span class="results-count" id="resultsCount">جارٍ تحميل الأعضاء...</span>
+        <button class="clear-button" id="clearFiltersBtn" type="button">مسح الفلاتر</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="list-heading">
+        <h3>الأعضاء المسجّلون</h3>
+      </div>
+
+      <div id="loadingState" class="state-panel">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <h3>جارٍ تحميل الأعضاء</h3>
+        <p>انتظر قليلاً ريثما نحصل على القائمة.</p>
+      </div>
+
+      <div id="errorState" class="state-panel hidden" role="alert">
+        <div class="state-icon" aria-hidden="true">!</div>
+        <h3>تعذّر تحميل الأعضاء</h3>
+        <p id="errorText">تحقق من الاتصال ثم حاول مجدداً.</p>
+        <button class="state-retry" id="retryBtn" type="button">إعادة المحاولة</button>
+      </div>
+
+      <div id="emptyState" class="state-panel hidden">
+        <div class="state-icon" aria-hidden="true">♬</div>
+        <h3 id="emptyTitle">لا يوجد أعضاء</h3>
+        <p id="emptyText">لم نعثر على أعضاء يطابقون البحث والفلاتر الحالية.</p>
+      </div>
+
+      <div id="memberList" class="member-list"></div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    "use strict";
+
+    const searchInput = document.getElementById("searchInput");
+    const instrumentFilter = document.getElementById("instrumentFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const clearFiltersBtn = document.getElementById("clearFiltersBtn");
+
+    const totalCount = document.getElementById("totalCount");
+    const activeCount = document.getElementById("activeCount");
+    const disabledCount = document.getElementById("disabledCount");
+    const resultsCount = document.getElementById("resultsCount");
+
+    const loadingState = document.getElementById("loadingState");
+    const errorState = document.getElementById("errorState");
+    const errorText = document.getElementById("errorText");
+    const emptyState = document.getElementById("emptyState");
+    const emptyTitle = document.getElementById("emptyTitle");
+    const emptyText = document.getElementById("emptyText");
+    const memberList = document.getElementById("memberList");
+
+    let allMembers = [];
+
+    function firstValue(object, keys, fallback = "") {
+      for (const key of keys) {
+        if (
+          object &&
+          object[key] !== undefined &&
+          object[key] !== null &&
+          object[key] !== ""
+        ) {
+          return object[key];
+        }
+      }
+
+      return fallback;
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+        .replace(/[أإآ]/g, "ا")
+        .replace(/ى/g, "ي")
+        .replace(/ة/g, "ه")
+        .replace(/\s+/g, " ");
+    }
+
+    function getMemberId(member) {
+      return String(firstValue(member, ["id", "ID", "memberId"]));
+    }
+
+    function getMemberName(member) {
+      return String(firstValue(member, [
+        "fullName",
+        "name",
+        "الاسم الثلاثي"
+      ], "بدون اسم"));
+    }
+
+    function getMemberFamily(member) {
+      return String(firstValue(member, [
+        "familyName",
+        "family",
+        "الكنية"
+      ]));
+    }
+
+    function getMemberInstrument(member) {
+      const raw = String(firstValue(member, [
+        "instrument",
+        "الآلة"
+      ]));
+
+      const instruments = {
+        trumpet: "ترومبيت",
+        tanbour: "طنبور",
+        drum: "طنبور",
+        ceremonial: "مراسم"
+      };
+
+      return instruments[raw] || raw || "غير محددة";
+    }
+
+    function getMemberStatus(member) {
+      const raw = normalizeText(firstValue(member, [
+        "status",
+        "الحالة"
+      ], "فعال"));
+
+      if (
+        raw === "معطل" ||
+        raw === "disabled" ||
+        raw === "inactive"
+      ) {
+        return "disabled";
+      }
+
+      return "active";
+    }
+
+    function getMemberSearchText(member) {
+      return normalizeText([
+        getMemberId(member),
+        getMemberName(member),
+        getMemberFamily(member),
+        firstValue(member, ["motherName", "mother", "اسم الأم"]),
+        getMemberInstrument(member)
+      ].join(" "));
+    }
+
+    function updateStats() {
+      const active = allMembers.filter(
+        member => getMemberStatus(member) === "active"
+      ).length;
+
+      totalCount.textContent = String(allMembers.length);
+      activeCount.textContent = String(active);
+      disabledCount.textContent = String(allMembers.length - active);
+    }
+
+    function createMemberCard(member) {
+      const id = getMemberId(member);
+      const name = getMemberName(member);
+      const family = getMemberFamily(member);
+      const instrument = getMemberInstrument(member);
+      const status = getMemberStatus(member);
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "member-card";
+      button.setAttribute(
+        "aria-label",
+        "عرض بطاقة العضو " + name + "، رقم " + id
+      );
+
+      const avatar = document.createElement("span");
+      avatar.className = "member-avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.textContent = name.trim().charAt(0) || "؟";
+
+      const main = document.createElement("span");
+      main.className = "member-main";
+
+      const memberName = document.createElement("span");
+      memberName.className = "member-name";
+      memberName.textContent = name + (family ? " " + family : "");
+
+      const memberId = document.createElement("span");
+      memberId.className = "member-id";
+      memberId.textContent = id || "—";
+
+      const meta = document.createElement("span");
+      meta.className = "member-meta";
+
+      const instrumentText = document.createElement("span");
+      instrumentText.className = "member-instrument";
+      instrumentText.textContent = instrument;
+
+      const statusPill = document.createElement("span");
+      statusPill.className =
+        "status-pill" + (status === "disabled" ? " disabled" : "");
+      statusPill.textContent = status === "disabled" ? "معطّل" : "فعّال";
+
+      const arrow = document.createElement("span");
+      arrow.className = "member-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "‹";
+
+      meta.append(instrumentText, statusPill);
+      main.append(memberName, memberId, meta);
+      button.append(avatar, main, arrow);
+
+      button.addEventListener("click", function () {
+        if (!id) {
+          showError("لا يوجد رقم عضوية لهذا السجل، لذلك لا يمكن فتح البطاقة.");
+          return;
+        }
+
+        window.location.href =
+          APP_PAGES.memberCard + "?id=" + encodeURIComponent(id);
+      });
+
+      return button;
+    }
+
+    function showLoading() {
+      loadingState.classList.remove("hidden");
+      errorState.classList.add("hidden");
+      emptyState.classList.add("hidden");
+      memberList.replaceChildren();
+    }
+
+    function showError(message) {
+      loadingState.classList.add("hidden");
+      emptyState.classList.add("hidden");
+      memberList.replaceChildren();
+
+      errorText.textContent = message;
+      errorState.classList.remove("hidden");
+      resultsCount.textContent = "تعذّر تحميل النتائج";
+    }
+
+    function getMemberArray(result) {
+      if (Array.isArray(result)) {
+        return result;
+      }
+
+      if (result && Array.isArray(result.members)) {
+        return result.members;
+      }
+
+      if (result && Array.isArray(result.items)) {
+        return result.items;
+      }
+
+      return null;
+    }
+
+    function renderMembers() {
+      const searchTerm = normalizeText(searchInput.value);
+      const selectedInstrument = instrumentFilter.value;
+      const selectedStatus = statusFilter.value;
+
+      const filteredMembers = allMembers.filter(function (member) {
+        const matchesSearch =
+          !searchTerm ||
+          getMemberSearchText(member).includes(searchTerm);
+
+        const matchesInstrument =
+          !selectedInstrument ||
+          getMemberInstrument(member) === selectedInstrument;
+
+        const matchesStatus =
+          !selectedStatus ||
+          getMemberStatus(member) === selectedStatus;
+
+        return matchesSearch && matchesInstrument && matchesStatus;
+      });
+
+      memberList.replaceChildren();
+      loadingState.classList.add("hidden");
+      errorState.classList.add("hidden");
+
+      resultsCount.textContent =
+        "عرض " + filteredMembers.length + " من أصل " + allMembers.length + " عضو";
+
+      if (filteredMembers.length === 0) {
+        emptyTitle.textContent =
+          allMembers.length === 0 ? "لا يوجد أعضاء مسجّلون" : "لا توجد نتائج";
+
+        emptyText.textContent =
+          allMembers.length === 0
+            ? "بعد ربط Google Sheets وإضافة الأعضاء، ستظهر القائمة هنا."
+            : "لم نعثر على أعضاء يطابقون البحث والفلاتر الحالية. جرّب تغيير كلمات البحث أو مسح الفلاتر.";
+
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      const fragment = document.createDocumentFragment();
+
+      filteredMembers.forEach(function (member) {
+        fragment.appendChild(createMemberCard(member));
+      });
+
+      memberList.appendChild(fragment);
+    }
+
+    async function loadMembers() {
+      showLoading();
+      resultsCount.textContent = "جارٍ تحميل الأعضاء...";
+
+      if (typeof API_URL === "undefined" || !API_URL) {
+        allMembers = [];
+        updateStats();
+        showError(
+          "رابط API غير مضبوط بعد. الواجهة جاهزة، لكن قائمة الأعضاء تحتاج إلى الربط مع Google Sheets."
+        );
+        return;
+      }
+
+      try {
+        const result = await api("listMembers", {});
+        const members = getMemberArray(result);
+
+        if (!members) {
+          throw new Error(
+            "استجابة listMembers لا تحتوي على قائمة أعضاء بالشكل المتوقع. يجب أن تعيد data.members أو data.items أو مصفوفة مباشرة."
+          );
+        }
+
+        allMembers = members;
+        updateStats();
+        renderMembers();
+      } catch (error) {
+        allMembers = [];
+        updateStats();
+
+        showError(
+          error && error.message
+            ? error.message
+            : "تعذّر تحميل الأعضاء. تحقق من الاتصال وحاول مجدداً."
+        );
+      }
+    }
+
+    searchInput.addEventListener("input", renderMembers);
+    instrumentFilter.addEventListener("change", renderMembers);
+    statusFilter.addEventListener("change", renderMembers);
+
+    clearFiltersBtn.addEventListener("click", function () {
+      searchInput.value = "";
+      instrumentFilter.value = "";
+      statusFilter.value = "";
+      renderMembers();
+      searchInput.focus();
+    });
+
+    document.getElementById("retryBtn").addEventListener("click", loadMembers);
+
+    document.getElementById("backButton").addEventListener("click", function () {
+      window.location.href = APP_PAGES.home || "home.html";
+    });
+
+    const headerLogo = document.getElementById("headerLogo");
+    const logoFallback = document.getElementById("logoFallback");
+
+    headerLogo.addEventListener("error", function () {
+      headerLogo.hidden = true;
+      logoFallback.hidden = false;
+    });
+
+    loadMembers();
+  </script>
+</body>
+</html>
