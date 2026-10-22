@@ -1,7 +1,7 @@
 
 "use strict";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbx3djw-iTnBEiQTG2R1WLJ7TJE3Oc1h5y-zITTxqGI2Ed08Y2sibo9oC3aNUFm61EWAQg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxC5BjCDa51op3yQFOTmx0Ap1b-2rifbpDjFARh0444Y4x9W2hh6pe07JCmWVkUUPKNaA/exec";
 
 const APP_NAME = "حاضر";
 const APP_VERSION = "1.0.0";
