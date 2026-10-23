@@ -14,12 +14,6 @@
     absent: $("stat-absent"),
     excuses: $("stat-excuses"),
 
-    sessionType: $("session-type"),
-    sessionStart: $("session-start"),
-
-    pendingCount: $("pending-count"),
-    pendingLateCount: $("pending-late-count"),
-    pendingExcusesCount: $("pending-excuses-count")
   };
 
   function setText(element, value) {
@@ -98,7 +92,6 @@
 
   function renderSummary(data) {
     const summary = data.summary || data;
-    const session = data.session || data.sessionInfo || {};
 
     setNumber(
       elements.present,
@@ -136,47 +129,6 @@
         "عدد_الأعذار"
       ])
     );
-
-    const pendingLate = getFirstValue(summary, [
-      "pendingLateCount",
-      "pendingLate",
-      "latePending"
-    ]);
-
-    const pendingExcuses = getFirstValue(summary, [
-      "pendingExcusesCount",
-      "pendingExcuses",
-      "excusesPending"
-    ]);
-
-    const pendingTotal = getFirstValue(summary, [
-      "pendingCount",
-      "pending",
-      "حالات_تحتاج_متابعة"
-    ]);
-
-    setNumber(elements.pendingLateCount, pendingLate);
-    setNumber(elements.pendingExcusesCount, pendingExcuses);
-    setNumber(elements.pendingCount, pendingTotal);
-
-    setText(
-      elements.sessionType,
-      getFirstValue(session, [
-        "sessionType",
-        "type",
-        "نوع الجلسة"
-      ])
-    );
-
-    setText(
-      elements.sessionStart,
-      getFirstValue(session, [
-        "startTime",
-        "start",
-        "وقت بداية الجلسة"
-      ])
-    );
-
   }
 
   async function loadDashboard() {
@@ -194,25 +146,7 @@
         );
       }
 
-      const results = await Promise.allSettled([
-        api("summary"),
-        api("sessionInfo")
-      ]);
-
-      if (results[0].status === "rejected") {
-        throw results[0].reason ||
-          new Error("تعذر جلب ملخص الحضور.");
-      }
-
-      const summaryData = results[0].value || {};
-
-      if (results[1].status === "fulfilled") {
-        const sessionData = results[1].value || {};
-
-        summaryData.session =
-          sessionData.session || sessionData;
-      }
-
+      const summaryData = await api("summary") || {};
       renderSummary(summaryData);
     } catch (error) {
       console.error(
@@ -225,7 +159,6 @@
           ? error.message
           : "تعذر تحميل بيانات لوحة المتابعة. تحقق من الاتصال ثم أعد المحاولة."
       );
-
     } finally {
       if (elements.refreshButton) {
         elements.refreshButton.disabled = false;
