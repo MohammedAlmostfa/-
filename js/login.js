@@ -14,6 +14,10 @@ const loginNotice = document.getElementById("loginNotice");
 const loginNoticeText = document.getElementById("loginNoticeText");
 const bandLogo = document.getElementById("bandLogo");
 
+if (new URLSearchParams(window.location.search).get("session") === "expired") {
+  showNotice("انتهت الجلسة. سجّل الدخول مجددًا.");
+}
+
 function showError(message) {
   errorText.textContent = message;
   errorMsg.hidden = false;

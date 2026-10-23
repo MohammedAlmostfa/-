@@ -68,6 +68,16 @@ async function api(action, data = {}, options = {}) {
 
     if (code === "unauthorized" || code === "forbidden") {
       clearSession();
+
+      const currentPage = window.location.pathname
+        .split("/")
+        .pop();
+
+      if (action.trim() !== "login" && currentPage !== APP_PAGES.login) {
+        window.location.replace(
+          APP_PAGES.login + "?session=expired"
+        );
+      }
     }
 
     throw apiError;
