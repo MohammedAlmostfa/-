@@ -87,6 +87,172 @@ async function api(action, data = {}, options = {}) {
 }
 
 /**
+ * ---------------------------------------------------------------
+ * كاش الطلبات (Stale-While-Revalidate)
+ * ---------------------------------------------------------------
+ * يعرض آخر نتيجة محفوظة فوراً، ثم يجلب النسخة الحديثة بالخلفية
+ * ويحدّث الواجهة. التخزين في sessionStorage فيُمسح مع الجلسة.
+ *
+ * مثال:
+ * await apiCached("listMembers", {}, function (result, meta) {
+ *   render(result);   // meta.cached === true عند عرض النسخة المخزّنة
+ * });
+ *
+ * إذا فشل الجلب الحديث وكانت هناك نسخة مخزّنة معروضة، لا يُرمى خطأ.
+ */
+const API_CACHE_PREFIX = "hadir_cache_";
+
+function apiCacheKey(action, data) {
+  let serialized = "";
+
+  try {
+    serialized = JSON.stringify(data || {});
+  } catch (error) {
+    serialized = "";
+  }
+
+  return API_CACHE_PREFIX + action + ":" + serialized;
+}
+
+function readApiCache(key, maxAgeMs) {
+  try {
+    const raw = sessionStorage.getItem(key);
+
+    if (!raw) {
+      return undefined;
+    }
+
+    const entry = JSON.parse(raw);
+
+    if (
+      !entry ||
+      typeof entry.t !== "number" ||
+      Date.now() - entry.t > maxAgeMs
+    ) {
+      return undefined;
+    }
+
+    return entry.v;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+function writeApiCache(key, value) {
+  try {
+    sessionStorage.setItem(
+      key,
+      JSON.stringify({ t: Date.now(), v: value })
+    );
+  } catch (error) {
+    // الامتلاء أو الوضع الخاص: نتجاهل التخزين دون التأثير على التطبيق.
+  }
+}
+
+/**
+ * حذف كل نتائج الكاش، أو نتائج عملية معيّنة فقط.
+ * نستدعيها بعد أي عملية تغيّر البيانات (مثل addMember).
+ */
+function clearApiCache(action) {
+  try {
+    const prefix = API_CACHE_PREFIX + (action ? action + ":" : "");
+    const keys = [];
+
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+
+      if (key && key.startsWith(prefix)) {
+        keys.push(key);
+      }
+    }
+
+    keys.forEach(function (key) {
+      sessionStorage.removeItem(key);
+    });
+  } catch (error) {
+    // لا شيء.
+  }
+}
+
+async function apiCached(action, data = {}, onData, options = {}) {
+  const key = apiCacheKey(action, data);
+  const maxAge =
+    typeof options.maxAge === "number" ? options.maxAge : 10 * 60 * 1000;
+
+  let shownFromCache = false;
+  const cached = readApiCache(key, maxAge);
+
+  if (cached !== undefined && typeof onData === "function") {
+    try {
+      onData(cached, { cached: true });
+      shownFromCache = true;
+    } catch (error) {
+      // نسخة مخزّنة غير صالحة: نتجاهلها وننتظر الشبكة.
+      shownFromCache = false;
+    }
+  }
+
+  try {
+    const fresh = await api(action, data, options);
+
+    writeApiCache(key, fresh);
+
+    if (typeof onData === "function") {
+      onData(fresh, { cached: false });
+    }
+
+    return fresh;
+  } catch (error) {
+    if (shownFromCache && error && error.code !== "unauthorized" && error.code !== "forbidden") {
+      return cached;
+    }
+
+    throw error;
+  }
+}
+
+/**
+ * تحميل سكربت خارجي مرة واحدة فقط (للمكتبات غير الضرورية عند فتح الصفحة).
+ */
+const loadedScripts = {};
+
+function loadScriptOnce(src) {
+  if (loadedScripts[src]) {
+    return loadedScripts[src];
+  }
+
+  loadedScripts[src] = new Promise(function (resolve, reject) {
+    const script = document.createElement("script");
+
+    script.src = src;
+    script.async = true;
+    script.onload = function () {
+      resolve();
+    };
+    script.onerror = function () {
+      delete loadedScripts[src];
+      script.remove();
+      reject(new Error("تعذّر تحميل: " + src));
+    };
+
+    document.head.appendChild(script);
+  });
+
+  return loadedScripts[src];
+}
+
+/**
+ * تشغيل مهمة عندما يكون المتصفح فارغاً (لتحميل مسبق دون إبطاء الصفحة).
+ */
+function runWhenIdle(task) {
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(task, { timeout: 4000 });
+  } else {
+    window.setTimeout(task, 1500);
+  }
+}
+
+/**
  * قراءة بيانات الجلسة من sessionStorage.
  * تنتهي البيانات المحلية عند انتهاء جلسة المتصفح.
  */
@@ -136,6 +302,8 @@ function clearSession() {
   } catch (error) {
     // قد لا يكون التخزين متاحاً في بعض أوضاع المتصفح.
   }
+
+  clearApiCache();
 }
 
 /**

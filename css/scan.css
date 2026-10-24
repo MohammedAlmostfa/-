@@ -6,6 +6,98 @@
    Layout: Mobile-first · RTL
    ========================================================= */
 
+/* ---------- Base reset (replaces Tailwind preflight) ----------
+   كانت الصفحة تعتمد على Tailwind CDN لهذه القواعد. وُضعت هنا بـ :where()
+   (خصوصية صفر) حتى لا تتجاوز أي قاعدة خاصة بالصفحة.
+   ---------------------------------------------------------- */
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+body {
+  line-height: inherit;
+}
+
+:where(*, ::before, ::after) {
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote) {
+  margin: 0;
+}
+
+:where(a) {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+:where(ol, ul) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where(img, svg, video, canvas) {
+  display: block;
+  vertical-align: middle;
+}
+
+:where(img, video) {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(button, input, select, textarea) {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+:where(button, [type="button"], [type="submit"]) {
+  background-color: transparent;
+  background-image: none;
+  -webkit-appearance: button;
+}
+
+:where(input)::placeholder {
+  opacity: 1;
+  color: #9ca3af;
+}
+
+/* ---------- Layout helpers (كانت classes من Tailwind) ---------- */
+
+.scan-result-body {
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+.manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.manual-label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  color: #544243;
+}
+
 /* ---------- Page ---------- */
 
 body:has(.scan-header) {

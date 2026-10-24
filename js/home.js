@@ -146,8 +146,10 @@
         );
       }
 
-      const summaryData = await api("summary") || {};
-      renderSummary(summaryData);
+      // نعرض آخر أرقام محفوظة فوراً ثم نحدّثها عند وصول الرد الحديث.
+      await apiCached("summary", {}, function (summaryData) {
+        renderSummary(summaryData || {});
+      }, { maxAge: 5 * 60 * 1000 });
     } catch (error) {
       console.error(
         "Home dashboard loading failed:",

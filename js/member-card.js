@@ -290,6 +290,14 @@ async function downloadCard() {
   }
 
   if (typeof html2canvas === "undefined") {
+    try {
+      await loadScriptOnce(LIB_URLS.html2canvas);
+    } catch (error) {
+      // سنعرض رسالة الخطأ أدناه.
+    }
+  }
+
+  if (typeof html2canvas === "undefined") {
     showMessage(
       "تعذّر تحميل أداة تنزيل البطاقة. تحقق من اتصال الإنترنت.",
       true
@@ -346,3 +354,8 @@ document.getElementById("cardLogo").addEventListener("error", function () {
 });
 
 loadMember();
+
+// نحمّل أداة تنزيل الصورة مسبقاً عندما يكون المتصفح فارغاً.
+runWhenIdle(function () {
+  loadScriptOnce(LIB_URLS.html2canvas).catch(function () {});
+});

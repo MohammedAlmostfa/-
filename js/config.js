@@ -30,3 +30,11 @@ const SESSION_KEYS = Object.freeze({
   TOKEN: "hadir_token",
   ROLE: "hadir_role"
 });
+
+/**
+ * مكتبات خارجية بإصدارات مثبّتة، تُحمَّل عند الحاجة فقط (انظر loadScriptOnce في api.js).
+ */
+const LIB_URLS = Object.freeze({
+  html5Qrcode: "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js",
+  html2canvas: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+});

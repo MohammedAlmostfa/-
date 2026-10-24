@@ -489,6 +489,9 @@ select.filter-input:focus {
   box-shadow: 0 2px 6px rgba(67, 16, 26, 0.03), 0 10px 24px -16px rgba(67, 16, 26, 0.2);
   animation: m-rise 0.3s ease both;
   transition: transform var(--ease), border-color var(--ease), box-shadow var(--ease);
+  /* القوائم الطويلة: المتصفح لا يرسم البطاقات خارج الشاشة */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 92px;
 }
 
 .member-card:hover {
@@ -888,5 +891,34 @@ select.filter-input:focus {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- هيكل تحميل (Skeleton) ---------- */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.skeleton-card {
+  height: 74px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #F1E9E3 25%, #F8F2EE 50%, #F1E9E3 75%);
+  background-size: 200% 100%;
+  animation: m-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes m-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-card,
+  .loading-spinner,
+  .member-card {
+    animation: none;
   }
 }

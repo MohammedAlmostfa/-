@@ -140,6 +140,9 @@ addMemberForm.addEventListener("submit", async function (event) {
       instrument: instrument
     });
 
+    // قائمة الأعضاء والأرقام تغيّرت: نحذف النسخ المخزّنة.
+    clearApiCache();
+
     // addMember_ returns { member: { id: "M001", ... } }.
     const memberId =
       result && result.member && result.member.id

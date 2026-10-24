@@ -110,6 +110,31 @@ function getMemberSearchText(member) {
   ].join(" "));
 }
 
+/*
+ * نص البحث يُحسب مرة واحدة لكل عضو بدل إعادة حسابه مع كل حرف.
+ */
+const searchTextCache = new WeakMap();
+
+function getCachedSearchText(member) {
+  let text = searchTextCache.get(member);
+
+  if (text === undefined) {
+    text = getMemberSearchText(member);
+    searchTextCache.set(member, text);
+  }
+
+  return text;
+}
+
+function debounce(callback, wait) {
+  let timer = null;
+
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(callback, wait);
+  };
+}
+
 function updateStats() {
   const active = allMembers.filter(
     member => getMemberStatus(member) === "active"
@@ -226,7 +251,7 @@ function renderMembers() {
   const filteredMembers = allMembers.filter(function (member) {
     const matchesSearch =
       !searchTerm ||
-      getMemberSearchText(member).includes(searchTerm);
+      getCachedSearchText(member).includes(searchTerm);
 
     const matchesInstrument =
       !selectedInstrument ||
@@ -288,18 +313,20 @@ async function loadMembers() {
   }
 
   try {
-    const result = await api("listMembers", {});
-    const members = getMemberArray(result);
+    // نعرض القائمة المخزّنة فوراً (إن وجدت) ثم نحدّثها بالنسخة الحديثة.
+    await apiCached("listMembers", {}, function (result) {
+      const members = getMemberArray(result);
 
-    if (!members) {
-      throw new Error(
-        "استجابة listMembers لا تحتوي على قائمة أعضاء بالشكل المتوقع. يجب أن تعيد مصفوفة مباشرة أو members أو items."
-      );
-    }
+      if (!members) {
+        throw new Error(
+          "استجابة listMembers لا تحتوي على قائمة أعضاء بالشكل المتوقع. يجب أن تعيد مصفوفة مباشرة أو members أو items."
+        );
+      }
 
-    allMembers = members;
-    updateStats();
-    renderMembers();
+      allMembers = members;
+      updateStats();
+      renderMembers();
+    });
 
   } catch (error) {
     allMembers = [];
@@ -313,7 +340,7 @@ async function loadMembers() {
   }
 }
 
-searchInput.addEventListener("input", renderMembers);
+searchInput.addEventListener("input", debounce(renderMembers, 150));
 instrumentFilter.addEventListener("change", renderMembers);
 statusFilter.addEventListener("change", renderMembers);
 

@@ -182,6 +182,7 @@
       const result = await api("scan", {
         id: memberId
       });
+      clearApiCache("summary");
 
       const display = displayScanResult(result);
 
@@ -220,6 +221,14 @@
   async function startScanner() {
     if (isScanning) {
       return;
+    }
+
+    if (typeof Html5Qrcode === "undefined") {
+      try {
+        await loadScriptOnce(LIB_URLS.html5Qrcode);
+      } catch (error) {
+        // سنعرض رسالة الخطأ أدناه.
+      }
     }
 
     if (typeof Html5Qrcode === "undefined") {
@@ -492,6 +501,7 @@
       const result = await api("manualCheckIn", {
         id: memberId
       });
+      clearApiCache("summary");
 
       const display = displayScanResult(result);
 
@@ -536,21 +546,22 @@
 
   async function loadSessionInfo() {
     try {
-      const result = await api("sessionInfo");
-      const session = result.session || result;
+      await apiCached("sessionInfo", {}, function (result) {
+        const session = (result && result.session) || result || {};
 
-      const type = session.sessionType || session.type || "";
-      const start = session.startTime || session.start || "";
+        const type = session.sessionType || session.type || "";
+        const start = session.startTime || session.start || "";
 
-      if (type && start) {
-        elements.sessionLabel.textContent =
-          type + " · البداية " + start;
-      } else if (type) {
-        elements.sessionLabel.textContent = type;
-      } else {
-        elements.sessionLabel.textContent =
-          "معلومات الجلسة غير متاحة";
-      }
+        if (type && start) {
+          elements.sessionLabel.textContent =
+            type + " · البداية " + start;
+        } else if (type) {
+          elements.sessionLabel.textContent = type;
+        } else {
+          elements.sessionLabel.textContent =
+            "معلومات الجلسة غير متاحة";
+        }
+      }, { maxAge: 2 * 60 * 1000 });
     } catch (error) {
       elements.sessionLabel.textContent =
         "بانتظار ربط النظام";
@@ -598,6 +609,12 @@
     );
 
     loadSessionInfo();
+
+    // نحمّل مكتبة القارئ مسبقاً عندما يكون المتصفح فارغاً،
+    // فتبدأ الكاميرا فوراً عند الضغط على الزر.
+    runWhenIdle(function () {
+      loadScriptOnce(LIB_URLS.html5Qrcode).catch(function () {});
+    });
   }
 
   window.addEventListener("pagehide", function () {

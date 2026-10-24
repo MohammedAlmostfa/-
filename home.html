@@ -8,13 +8,26 @@
 
   <title>الرئيسية | حاضر</title>
 
-  <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="icon" type="image/png" href="assets/logo-192.png">
+  <link rel="apple-touch-icon" href="assets/logo-192.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block" rel="stylesheet">
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- تحميل مسبق للصفحات التي سينتقل لها المستخدم غالباً -->
+  <link rel="prefetch" href="scan.html">
+  <link rel="prefetch" href="css/scan.css" as="style">
+  <link rel="prefetch" href="js/scan.js" as="script">
+  <link rel="prefetch" href="members.html">
+  <link rel="prefetch" href="css/members.css" as="style">
+  <link rel="prefetch" href="js/members.js" as="script">
+  <link rel="prefetch" href="log.html">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght@20..24,400..700&icon_names=arrow_back,arrow_forward,badge,calendar_month,calendar_today,check,check_circle,description,download,error,event_busy,family_restroom,flashlight_off,flashlight_on,graphic_eq,groups,history,hourglass_top,how_to_reg,info,key,lock,military_tech,music_note,person,person_add,person_off,person_search,photo_camera,print,qr_code_2,qr_code_scanner,refresh,schedule,search,videocam_off,visibility,visibility_off,warning&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/home.css">
@@ -31,7 +44,7 @@
         <span class="brand-logo-wrap">
           <img
             class="brand-logo"
-            src="assets/logo.png"
+            src="assets/logo-256.webp"
             alt=""
             width="44"
             height="44"
@@ -184,11 +197,12 @@
 
 
 
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/home.js"></script>
+  <script defer src="js/config.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/ui.js"></script>
+  <script defer src="js/nav.js"></script>
+  <script defer src="js/home.js"></script>
 
+  <script defer src="js/pwa.js"></script>
 </body>
 </html>

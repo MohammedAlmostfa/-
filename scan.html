@@ -10,11 +10,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="js/tailwind-config.js"></script>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght@20..24,400..700&icon_names=arrow_back,arrow_forward,badge,calendar_month,calendar_today,check,check_circle,description,download,error,event_busy,family_restroom,flashlight_off,flashlight_on,graphic_eq,groups,history,hourglass_top,how_to_reg,info,key,lock,military_tech,music_note,person,person_add,person_off,person_search,photo_camera,print,qr_code_2,qr_code_scanner,refresh,schedule,search,videocam_off,visibility,visibility_off,warning&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/scan.css">
@@ -48,7 +49,7 @@
     </button>
   </header>
 
-  <main class="scan-container flex flex-col gap-5">
+  <main class="scan-container">
     <section class="scan-instruction">
       <p>
         وجّه الكاميرا نحو رمز QR الموجود على بطاقة العضو لتسجيل الحضور.
@@ -78,7 +79,7 @@
     >
       <span id="scanResultIcon" class="material-symbols-outlined scan-result-icon">info</span>
 
-      <div class="min-w-0 flex-1">
+      <div class="scan-result-body">
         <h2 id="scanResultTitle"></h2>
         <p id="scanResultMessage"></p>
         <p id="scanResultMember" class="scan-result-member"></p>
@@ -103,8 +104,8 @@
         من العضو وتطبيق قواعد الحضور.
       </p>
 
-      <form id="manualEntryForm" class="flex flex-col gap-3">
-        <label for="memberIdInput" class="text-sm font-bold text-[#544243]">
+      <form id="manualEntryForm" class="manual-form">
+        <label for="memberIdInput" class="manual-label">
           رقم العضو
         </label>
 
@@ -138,14 +139,11 @@
     </p>
   </main>
 
-
-
-  <script src="https://unpkg.com/html5-qrcode"></script>
-
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/scan.js"></script>
+  <script defer src="js/config.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/ui.js"></script>
+  <script defer src="js/nav.js"></script>
+  <script defer src="js/scan.js"></script>
+  <script defer src="js/pwa.js"></script>
 </body>
 </html>
