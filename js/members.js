@@ -358,13 +358,6 @@ document.getElementById("retryBtn").addEventListener(
   loadMembers
 );
 
-document.getElementById("backButton").addEventListener(
-  "click",
-  function () {
-    window.location.href = APP_PAGES.home || "home.html";
-  }
-);
-
 const headerLogo = document.getElementById("headerLogo");
 const logoFallback = document.getElementById("logoFallback");
 

@@ -182,10 +182,6 @@ addMemberForm.addEventListener("submit", async function (event) {
   }
 });
 
-document.getElementById("backButton").addEventListener("click", function () {
-  window.location.href = "members.html";
-});
-
 if (typeof guard === "function") {
   guard(["owner"]);
 }
