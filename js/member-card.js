@@ -112,12 +112,6 @@ function renderMember(member) {
     "الاسم الثلاثي"
   ]);
 
-  const motherName = firstValue(member, [
-    "motherName",
-    "mother",
-    "اسم الأم"
-  ]);
-
   const instrument = firstValue(member, [
     "instrument",
     "الآلة"
@@ -141,7 +135,6 @@ function renderMember(member) {
 
   setText("memberId", id);
   setText("memberInstrument", normalizeInstrument(instrument));
-  setText("memberMother", motherName);
 
   const normalizedStatus = normalizeStatus(status);
   const statusElement = document.getElementById("memberStatus");
