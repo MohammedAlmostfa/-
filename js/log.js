@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const totalCount = document.getElementById("total-count");
   const presentCount = document.getElementById("present-count");
-  const excusedCount = document.getElementById("excused-count");
-  const lateCount = document.getElementById("late-count");
   const recordsDescription = document.getElementById("records-description");
 
   let requestNumber = 0;
@@ -96,14 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return String(value ?? "").trim();
   }
 
-  function getRecordStatus(record) {
-    return normalizeText(
-      record.status ??
-      record.attendanceStatus ??
-      record.state
-    );
-  }
-
   function getRecordTime(record) {
     return normalizeText(
       record.time ??
@@ -127,61 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ) || "—";
   }
 
-  function isExcused(record) {
-    const status = getRecordStatus(record);
-    const time = getRecordTime(record);
-
-    return status.includes("معذور") ||
-      status.includes("عذر") ||
-      time.includes("معذور");
-  }
-
-  function isLate(record) {
-    const status = getRecordStatus(record);
-
-    return status.includes("متأخر") ||
-      status.toLowerCase().includes("late");
-  }
-
-  function isPresent(record) {
-    const status = getRecordStatus(record);
-
-    return status.includes("حاضر") ||
-      status.includes("متأخر") ||
-      status.toLowerCase().includes("present") ||
-      status.toLowerCase().includes("late");
-  }
-
-  function getStatusPresentation(record) {
-    const status = getRecordStatus(record);
-
-    if (isExcused(record)) {
-      return {
-        label: "معذور",
-        className: "excused"
-      };
-    }
-
-    if (isLate(record)) {
-      return {
-        label: "متأخر",
-        className: "late"
-      };
-    }
-
-    if (isPresent(record)) {
-      return {
-        label: status || "حاضر",
-        className: "present"
-      };
-    }
-
-    return {
-      label: status || "غير محدد",
-      className: "unknown"
-    };
-  }
-
   function createCell(text, className = "") {
     const cell = document.createElement("td");
     cell.textContent = text;
@@ -198,8 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     records.forEach(function (record, index) {
       const row = document.createElement("tr");
-      const presentation = getStatusPresentation(record);
-
       row.appendChild(createCell(String(index + 1)));
       row.appendChild(createCell(getRecordId(record), "member-id"));
       row.appendChild(createCell(getRecordName(record), "member-name"));
@@ -208,8 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const statusCell = document.createElement("td");
       const statusPill = document.createElement("span");
 
-      statusPill.className = "status-pill " + presentation.className;
-      statusPill.textContent = presentation.label;
+      statusPill.className = "status-pill present";
+      statusPill.textContent = "حاضر";
 
       statusCell.appendChild(statusPill);
       row.appendChild(statusCell);
@@ -224,15 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     totalCount.textContent = String(records.length);
 
-    const present = records.filter(isPresent).length;
-    const excused = records.filter(isExcused).length;
-    const late = records.filter(function (record) {
-      return isLate(record) && !isExcused(record);
-    }).length;
-
+    const present = records.length;
     presentCount.textContent = String(present);
-    excusedCount.textContent = String(excused);
-    lateCount.textContent = String(late);
 
     recordsDescription.textContent = hasRecords
       ? "عدد التسجيلات: " + records.length

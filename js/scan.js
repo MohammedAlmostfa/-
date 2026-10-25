@@ -95,7 +95,7 @@
    */
   const SUCCESS_CODES = [
     "ok", "success", "recorded", "registered", "present",
-    "checkedin", "checked_in", "attended"
+    "checkedin", "checked_in", "attended", "ontime"
   ];
 
   const DUPLICATE_CODES = [
@@ -106,8 +106,6 @@
   const NOT_FOUND_CODES = ["notfound", "not_found", "missing", "unknown"];
 
   const BLOCKED_CODES = [
-    "late", "latenoexcuse", "late_no_excuse", "lateblocked", "late_blocked",
-    "needsexcuse", "needs_excuse", "excuserequired", "excuse_required",
     "blocked", "denied", "rejected", "forbidden"
   ];
 
@@ -149,10 +147,10 @@
       info = {
         code: "blocked",
         type: "warning",
-        title: "لم يُسجَّل الحضور بالمسح",
+        title: "تعذّر تسجيل الحضور",
         message:
           serverMessage ||
-          "العضو متأخر ولا يوجد له عذر مسجّل. يسجّله المسؤول يدوياً."
+          "تعذّر تسجيل الحضور بهذه الطريقة."
       };
     } else {
       // حالة غير متوقعة: لا نُخفيها.

@@ -21,8 +21,7 @@ const APP_CONFIG = Object.freeze({
     MEMBERS: "Members",
     ATTENDANCE: "Attendance",
     SETTINGS: "Settings",
-    LOG: "Log",
-    EXCUSES: "Excuses"
+    LOG: "Log"
   },
   HEADERS: {
     Members: [
@@ -36,8 +35,7 @@ const APP_CONFIG = Object.freeze({
     ],
     Attendance: ["ID", "الاسم"],
     Settings: ["المفتاح", "القيمة"],
-    Log: ["الوقت", "ID", "الاسم", "الحالة", "المصدر"],
-    Excuses: ["ID", "الاسم", "التاريخ", "السبب", "وقت التقديم"]
+    Log: ["الوقت", "ID", "الاسم", "الحالة", "المصدر"]
   },
   DEFAULT_SETTINGS: [
     ["وقت بداية الجلسة", "08:00"],
@@ -84,8 +82,7 @@ const OBSERVER_ACTIONS_ = Object.freeze([
   "sessionInfo",
   "scan",
   "manualCheckIn",
-  "logout",
-  "submitExcuse"
+  "logout"
 ]);
 
 // ذاكرة مؤقتة لتنفيذ واحد فقط (تُصفَّر مع كل طلب جديد)
@@ -161,12 +158,9 @@ function setupHadir() {
 
   const membersSheet = ss.getSheetByName(APP_CONFIG.SHEETS.MEMBERS);
   const attendanceSheet = ss.getSheetByName(APP_CONFIG.SHEETS.ATTENDANCE);
-  const excusesSheet = ss.getSheetByName(APP_CONFIG.SHEETS.EXCUSES);
-
   membersSheet.getRange("A:A").setNumberFormat("@");
   attendanceSheet.getRange("A:B").setNumberFormat("@");
   attendanceSheet.getRange("C:ZZ").setNumberFormat("@");
-  excusesSheet.getRange("A:C").setNumberFormat("@");
   settingsSheet.getRange("A:B").setNumberFormat("@");
 
   SpreadsheetApp.flush();
@@ -394,10 +388,6 @@ function routeAction_(action, token, data) {
     );
   }
 
-  if (action === "submitExcuse") {
-    return submitExcuse_(data);
-  }
-
   if (action === "sessionInfo") {
     return sessionInfo_();
   }
@@ -444,14 +434,6 @@ function routeAction_(action, token, data) {
 
   if (action === "manualCheckIn") {
     return manualCheckIn_(data);
-  }
-
-  if (action === "pendingLate") {
-    return pendingLate_();
-  }
-
-  if (action === "excusesList") {
-    return excusesList_(data);
   }
 
   if (action === "logList") {
@@ -777,7 +759,7 @@ function updateMember_(data) {
 
 /**
  * حذف العضو من قائمة Members فقط.
- * نحتفظ بسجلات Attendance وExcuses وLog للمحافظة على السجل التاريخي.
+ * نحتفظ بسجلات Attendance وLog للمحافظة على السجل التاريخي.
  * صلاحية owner مفروضة من routeAction_ قبل الوصول إلى هذه الدالة.
  */
 function deleteMember_(data) {
@@ -850,45 +832,16 @@ function getMember_(data) {
   const found = readAttendanceRow_(id, lastColumn);
 
   let attendanceRow = [];
-  let backgrounds = [];
-
   if (found) {
     attendanceRow = found.values;
-    backgrounds = attendance
-      .getRange(found.row, 1, 1, lastColumn)
-      .getBackgrounds()[0];
   }
 
   const headers = attendance
     .getRange(1, 1, 1, lastColumn)
     .getDisplayValues()[0];
 
-  // قراءة واحدة لورقة الأعذار تكفي للتواريخ وللقائمة
-  const excuseDates = {};
-  const excuses = [];
-
-  getExcuseRows_().forEach(function (row) {
-    if (row[0] === id) {
-      excuseDates[row[2]] = true;
-      excuses.push({
-        id: row[0],
-        name: row[1],
-        date: row[2],
-        reason: row[3],
-        submittedAt: row[4]
-      });
-    }
-  });
-
-  excuses.sort(function (a, b) {
-    return b.date.localeCompare(a.date);
-  });
-
   const history = [];
   let present = 0;
-  let excusedLate = 0;
-  let unexcusedLate = 0;
-  let absentExcused = 0;
   let absent = 0;
 
   for (let column = 2; column < headers.length; column++) {
@@ -903,24 +856,12 @@ function getMember_(data) {
     }
 
     const value = String(attendanceRow[column] || "").trim();
-    const background = String(backgrounds[column] || "").toLowerCase();
-    let status = "";
-    let time = value;
+    const status = value ? "حاضر" : "غائب";
+    const time = value;
 
-    if (value && value.indexOf("(معذور)") !== -1) {
-      status = "متأخر بعذر";
-      excusedLate++;
-    } else if (value && isRedBackground_(background)) {
-      status = "متأخر بدون عذر";
-      unexcusedLate++;
-    } else if (value) {
-      status = "حاضر";
+    if (value) {
       present++;
-    } else if (excuseDates[date]) {
-      status = "غائب بعذر";
-      absentExcused++;
     } else {
-      status = "غائب";
       absent++;
     }
 
@@ -935,22 +876,17 @@ function getMember_(data) {
     return b.date.localeCompare(a.date);
   });
 
-  const total = present + excusedLate + unexcusedLate +
-    absentExcused + absent;
+  const total = present + absent;
 
   return {
     member: member,
     history: history,
-    excuses: excuses,
     statistics: {
       present: present,
-      excusedLate: excusedLate,
-      unexcusedLate: unexcusedLate,
-      absentExcused: absentExcused,
       absent: absent,
       total: total,
       attendancePercentage: total
-        ? Math.round(((present + excusedLate + unexcusedLate) / total) * 100)
+        ? Math.round((present / total) * 100)
         : 0
     }
   };
@@ -996,9 +932,6 @@ function scanMember_(data) {
       .setValue(member.fullName);
   }
 
-  const timing = getTiming_();
-  const lateMinutes = Math.max(0, currentMinutes_() - timing.startMinutes);
-
   // ما لم يوجد (صف أو عمود) يُنشأ داخل القفل في registerAttendance_
   const ctx = {
     member: member,
@@ -1006,43 +939,13 @@ function scanMember_(data) {
     column: column
   };
 
-  if (lateMinutes > 0) {
-    if (hasExcuse_(member.id, today_())) {
-      registerAttendance_(member.id, "excused", "مسح", ctx);
-
-      return {
-        status: "autoExcused",
-        name: member.fullName,
-        instrument: member.instrument,
-        time: currentTime_(),
-        lateMinutes: lateMinutes
-      };
-    }
-
-    appendLog_(
-      member.id,
-      member.fullName,
-      "مرفوض (متأخر بدون عذر)",
-      "مسح"
-    );
-
-    return {
-      status: "rejectedLate",
-      name: member.fullName,
-      instrument: member.instrument,
-      time: currentTime_(),
-      lateMinutes: lateMinutes
-    };
-  }
-
-  registerAttendance_(member.id, "ontime", "مسح", ctx);
+  registerAttendance_(member.id, "مسح", ctx);
 
   return {
     status: "ok",
     name: member.fullName,
     instrument: member.instrument,
-    time: currentTime_(),
-    lateMinutes: 0
+    time: currentTime_()
   };
 }
 
@@ -1061,24 +964,22 @@ function manualCheckIn_(data) {
 
   const member = record.member;
 
-  // تسجيل الحضور مباشرة دون التحقق من الوقت أو الأعذار.
-  registerAttendance_(member.id, "ontime", "يدوي", { member: member });
+  registerAttendance_(member.id, "يدوي", { member: member });
 
   return {
     id: member.id,
     name: member.fullName,
-    status: "ontime",
+    status: "ok",
     time: currentTime_()
   };
 }
 
 /**
  * نقطة تسجيل الحضور المشتركة.
- * status: ontime | excused | late
  * ctx (اختياري، داخلي): { member, attendanceRow, column }
  * عند غيابه تعمل الدالة كما كانت تمامًا.
  */
-function registerAttendance_(id, status, source, ctx) {
+function registerAttendance_(id, source, ctx) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
 
@@ -1113,27 +1014,11 @@ function registerAttendance_(id, status, source, ctx) {
 
     value = currentTime_();
 
-    if (status === "excused") {
-      value += " (معذور)";
-    }
-
     cell.setNumberFormat("@");
     cell.setValue(value);
-
-    if (status === "late") {
-      cell.setBackground("#C62828");
-      cell.setFontColor("#FFFFFF");
-    } else {
-      cell.setBackground(null);
-      cell.setFontColor(null);
-    }
-
-    logStatus =
-      status === "excused"
-        ? "متأخر بعذر"
-        : status === "late"
-          ? "متأخر بدون عذر"
-          : "حاضر";
+    cell.setBackground(null);
+    cell.setFontColor(null);
+    logStatus = "حاضر";
   } finally {
     lock.releaseLock();
   }
@@ -1148,26 +1033,6 @@ function registerAttendance_(id, status, source, ctx) {
     time: value
   };
 }
-
-/* =====================================================
-   6 + 7. الدوال الأربع غير الموجودة في النسخة التي أُرسلت
-   =====================================================
-   الصق هنا من ملفك القديم، كما هي بدون أي تعديل:
-
-     function submitExcuse_(data) { ... }
-     function pendingLate_() { ... }
-     function excusesList_(data) { ... }
-     function logList_(data) { ... }
-
-   (getSummary_ موجودة أدناه.)
-
-   إذا نسيتها: الملف يُحفظ بدون خطأ، لكن الـ actions التالية تفشل:
-   submitExcuse, pendingLate, excusesList, logList.
-
-   تلميح: إذا كتبت submitExcuse_ في ورقة Excuses مباشرة (appendRow)
-   أضف بعدها السطر التالي ليظهر العذر في لوحة المتابعة فورًا:
-       invalidateSummary_();
-   ===================================================== */
 
 /* =====================================================
    8. دوال مساعدة للأعضاء والحضور
@@ -1414,40 +1279,6 @@ function nextMemberId_() {
   return "M" + String(largest + 1).padStart(3, "0");
 }
 
-function getActiveMembers_() {
-  return listMembers_().members.filter(function (member) {
-    return member.status === "فعّال";
-  });
-}
-
-/**
- * صفوف ورقة الأعذار بدون العنوان (A:E) بقراءة واحدة.
- */
-function getExcuseRows_() {
-  const sheet = getSheet_(APP_CONFIG.SHEETS.EXCUSES);
-  const lastRow = sheet.getLastRow();
-
-  if (lastRow < 2) return [];
-
-  return sheet.getRange(2, 1, lastRow - 1, 5).getDisplayValues();
-}
-
-function getExcuseDatesForMember_(id) {
-  const result = {};
-
-  getExcuseRows_().forEach(function (row) {
-    if (row[0] === id) result[row[2]] = true;
-  });
-
-  return result;
-}
-
-function hasExcuse_(id, date) {
-  return getExcuseRows_().some(function (row) {
-    return row[0] === id && row[2] === date;
-  });
-}
-
 function appendLog_(id, name, status, source) {
   getSheet_(APP_CONFIG.SHEETS.LOG).appendRow([
     currentDateTime_(),
@@ -1459,27 +1290,6 @@ function appendLog_(id, name, status, source) {
 
   // أي سطر جديد في Log قد يغيّر أرقام لوحة المتابعة
   invalidateSummary_();
-}
-
-function getTiming_() {
-  const startTime = getSessionSettings_().startTime;
-  const parts = startTime.split(":");
-
-  return {
-    startTime: startTime,
-    startMinutes: Number(parts[0]) * 60 + Number(parts[1])
-  };
-}
-
-function currentMinutes_() {
-  const parts = currentTime_().split(":");
-  return Number(parts[0]) * 60 + Number(parts[1]);
-}
-
-function isRedBackground_(background) {
-  return background === "#c62828" ||
-    background === "#ff0000" ||
-    background === "#f00";
 }
 
 /* =====================================================
@@ -1752,7 +1562,6 @@ function readAttendanceByDate_(date) {
   const idNameValues = sheet.getRange(2, 1, rowCount, 2).getDisplayValues();
   const dateRange = sheet.getRange(2, dateColumnIndex + 1, rowCount, 1);
   const dateValues = dateRange.getDisplayValues();
-  const dateBackgrounds = dateRange.getBackgrounds();
 
   const records = [];
 
@@ -1765,21 +1574,6 @@ function readAttendanceByDate_(date) {
       continue;
     }
 
-    const background = String(dateBackgrounds[i][0] || "").toLowerCase();
-
-    const isExcused = attendanceValue.indexOf("معذور") !== -1;
-    const isLateWithoutExcuse = !isExcused && isRedBackground_(background);
-
-    let status;
-
-    if (isExcused) {
-      status = "متأخر بعذر";
-    } else if (isLateWithoutExcuse) {
-      status = "متأخر بدون عذر";
-    } else {
-      status = "حاضر";
-    }
-
     const timeMatch = attendanceValue.match(/([01]?\d|2[0-3]):[0-5]\d/);
     const time = timeMatch ? timeMatch[0] : attendanceValue;
 
@@ -1787,7 +1581,7 @@ function readAttendanceByDate_(date) {
       id: memberId,
       fullName: fullName,
       time: time,
-      status: status
+      status: "حاضر"
     });
   }
 
@@ -1832,49 +1626,23 @@ function getSummary_() {
 function computeSummary_() {
   const date = today_();
 
-  // سجلات اليوم (الحالات: حاضر / متأخر بعذر / متأخر بدون عذر)
+  // كل تسجيل في Attendance يُحتسب حضورًا بغض النظر عن حالة العضوية أو الوقت.
   const attendance = getAttendanceByDate_({ date: date });
-  const activeMembers = getActiveMembers_();
+  const members = listMembers_().members;
+  const memberIds = {};
 
-  const activeIds = {};
-  activeMembers.forEach(function (member) {
-    activeIds[member.id] = true;
+  members.forEach(function (member) {
+    memberIds[member.id] = true;
   });
 
-  // نحسب فقط الأعضاء الفعّالين حتى يبقى: حاضر + متأخر + غائب = إجمالي الفعّالين
   const records = attendance.records.filter(function (record) {
-    return activeIds[record.id];
+    return memberIds[record.id];
   });
-
-  let present = 0;
-  let late = 0;
-
-  records.forEach(function (record) {
-    if (record.status === "حاضر") {
-      present++;
-    } else {
-      late++;
-    }
-  });
-
-  const absent = Math.max(0, activeMembers.length - records.length);
-
-  const excusesCount = getExcuseRows_().filter(function (row) {
-    return row[2] === date;
-  }).length;
-
-  const attendedIds = {};
-  attendance.records.forEach(function (record) {
-    attendedIds[record.id] = true;
-  });
-
-  const pendingLateCount = countPendingLate_(date, attendedIds);
-
-  // ورقة الأعذار ليس فيها عمود حالة (مقبول/معلّق)، لذلك لا يوجد أعذار معلّقة
-  const pendingExcusesCount = 0;
+  const present = records.length;
+  const absent = Math.max(0, members.length - present);
 
   // آخر 5 تسجيلات (الأحدث أولًا؛ عند تساوي الدقيقة يُعتمد ترتيب الصف)
-  const recentCheckIns = attendance.records
+  const recentCheckIns = records
     .map(function (record, index) {
       return { record: record, index: index };
     })
@@ -1894,51 +1662,9 @@ function computeSummary_() {
 
   return {
     date: date,
-    total: activeMembers.length,
+    total: members.length,
     present: present,
-    late: late,
     absent: absent,
-    excusesCount: excusesCount,
-    pendingLateCount: pendingLateCount,
-    pendingExcusesCount: pendingExcusesCount,
-    pendingCount: pendingLateCount + pendingExcusesCount,
     recentCheckIns: recentCheckIns
   };
-}
-
-/**
- * عدد الأعضاء الذين رُفض مسحهم اليوم (متأخر بدون عذر) ولم يُسجَّل حضورهم بعدها.
- * يقرأ آخر 300 صف من Log فقط للحفاظ على السرعة.
- */
-function countPendingLate_(date, attendedIds) {
-  const sheet = getSheet_(APP_CONFIG.SHEETS.LOG);
-  const lastRow = sheet.getLastRow();
-
-  if (lastRow < 2) return 0;
-
-  const startRow = Math.max(2, lastRow - 299);
-  const rows = sheet
-    .getRange(startRow, 1, lastRow - startRow + 1, 4)
-    .getValues();
-
-  const pending = {};
-
-  rows.forEach(function (row) {
-    // عمود الوقت قد يتحول إلى Date تلقائيًا في Sheets
-    const stamp = row[0] instanceof Date
-      ? Utilities.formatDate(row[0], APP_CONFIG.TIME_ZONE, "yyyy-MM-dd")
-      : String(row[0]).slice(0, 10);
-
-    const id = String(row[1]).trim();
-
-    if (
-      stamp === date &&
-      String(row[3]).trim() === "مرفوض (متأخر بدون عذر)" &&
-      !attendedIds[id]
-    ) {
-      pending[id] = true;
-    }
-  });
-
-  return Object.keys(pending).length;
 }

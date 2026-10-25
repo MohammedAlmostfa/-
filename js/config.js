@@ -1,7 +1,7 @@
 
 "use strict";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyu1_DO73fafb3Fhf4aPNIMeWX9I4ip8Mp3EFK7rQGfP-Sc8PFSTSYH9L08ouUhMsZokQ/exec"
+const API_URL ="https://script.google.com/macros/s/AKfycbzJAsNL3gGsGjl_yifpBWgzwp1Xg68J9wlqFPBmD5d9sJW12so3_D5-Yu3wT9Mn7bsu/exec"
 
 const APP_NAME = "حاضر";
 const APP_VERSION = "1.0.0";
@@ -15,10 +15,7 @@ const APP_PAGES = Object.freeze({
   memberCard: "member-card.html",
   members: "members.html",
   member: "member.html",
-  excuses: "excuses.html",
-  pending: "pending.html",
-  log: "log.html",
-  excuse: "excuse.html"
+  log: "log.html"
 });
 
 const APP_ROLES = Object.freeze({

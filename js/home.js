@@ -10,9 +10,7 @@
     refreshButton: $("refresh-button"),
 
     present: $("stat-present"),
-    late: $("stat-late"),
     absent: $("stat-absent"),
-    excuses: $("stat-excuses"),
 
   };
 
@@ -103,15 +101,6 @@
     );
 
     setNumber(
-      elements.late,
-      getFirstValue(summary, [
-        "late",
-        "lateCount",
-        "متأخرون"
-      ])
-    );
-
-    setNumber(
       elements.absent,
       getFirstValue(summary, [
         "absent",
@@ -120,15 +109,6 @@
       ])
     );
 
-    setNumber(
-      elements.excuses,
-      getFirstValue(summary, [
-        "excusesCount",
-        "todayExcuses",
-        "excuses",
-        "عدد_الأعذار"
-      ])
-    );
   }
 
   async function loadDashboard() {

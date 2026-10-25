@@ -401,7 +401,7 @@ body.hadir-home {
    ========================================================= */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -445,9 +445,7 @@ body.hadir-home {
 }
 
 .stat-present { --tone: var(--home-green);  --tone-soft: var(--home-green-soft); }
-.stat-late    { --tone: var(--home-orange); --tone-soft: var(--home-orange-soft); }
 .stat-absent  { --tone: var(--home-red);    --tone-soft: var(--home-red-soft); }
-.stat-excuses { --tone: var(--home-blue);   --tone-soft: var(--home-blue-soft); }
 
 .stat-icon {
   display: grid;

@@ -462,7 +462,7 @@
 
 .log-page .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 22px;
 }
@@ -496,14 +496,6 @@
   background: var(--log-green);
 }
 
-.log-page .excused-card::after {
-  background: #D4A23D;
-}
-
-.log-page .late-card::after {
-  background: var(--log-red);
-}
-
 .log-page .summary-label {
   color: var(--log-muted);
   font-size: 12px;
@@ -531,14 +523,6 @@
 
 .log-page .present-card strong {
   color: var(--log-green);
-}
-
-.log-page .excused-card strong {
-  color: #A87824;
-}
-
-.log-page .late-card strong {
-  color: var(--log-red);
 }
 
 /* ---------- Attendance Table Card ---------- */
@@ -683,18 +667,6 @@
   border-color: #D5EBDD;
   background: #EAF7EF;
   color: #26734D;
-}
-
-.log-page .status-pill.excused {
-  border-color: #F1E1BC;
-  background: #FFF4DF;
-  color: #93651D;
-}
-
-.log-page .status-pill.late {
-  border-color: #F1D8D1;
-  background: #FFF0EC;
-  color: #B94A3A;
 }
 
 .log-page .status-pill.unknown {

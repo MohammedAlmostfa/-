@@ -128,7 +128,6 @@
      */
     if (
       currentPage === "index.html" ||
-      currentPage === "excuse.html" ||
       !getSessionToken() ||
       !NAVIGATION_ITEMS[role]
     ) {
