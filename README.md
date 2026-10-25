@@ -1,8 +1,0 @@
-# حاضر
-
-نظام تسجيل حضور فرقة القديس جاورجيوس الموسيقية (HTML/CSS/JS + Google Apps Script).
-
-## ملاحظات الأداء
-- `sw.js` يخزّن الواجهة محلياً. إذا أضفت ملفات جديدة أضفها لقائمة `PRECACHE` وغيّر `CACHE_VERSION`.
-- `apiCached()` في `js/api.js` يعرض آخر بيانات محفوظة فوراً ثم يحدّثها.
-- `docs/apps-script-optimizations.gs` أمثلة كاش للخادم.

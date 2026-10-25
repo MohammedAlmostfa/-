@@ -3,8 +3,6 @@
 
 const API_URL ="https://script.google.com/macros/s/AKfycbx35ZK7TO5BN5M-_Fy8hFNP4io_bii6bmJlWa9YWPJdcS00tfbQEjLFOGPI3AyTmIXX/exec"
 
-const APP_NAME = "حاضر";
-const APP_VERSION = "1.0.0";
 const APP_TIME_ZONE = "Asia/Damascus";
 
 const APP_PAGES = Object.freeze({

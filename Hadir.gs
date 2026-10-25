@@ -528,6 +528,13 @@ function requireRole_(token, allowedRoles) {
     );
   }
 
+  if (!Array.isArray(allowedRoles) || allowedRoles.indexOf(role) === -1) {
+    throw publicError_(
+      "forbidden",
+      "هذه العملية غير مسموحة لهذا الحساب."
+    );
+  }
+
   return role;
 }
 
@@ -670,16 +677,16 @@ function addMember_(data) {
 
     sheet.appendRow([
       id,
-      fullName,
+      sheetTextValue_(fullName),
 
-      motherName,
+      sheetTextValue_(motherName),
       instrument,
       "فعّال",
       date
     ]);
 
     const attendanceSheet = getSheet_(APP_CONFIG.SHEETS.ATTENDANCE);
-    attendanceSheet.appendRow([id, fullName]);
+    attendanceSheet.appendRow([id, sheetTextValue_(fullName)]);
     addAttendanceRowToMap_(id, attendanceSheet.getLastRow());
 
     invalidateMembers_();
@@ -737,9 +744,9 @@ function updateMember_(data) {
   const sheet = getSheet_(APP_CONFIG.SHEETS.MEMBERS);
 
   sheet.getRange(rowNumber, 2, 1, 3).setValues([[
-    fullName,
+    sheetTextValue_(fullName),
 
-    motherName,
+    sheetTextValue_(motherName),
     instrument
   ]]);
 
@@ -747,7 +754,8 @@ function updateMember_(data) {
   const attendanceRow = findAttendanceRow_(id);
 
   if (attendanceRow) {
-    attendanceSheet.getRange(attendanceRow, 2).setValue(fullName);
+    attendanceSheet.getRange(attendanceRow, 2)
+      .setValue(sheetTextValue_(fullName));
   }
 
   invalidateMembers_();
@@ -1144,7 +1152,7 @@ function ensureAttendanceRow_(id, name) {
     if (String(found.values[1] || "") !== name) {
       getSheet_(APP_CONFIG.SHEETS.ATTENDANCE)
         .getRange(found.row, 2)
-        .setValue(name);
+        .setValue(sheetTextValue_(name));
     }
 
     return found.row;
@@ -1152,7 +1160,7 @@ function ensureAttendanceRow_(id, name) {
 
   const sheet = getSheet_(APP_CONFIG.SHEETS.ATTENDANCE);
 
-  sheet.appendRow([id, name]);
+  sheet.appendRow([id, sheetTextValue_(name)]);
 
   const row = sheet.getLastRow();
   addAttendanceRowToMap_(id, row);
@@ -1257,7 +1265,7 @@ function appendLog_(id, name, status, source) {
   getSheet_(APP_CONFIG.SHEETS.LOG).appendRow([
     currentDateTime_(),
     id,
-    name,
+    sheetTextValue_(name),
     status,
     source
   ]);
@@ -1359,7 +1367,7 @@ function setSetting_(key, value) {
       if (String(rows[i][0]).trim() === key) {
         const cell = sheet.getRange(i + 2, 2);
         cell.setNumberFormat("@");
-        cell.setValue(value);
+        cell.setValue(sheetTextValue_(value));
         written = true;
         break;
       }
@@ -1367,7 +1375,7 @@ function setSetting_(key, value) {
   }
 
   if (!written) {
-    sheet.appendRow([key, value]);
+    sheet.appendRow([key, sheetTextValue_(value)]);
   }
 
   RUNTIME_.settings = null;
@@ -1430,6 +1438,12 @@ function cleanText_(value, maxLength) {
     .replace(/[\u0000-\u001F\u007F]/g, "")
     .trim()
     .slice(0, maxLength || 200);
+}
+
+function sheetTextValue_(value) {
+  const text = String(value == null ? "" : value);
+
+  return /^[\s\uFEFF]*[=+\-@]/.test(text) ? "'" + text : text;
 }
 
 function normalizeArabic_(value) {

@@ -10,7 +10,7 @@
  * عند إضافة/حذف ملفات من قائمة PRECACHE غيّر رقم CACHE_VERSION.
  */
 
-const CACHE_VERSION = "v5";
+const CACHE_VERSION = "v6";
 const APP_CACHE = "hadir-app-" + CACHE_VERSION;
 const EXT_CACHE = "hadir-ext-" + CACHE_VERSION;
 
@@ -35,7 +35,6 @@ const PRECACHE = [
   "js/config.js",
   "js/api.js",
   "js/ui.js",
-  "js/nav.js",
   "js/pwa.js",
   "js/login.js",
   "js/home.js",
