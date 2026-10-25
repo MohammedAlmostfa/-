@@ -105,8 +105,6 @@
 
   const NOT_FOUND_CODES = ["notfound", "not_found", "missing", "unknown"];
 
-  const DISABLED_CODES = ["disabled", "inactive", "suspended"];
-
   const BLOCKED_CODES = [
     "late", "latenoexcuse", "late_no_excuse", "lateblocked", "late_blocked",
     "needsexcuse", "needs_excuse", "excuserequired", "excuse_required",
@@ -146,13 +144,6 @@
         type: "error",
         title: "العضو غير موجود",
         message: serverMessage || "لم يتم العثور على عضو مطابق لرقم العضو أو رمز QR."
-      };
-    } else if (DISABLED_CODES.includes(code)) {
-      info = {
-        code: "disabled",
-        type: "error",
-        title: "العضوية معطّلة",
-        message: serverMessage || "لا يمكن تسجيل حضور هذا العضو لأن عضويته معطّلة."
       };
     } else if (BLOCKED_CODES.includes(code)) {
       info = {

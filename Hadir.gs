@@ -970,14 +970,6 @@ function scanMember_(data) {
 
   const member = record.member;
 
-  if (member.status !== "فعّال") {
-    return {
-      status: "disabled",
-      name: member.fullName,
-      instrument: member.instrument
-    };
-  }
-
   // قراءتان فقط من الورقة في المسار المعتاد:
   // 1) ترويسة عمود اليوم (للتحقق من الكاش)  2) صف العضو حتى عمود اليوم
   //    (يتحقق من رقم العضو ويكشف التكرار في نفس القراءة).
@@ -1069,10 +1061,6 @@ function manualCheckIn_(data) {
 
   const member = record.member;
 
-  if (member.status !== "فعّال") {
-    throw publicError_("invalid", "لا يمكن تسجيل حضور عضو معطّل.");
-  }
-
   // تسجيل الحضور مباشرة دون التحقق من الوقت أو الأعذار.
   registerAttendance_(member.id, "ontime", "يدوي", { member: member });
 
@@ -1110,10 +1098,6 @@ function registerAttendance_(id, status, source, ctx) {
       }
 
       member = record.member;
-
-      if (member.status !== "فعّال") {
-        throw publicError_("invalid", "لا يمكن تسجيل حضور عضو معطّل.");
-      }
     }
 
     const attendanceRow =
