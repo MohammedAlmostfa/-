@@ -196,10 +196,6 @@
 
   // نفس الرمز لا يُعاد إرساله خلال هذه المدة بعد انتهاء المعالجة.
   const SAME_CODE_COOLDOWN_MS = 6000;
-  // مدة حماية رسالة النجاح من أن تستبدلها رسالة "مسجل مسبقاً" لنفس العضو.
-  const SUCCESS_GUARD_MS = 20000;
-  let lastSuccess = { id: "", at: 0 };
-
   async function registerScannedMember(decodedText) {
     if (isProcessing) {
       return;
@@ -244,7 +240,7 @@
       );
 
       const result = await api(
-        "scan",
+        "checkIn",
         { id: memberId },
         { timeoutMs: 25000 }
       );
@@ -252,22 +248,7 @@
 
       const display = normalizeScanResponse(result || {});
 
-      // أثناء بقاء البطاقة أمام الكاميرا قد يصل رد "مسجل مسبقاً" بعد النجاح؛
-      // لا نسمح له بمحو رسالة النجاح.
-      if (
-        display.code === "duplicate" &&
-        lastSuccess.id === memberId &&
-        Date.now() - lastSuccess.at < SUCCESS_GUARD_MS
-      ) {
-        setCameraStatus("جاهز لمسح الرمز التالي", "success");
-        return;
-      }
-
       displayScanResult(result);
-
-      if (display.code === "success") {
-        lastSuccess = { id: memberId, at: Date.now() };
-      }
 
       setCameraStatus(
         "جاهز لمسح الرمز التالي",
@@ -586,7 +567,7 @@
     );
 
     try {
-      const result = await api("manualCheckIn", {
+      const result = await api("checkIn", {
         id: memberId
       });
       clearApiCache("summary");

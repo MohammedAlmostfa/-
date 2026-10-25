@@ -77,10 +77,11 @@ const PERF_ = Object.freeze({
   ENFORCE_ROLES: true
 });
 
-// العمليات المسموحة للمراقب (مطابقة لما تستعمله صفحة المسح)
+// العمليات المسموحة للمراقب (تسجيل الحضور وإدارة الجلسة)
 const OBSERVER_ACTIONS_ = Object.freeze([
   "sessionInfo",
   "scan",
+  "checkIn",
   "manualCheckIn",
   "logout"
 ]);
@@ -302,14 +303,17 @@ function prefetchForAction_(action, token) {
 
   const keys = ["session_" + token];
 
-  if (action === "scan" || action === "manualCheckIn") {
+  if (
+    action === "checkIn" ||
+    action === "scan" ||
+    action === "manualCheckIn"
+  ) {
     keys.push(
       PERF_.MEMBERS_KEY,
       PERF_.ATT_ROWS_KEY,
       PERF_.ATT_COL_KEY + today_()
     );
 
-    if (action === "scan") keys.push(PERF_.SESSION_CACHE_KEY);
   } else if (action === "listMembers") {
     keys.push(PERF_.MEMBERS_KEY);
   } else if (action === "getMember") {
@@ -394,6 +398,10 @@ function routeAction_(action, token, data) {
 
   if (action === "setSession") {
     return setSession_(data);
+  }
+
+  if (action === "checkIn") {
+    return checkInMember_(data, "تسجيل");
   }
 
   if (action === "scan") {
@@ -897,59 +905,14 @@ function getMember_(data) {
    ===================================================== */
 
 function scanMember_(data) {
-  const id = cleanText_(data.id, 20);
-  const record = getMemberRecord_(id);
-
-  if (!record) {
-    return { status: "notFound" };
-  }
-
-  const member = record.member;
-
-  // قراءتان فقط من الورقة في المسار المعتاد:
-  // 1) ترويسة عمود اليوم (للتحقق من الكاش)  2) صف العضو حتى عمود اليوم
-  //    (يتحقق من رقم العضو ويكشف التكرار في نفس القراءة).
-  // column = 0 يعني أن عمود اليوم لم يُنشأ بعد، فلا يمكن أن يكون هناك تكرار.
-  const column = getTodayColumn_();
-  const found = readAttendanceRow_(member.id, column || 2);
-  const existing = found && column
-    ? String(found.values[column - 1] || "").trim()
-    : "";
-
-  if (existing) {
-    return {
-      status: "duplicate",
-      name: member.fullName,
-      instrument: member.instrument,
-      time: existing
-    };
-  }
-
-  // مزامنة الاسم عند اختلافه فقط
-  if (found && String(found.values[1] || "") !== member.fullName) {
-    getSheet_(APP_CONFIG.SHEETS.ATTENDANCE)
-      .getRange(found.row, 2)
-      .setValue(member.fullName);
-  }
-
-  // ما لم يوجد (صف أو عمود) يُنشأ داخل القفل في registerAttendance_
-  const ctx = {
-    member: member,
-    attendanceRow: found ? found.row : 0,
-    column: column
-  };
-
-  registerAttendance_(member.id, "مسح", ctx);
-
-  return {
-    status: "ok",
-    name: member.fullName,
-    instrument: member.instrument,
-    time: currentTime_()
-  };
+  return checkInMember_(data, "مسح");
 }
 
 function manualCheckIn_(data) {
+  return checkInMember_(data, "يدوي");
+}
+
+function checkInMember_(data, source) {
   const id = cleanText_(data.id, 20);
 
   if (!id) {
@@ -964,13 +927,17 @@ function manualCheckIn_(data) {
 
   const member = record.member;
 
-  registerAttendance_(member.id, "يدوي", { member: member });
+  const result = registerAttendance_(
+    member.id,
+    source,
+    { member: member }
+  );
 
   return {
     id: member.id,
     name: member.fullName,
-    status: "ok",
-    time: currentTime_()
+    status: result.status === "duplicate" ? "duplicate" : "ok",
+    time: result.time
   };
 }
 
@@ -1007,9 +974,16 @@ function registerAttendance_(id, source, ctx) {
     const sheet = getSheet_(APP_CONFIG.SHEETS.ATTENDANCE);
     const cell = sheet.getRange(attendanceRow, column);
 
-    // يبقى هذا الفحص داخل القفل لمنع التسجيل المزدوج عند المسح المتزامن
-    if (String(cell.getDisplayValue() || "").trim()) {
-      throw publicError_("invalid", "تم تسجيل حضور هذا العضو مسبقًا.");
+    // يمنع التسجيل المزدوج حتى عند وصول طلبين متزامنين.
+    const existing = String(cell.getDisplayValue() || "").trim();
+
+    if (existing) {
+      return {
+        id: id,
+        name: member.fullName,
+        status: "duplicate",
+        time: existing
+      };
     }
 
     value = currentTime_();
