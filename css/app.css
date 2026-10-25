@@ -23,6 +23,7 @@
   --shadow-card:
     0 10px 24px -6px rgba(122, 46, 53, 0.06),
     0 4px 8px -2px rgba(30, 27, 24, 0.03);
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
 }
 
 *,
@@ -39,7 +40,10 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   font-family: "Cairo", sans-serif;
   color: var(--color-text);
@@ -228,6 +232,29 @@ textarea:focus-visible {
 
 .text-warning {
   color: var(--color-warning);
+}
+
+/* تذييل موحد ورابط فريق التطوير */
+.site-footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  color: #FFFFFF;
+  background: var(--color-primary);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.site-footer a {
+  color: #F1D998;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer a:hover {
+  color: #FFFFFF;
 }
 
 /* مساحة آمنة أسفل المحتوى عند وجود التنقل السفلي */

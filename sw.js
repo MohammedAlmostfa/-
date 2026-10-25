@@ -10,7 +10,7 @@
  * عند إضافة/حذف ملفات من قائمة PRECACHE غيّر رقم CACHE_VERSION.
  */
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v4";
 const APP_CACHE = "hadir-app-" + CACHE_VERSION;
 const EXT_CACHE = "hadir-ext-" + CACHE_VERSION;
 

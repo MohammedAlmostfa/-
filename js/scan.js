@@ -88,44 +88,105 @@
     elements.resultMember.textContent = "";
   }
 
+  /*
+   * تحويل رد الخادم إلى شكل يعرضه الماسح.
+   * أي حالة غير معروفة لم تعد تُعرض كـ "نتيجة التسجيل" الغامضة؛
+   * نعرض رسالة الخادم نفسها مع رمز الحالة لتسهيل معرفة السبب.
+   */
+  const SUCCESS_CODES = [
+    "ok", "success", "recorded", "registered", "present",
+    "checkedin", "checked_in", "attended"
+  ];
+
+  const DUPLICATE_CODES = [
+    "duplicate", "already", "alreadyrecorded", "already_recorded",
+    "alreadyregistered", "already_registered"
+  ];
+
+  const NOT_FOUND_CODES = ["notfound", "not_found", "missing", "unknown"];
+
+  const DISABLED_CODES = ["disabled", "inactive", "suspended"];
+
+  const BLOCKED_CODES = [
+    "late", "latenoexcuse", "late_no_excuse", "lateblocked", "late_blocked",
+    "needsexcuse", "needs_excuse", "excuserequired", "excuse_required",
+    "blocked", "denied", "rejected", "forbidden"
+  ];
+
   function normalizeScanResponse(result) {
-    const statuses = {
-      ok: {
+    const rawStatus = String(
+      result.status !== undefined && result.status !== null
+        ? result.status
+        : ""
+    ).trim();
+
+    const code = rawStatus.toLowerCase().replace(/[\s-]+/g, "");
+    const serverMessage =
+      typeof result.message === "string" ? result.message.trim() : "";
+
+    let info;
+
+    if (SUCCESS_CODES.includes(code)) {
+      info = {
+        code: "success",
         type: "success",
         title: "تم تسجيل الحضور",
-        message: "تم تسجيل حضور العضو بنجاح."
-      },
-      success: {
-        type: "success",
-        title: "تم تسجيل الحضور",
-        message: "تم تسجيل حضور العضو بنجاح."
-      },
-      duplicate: {
+        message: serverMessage || "تم تسجيل حضور العضو بنجاح."
+      };
+    } else if (DUPLICATE_CODES.includes(code)) {
+      info = {
+        code: "duplicate",
         type: "neutral",
         title: "الحضور مسجل مسبقاً",
-        message: "يوجد تسجيل حضور لهذا العضو اليوم."
-      },
-      notFound: {
+        message: serverMessage || "يوجد تسجيل حضور لهذا العضو اليوم."
+      };
+    } else if (NOT_FOUND_CODES.includes(code)) {
+      info = {
+        code: "notFound",
         type: "error",
         title: "العضو غير موجود",
-        message: "لم يتم العثور على عضو مطابق لرقم العضو أو رمز QR."
-      },
-      disabled: {
+        message: serverMessage || "لم يتم العثور على عضو مطابق لرقم العضو أو رمز QR."
+      };
+    } else if (DISABLED_CODES.includes(code)) {
+      info = {
+        code: "disabled",
         type: "error",
         title: "العضوية معطّلة",
-        message: "لا يمكن تسجيل حضور هذا العضو لأن عضويته معطّلة."
+        message: serverMessage || "لا يمكن تسجيل حضور هذا العضو لأن عضويته معطّلة."
+      };
+    } else if (BLOCKED_CODES.includes(code)) {
+      info = {
+        code: "blocked",
+        type: "warning",
+        title: "لم يُسجَّل الحضور بالمسح",
+        message:
+          serverMessage ||
+          "العضو متأخر ولا يوجد له عذر مسجّل. يسجّله المسؤول يدوياً."
+      };
+    } else {
+      // حالة غير متوقعة: لا نُخفيها.
+      if (window.console && typeof console.warn === "function") {
+        console.warn("رد غير متوقع من scan:", result);
       }
-    };
 
-    const info = statuses[result.status] || {
-      type: "neutral",
-      title: "نتيجة التسجيل",
-      message: result.message || "استلم النظام نتيجة غير معروفة."
-    };
+      info = {
+        code: "unknown",
+        type: "warning",
+        title: "رد غير متوقع من الخادم",
+        message:
+          (serverMessage || "لم يتضح إن كان الحضور قد سُجّل. راجع السجل.") +
+          (rawStatus ? " (رمز الحالة: " + rawStatus + ")" : "")
+      };
+    }
 
     return {
       ...info,
-      name: result.name || result.memberName || "",
+      name:
+        result.name ||
+        result.memberName ||
+        result.fullName ||
+        (result.member && (result.member.fullName || result.member.name)) ||
+        "",
       time: result.time || ""
     };
   }
@@ -144,6 +205,12 @@
     return display;
   }
 
+  // نفس الرمز لا يُعاد إرساله خلال هذه المدة بعد انتهاء المعالجة.
+  const SAME_CODE_COOLDOWN_MS = 6000;
+  // مدة حماية رسالة النجاح من أن تستبدلها رسالة "مسجل مسبقاً" لنفس العضو.
+  const SUCCESS_GUARD_MS = 20000;
+  let lastSuccess = { id: "", at: 0 };
+
   async function registerScannedMember(decodedText) {
     if (isProcessing) {
       return;
@@ -153,7 +220,7 @@
 
     if (
       decodedText === lastScannedText &&
-      now - lastScannedAt < 2500
+      now - lastScannedAt < SAME_CODE_COOLDOWN_MS
     ) {
       return;
     }
@@ -179,12 +246,39 @@
         return;
       }
 
-      const result = await api("scan", {
-        id: memberId
-      });
+      // تغذية راجعة فورية: يُعرف الرمز ويُرسَل الطلب.
+      showResult(
+        "neutral",
+        "جارٍ التسجيل...",
+        "تم قراءة الرمز، وجارٍ إرسال الحضور إلى النظام.",
+        "رقم العضو: " + memberId
+      );
+
+      const result = await api(
+        "scan",
+        { id: memberId },
+        { timeoutMs: 25000 }
+      );
       clearApiCache("summary");
 
-      const display = displayScanResult(result);
+      const display = normalizeScanResponse(result || {});
+
+      // أثناء بقاء البطاقة أمام الكاميرا قد يصل رد "مسجل مسبقاً" بعد النجاح؛
+      // لا نسمح له بمحو رسالة النجاح.
+      if (
+        display.code === "duplicate" &&
+        lastSuccess.id === memberId &&
+        Date.now() - lastSuccess.at < SUCCESS_GUARD_MS
+      ) {
+        setCameraStatus("جاهز لمسح الرمز التالي", "success");
+        return;
+      }
+
+      displayScanResult(result);
+
+      if (display.code === "success") {
+        lastSuccess = { id: memberId, at: Date.now() };
+      }
 
       setCameraStatus(
         "جاهز لمسح الرمز التالي",
@@ -197,6 +291,9 @@
       } else if (display.type === "error") {
         playFeedbackSound("error");
         vibrateDevice([100, 60, 100]);
+      } else if (display.type === "warning") {
+        playFeedbackSound("warning");
+        vibrateDevice([60, 40, 60]);
       }
     } catch (error) {
       showResult(
@@ -214,6 +311,8 @@
 
       playFeedbackSound("error");
     } finally {
+      // نحسب فترة التهدئة من لحظة انتهاء الطلب لا من بدايته.
+      lastScannedAt = Date.now();
       isProcessing = false;
     }
   }

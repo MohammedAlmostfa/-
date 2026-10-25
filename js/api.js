@@ -27,15 +27,36 @@ async function api(action, data = {}, options = {}) {
 
   let response;
 
+  // مهلة اختيارية (مثلاً للمسح) حتى لا يعلق التطبيق إذا تأخر الخادم.
+  const timeoutMs = Number(options.timeoutMs) > 0 ? Number(options.timeoutMs) : 0;
+  const controller =
+    timeoutMs && typeof AbortController !== "undefined"
+      ? new AbortController()
+      : null;
+  const timer = controller
+    ? window.setTimeout(function () { controller.abort(); }, timeoutMs)
+    : null;
+
   try {
     response = await fetch(API_URL, {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
     });
   } catch (error) {
+    if (error && error.name === "AbortError") {
+      throw new Error(
+        "تأخر الخادم بالرد. قد يكون الطلب قد نُفّذ، تحقق من السجل قبل إعادة المحاولة."
+      );
+    }
+
     throw new Error(
       "تعذّر الاتصال بالخادم. تحقق من الإنترنت ورابط الخدمة المنشور."
     );
+  } finally {
+    if (timer) {
+      window.clearTimeout(timer);
+    }
   }
 
   let result;

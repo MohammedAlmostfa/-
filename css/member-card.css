@@ -47,7 +47,6 @@ body.member-card-page {
   min-height: 100vh;
   min-height: 100dvh;
   margin: 0;
-  padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
   color: var(--text);
   background:
     radial-gradient(ellipse at 100% 0%, rgba(201, 162, 75, 0.08), transparent 34rem),
@@ -394,19 +393,6 @@ body.member-card-page {
   overflow-wrap: anywhere;
 }
 
-.member-family {
-  margin: 2px 0 0;
-  color: #6B5A5B;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.member-family:empty {
-  display: none;
-}
-
 /* ---------- شبكة المعلومات ---------- */
 .member-info-grid {
   display: grid;
@@ -414,6 +400,10 @@ body.member-card-page {
   gap: 10px;
   margin-top: 18px;
   text-align: right;
+}
+
+.info-box-wide {
+  grid-column: 1 / -1;
 }
 
 .info-box {

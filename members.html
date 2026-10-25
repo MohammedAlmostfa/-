@@ -18,13 +18,13 @@
 
   <link rel="manifest" href="manifest.webmanifest">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght@20..24,400..700&icon_names=arrow_back,arrow_forward,badge,calendar_month,calendar_today,check,check_circle,description,download,error,event_busy,family_restroom,flashlight_off,flashlight_on,graphic_eq,groups,history,hourglass_top,how_to_reg,info,key,lock,military_tech,music_note,person,person_add,person_off,person_search,photo_camera,print,qr_code_2,qr_code_scanner,refresh,schedule,search,videocam_off,visibility,visibility_off,warning&display=block" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght@20..24,400..700&icon_names=arrow_back,arrow_forward,badge,calendar_month,calendar_today,check,check_circle,close,delete,description,download,edit,error,event_busy,family_restroom,flashlight_off,flashlight_on,graphic_eq,groups,history,hourglass_top,how_to_reg,info,key,lock,military_tech,music_note,person,person_add,person_off,person_search,photo_camera,print,qr_code_2,qr_code_scanner,refresh,schedule,search,videocam_off,visibility,visibility_off,warning&display=block" rel="stylesheet">
 
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/members.css">
 </head>
 
-<body class="members-page has-bottom-nav">
+<body class="members-page">
 
   <noscript>
     <p class="noscript-note">هذه الصفحة تحتاج تفعيل جافاسكربت في المتصفح.</p>
@@ -111,7 +111,7 @@
               class="filter-input search-input"
               id="searchInput"
               type="search"
-              placeholder="الاسم أو الكنية أو رقم العضوية"
+              placeholder="الاسم أو رقم العضوية أو الآلة"
               autocomplete="off"
               autocapitalize="off"
               spellcheck="false"
@@ -204,10 +204,69 @@
 
 
 
+
+  <!-- نافذة تعديل بيانات العضو -->
+  <div class="m-modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle" hidden>
+    <div class="m-modal-panel">
+      <h2 class="m-modal-title" id="editTitle">تعديل بيانات العضو</h2>
+
+      <form id="editForm" novalidate>
+        <div class="m-field">
+          <label class="field-label" for="editName">الاسم الثلاثي</label>
+          <input class="filter-input" id="editName" type="text" maxlength="100" autocomplete="off" spellcheck="false" required>
+        </div>
+
+        <div class="m-field">
+          <label class="field-label" for="editMother">اسم الأم</label>
+          <input class="filter-input" id="editMother" type="text" maxlength="100" autocomplete="off" spellcheck="false" required>
+        </div>
+
+        <div class="m-field">
+          <label class="field-label" for="editInstrument">الآلة</label>
+          <select class="filter-input" id="editInstrument">
+            <option value="ترومبيت">ترومبيت</option>
+            <option value="طنبور">طنبور</option>
+            <option value="مراسم">مراسم</option>
+          </select>
+        </div>
+
+        <p class="m-modal-error" id="editError" role="alert" hidden></p>
+
+        <div class="m-modal-actions">
+          <button type="submit" class="m-btn m-btn-primary" id="editSave">حفظ التعديلات</button>
+          <button type="button" class="m-btn" id="editCancel">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- نافذة تأكيد حذف العضو -->
+  <div class="m-modal" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle" hidden>
+    <div class="m-modal-panel">
+      <div class="m-modal-icon" aria-hidden="true">
+        <span class="material-symbols-outlined">delete</span>
+      </div>
+
+      <h2 class="m-modal-title" id="deleteTitle">حذف العضو؟</h2>
+      <p class="m-modal-text" id="deleteText"></p>
+
+      <p class="m-modal-error" id="deleteError" role="alert" hidden></p>
+
+      <div class="m-modal-actions">
+        <button type="button" class="m-btn m-btn-danger" id="deleteConfirm">نعم، احذف</button>
+        <button type="button" class="m-btn" id="deleteCancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    جميع الحقوق محفوظة لفريق
+    <a href="http://mohammedalmostfa.me/Portfolio2/" target="_blank" rel="noopener noreferrer">DevNest</a>
+  </footer>
+
   <script defer src="js/config.js"></script>
   <script defer src="js/api.js"></script>
   <script defer src="js/ui.js"></script>
-  <script defer src="js/nav.js"></script>
   <script defer src="js/members.js"></script>
   <script defer src="js/pwa.js"></script>
 </body>

@@ -3,7 +3,6 @@
 
 const addMemberForm = document.getElementById("addMemberForm");
 const fullNameInput = document.getElementById("fullName");
-const familyNameInput = document.getElementById("familyName");
 const motherNameInput = document.getElementById("motherName");
 const instrumentInput = document.getElementById("instrument");
 const instrumentGroup = document.getElementById("instrumentGroup");
@@ -82,7 +81,7 @@ instrumentButtons.forEach(function (button) {
   });
 });
 
-[fullNameInput, familyNameInput, motherNameInput].forEach(function (input) {
+[fullNameInput, motherNameInput].forEach(function (input) {
   input.addEventListener("input", clearFormNotice);
 });
 
@@ -94,20 +93,17 @@ addMemberForm.addEventListener("submit", async function (event) {
   clearFormNotice();
 
   const fullName = fullNameInput.value.trim();
-  const familyName = familyNameInput.value.trim();
   const motherName = motherNameInput.value.trim();
   const instrument = instrumentInput.value.trim();
 
-  if (!fullName || !familyName || !motherName) {
+  if (!fullName || !motherName) {
     showFormNotice(
-      "يرجى تعبئة الاسم الثلاثي والكنية واسم الأم قبل المتابعة.",
+      "يرجى تعبئة الاسم الثلاثي واسم الأم قبل المتابعة.",
       "error"
     );
 
     if (!fullName) {
       fullNameInput.focus();
-    } else if (!familyName) {
-      familyNameInput.focus();
     } else {
       motherNameInput.focus();
     }
@@ -135,7 +131,6 @@ addMemberForm.addEventListener("submit", async function (event) {
   try {
     const result = await api("addMember", {
       fullName: fullName,
-      familyName: familyName,
       motherName: motherName,
       instrument: instrument
     });

@@ -50,8 +50,6 @@ body.members-page {
   min-height: 100vh;
   min-height: 100dvh;
   margin: 0;
-  /* مسافة للزر العائم وشريط التنقل السفلي */
-  padding-bottom: calc(9.5rem + env(safe-area-inset-bottom, 0px));
   color: var(--text);
   background:
     radial-gradient(ellipse at 100% 0%, rgba(201, 162, 75, 0.08), transparent 34rem),
@@ -920,5 +918,230 @@ select.filter-input:focus {
   .loading-spinner,
   .member-card {
     animation: none;
+  }
+}
+
+/* =========================================================
+   بطاقة العضو مع أزرار التعديل والحذف
+   ========================================================= */
+.member-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: default;
+  contain-intrinsic-size: auto 150px;
+}
+
+.member-open {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: start;
+  cursor: pointer;
+}
+
+.member-open:focus-visible,
+.member-action:focus-visible,
+.m-btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: -3px;
+}
+
+.member-card:hover .member-arrow {
+  color: var(--maroon);
+  background: #F8EFEC;
+  transform: translateX(-2px);
+}
+
+.member-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--border);
+  background: var(--field);
+}
+
+.member-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 10px;
+  color: var(--maroon);
+  background: transparent;
+  border: 0;
+  font-size: 13px;
+  font-weight: 800;
+  transition: background var(--ease), color var(--ease);
+}
+
+.member-action + .member-action {
+  border-inline-start: 1px solid var(--border);
+}
+
+.member-action .material-symbols-outlined {
+  font-size: 19px;
+}
+
+.member-action.edit:hover {
+  background: #F8EFEC;
+}
+
+.member-action.delete {
+  color: var(--red);
+}
+
+.member-action.delete:hover {
+  background: var(--red-soft);
+}
+
+@media (max-width: 420px) {
+  .member-open {
+    gap: 11px;
+    padding: 12px;
+  }
+}
+
+/* =========================================================
+   نوافذ التعديل والحذف
+   ========================================================= */
+.m-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(40, 20, 22, 0.55);
+  overflow-y: auto;
+  animation: m-fade 0.18s ease both;
+}
+
+.m-modal[hidden] {
+  display: none;
+}
+
+.m-modal-panel {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 22px 18px 18px;
+  background: var(--white);
+  border-radius: 22px;
+  box-shadow: 0 24px 48px -16px rgba(40, 10, 16, 0.5);
+  animation: m-rise 0.22s ease both;
+}
+
+.m-modal-title {
+  margin: 0 0 14px;
+  color: var(--maroon-dark);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.m-modal-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  color: var(--red);
+  background: var(--red-soft);
+  border-radius: 16px;
+}
+
+.m-modal-icon .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.m-modal-icon + .m-modal-title,
+.m-modal-icon ~ .m-modal-text {
+  text-align: center;
+}
+
+.m-modal-text {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.m-field {
+  margin-bottom: 14px;
+}
+
+.m-modal-error {
+  margin: 4px 0 12px;
+  padding: 10px 12px;
+  color: var(--red);
+  background: var(--red-soft);
+  border: 1px solid #F0DADA;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.m-modal-error[hidden] {
+  display: none;
+}
+
+.m-modal-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.m-btn {
+  min-height: 48px;
+  padding: 8px 16px;
+  color: var(--maroon-dark);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  transition: filter var(--ease), transform var(--ease);
+}
+
+.m-btn:active {
+  transform: scale(0.98);
+}
+
+.m-btn-primary {
+  color: #fff;
+  background: linear-gradient(180deg, var(--maroon-light), var(--maroon) 55%, var(--maroon-dark));
+  border-color: transparent;
+}
+
+.m-btn-danger {
+  color: #fff;
+  background: var(--red);
+  border-color: transparent;
+}
+
+.m-btn-primary:hover,
+.m-btn-danger:hover {
+  filter: brightness(1.06);
+}
+
+@keyframes m-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (min-width: 560px) {
+  .m-modal {
+    align-items: center;
   }
 }

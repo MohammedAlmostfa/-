@@ -46,21 +46,6 @@ function firstValue(object, keys, fallback = "") {
   return fallback;
 }
 
-function formatDate(value) {
-  if (!value) {
-    return "—";
-  }
-
-  const raw = String(value);
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
-    const parts = raw.split("-");
-    return parts[2] + "/" + parts[1] + "/" + parts[0];
-  }
-
-  return raw;
-}
-
 function normalizeInstrument(value) {
   const instruments = {
     trumpet: "ترومبيت",
@@ -127,12 +112,6 @@ function renderMember(member) {
     "الاسم الثلاثي"
   ]);
 
-  const familyName = firstValue(member, [
-    "familyName",
-    "family",
-    "الكنية"
-  ]);
-
   const motherName = firstValue(member, [
     "motherName",
     "mother",
@@ -150,13 +129,6 @@ function renderMember(member) {
     "فعّال"
   );
 
-  const joinDate = firstValue(member, [
-    "joinDate",
-    "createdAt",
-    "addedAt",
-    "تاريخ الإضافة"
-  ]);
-
   if (!id || !fullName) {
     throw new Error(
       "بيانات العضو وصلت، لكنها لا تتضمن رقم العضوية والاسم بالشكل المتوقع."
@@ -167,14 +139,8 @@ function renderMember(member) {
 
   setText("memberName", fullName);
 
-  setText(
-    "memberFamily",
-    familyName ? "الكنية: " + familyName : ""
-  );
-
   setText("memberId", id);
   setText("memberInstrument", normalizeInstrument(instrument));
-  setText("memberJoinDate", formatDate(joinDate));
   setText("memberMother", motherName);
 
   const normalizedStatus = normalizeStatus(status);
@@ -353,7 +319,9 @@ document.getElementById("cardLogo").addEventListener("error", function () {
   document.getElementById("logoFallback").style.display = "block";
 });
 
-loadMember();
+if (typeof guard !== "function" || guard(["owner"])) {
+  loadMember();
+}
 
 // نحمّل أداة تنزيل الصورة مسبقاً عندما يكون المتصفح فارغاً.
 runWhenIdle(function () {
