@@ -226,17 +226,12 @@ function createMemberCard(member) {
   instrumentText.className = "member-instrument";
   instrumentText.textContent = instrument;
 
-  const statusPill = document.createElement("span");
-  statusPill.className =
-    "status-pill" + (status === "disabled" ? " disabled" : "");
-  statusPill.textContent = status === "disabled" ? "معطّل" : "فعّال";
-
   const arrow = document.createElement("span");
   arrow.className = "member-arrow";
   arrow.setAttribute("aria-hidden", "true");
   arrow.textContent = "‹";
 
-  meta.append(instrumentText, statusPill);
+  meta.append(instrumentText);
   main.append(memberName, memberId, meta);
   open.append(avatar, main, arrow);
 

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="description" content="تنزيل جميع بطاقات أعضاء فرقة القديس جاورجيوس">
+
+  <title>تنزيل جميع البطاقات | حاضر</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-192.png">
+  <link rel="apple-touch-icon" href="assets/logo-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400..800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/member-card.css">
+  <link rel="stylesheet" href="css/all-cards.css">
+</head>
+
+<body class="member-card-page">
+  <header class="page-header">
+    <div class="header-inner">
+      <a href="home.html" class="back-button" aria-label="العودة إلى الرئيسية">
+        <span aria-hidden="true">‹</span>
+      </a>
+      <div class="header-copy">
+        <h1 class="header-title">تنزيل جميع البطاقات</h1>
+        <p class="header-subtitle">بطاقات الأعضاء في ملف ZIP واحد</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-container export-container">
+    <section class="export-panel" aria-labelledby="export-title">
+      <h2 id="export-title">تجهيز بطاقات الأعضاء</h2>
+      <p id="exportMessage" class="export-message" role="status" aria-live="polite">
+        جارٍ الاتصال بالخادم وتحميل قائمة الأعضاء...
+      </p>
+      <div
+        id="exportProgress"
+        class="export-progress"
+        role="progressbar"
+        aria-label="تقدم تجهيز البطاقات"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0">
+        <span id="exportProgressBar"></span>
+      </div>
+      <button id="downloadButton" class="app-button export-download hidden" type="button">
+        تنزيل ملف البطاقات
+      </button>
+      <button id="retryButton" class="app-button export-retry hidden" type="button">
+        إعادة المحاولة
+      </button>
+    </section>
+
+    <section id="membershipCard" class="membership-card hidden" aria-label="معاينة بطاقة العضوية">
+      <div class="card-header">
+        <div class="card-logo">
+          <img
+            src="assets/logo-256.webp"
+            alt="شعار الفرقة"
+            id="cardLogo"
+            onerror="this.style.display='none';this.parentNode.classList.add('logo-failed');">
+          <span id="logoFallback" class="card-logo-fallback" aria-hidden="true">ح</span>
+        </div>
+        <h3>فرقة القديس جاورجيوس</h3>
+        <p>بطاقة العضوية الرسمية</p>
+      </div>
+
+      <div class="card-gold-line"></div>
+
+      <div class="card-content" id="cardContent">
+        <div class="member-details">
+          <p class="member-label">الاسم الثلاثي</p>
+          <h2 class="member-name" id="memberName">—</h2>
+
+          <div class="member-info-grid">
+            <div class="info-box">
+              <span class="info-label">رقم العضوية</span>
+              <span class="info-value" id="memberId">—</span>
+            </div>
+            <div class="info-box">
+              <span class="info-label">الآلة الموسيقية</span>
+              <span class="info-value" id="memberInstrument">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qr-section">
+          <h4>رمز QR الخاص بالعضو</h4>
+          <p class="qr-hint">يُستخدم الرمز لتسجيل حضور العضو.</p>
+          <div class="qr-frame">
+            <div id="qrcode" aria-label="رمز QR للعضو"></div>
+          </div>
+          <div class="qr-member-id" id="qrMemberId"></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        هذه البطاقة خاصة بالعضو. يرجى المحافظة عليها وإبرازها عند الحاجة.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    جميع الحقوق محفوظة لفريق
+    <a href="http://mohammedalmostfa.me/Portfolio2/" target="_blank" rel="noopener noreferrer">DevNest</a>
+  </footer>
+
+  <script defer src="js/config.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/all-cards.js"></script>
+  <script defer src="js/pwa.js"></script>
+</body>
+</html>

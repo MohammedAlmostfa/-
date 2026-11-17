@@ -57,20 +57,6 @@ function normalizeInstrument(value) {
   return instruments[value] || value || "—";
 }
 
-function normalizeStatus(value) {
-  if (value === "disabled" || value === "معطّل") {
-    return {
-      text: "معطّل",
-      disabled: true
-    };
-  }
-
-  return {
-    text: "فعّال",
-    disabled: false
-  };
-}
-
 function renderQr(memberId) {
   const qrContainer = document.getElementById("qrcode");
   const qrWarning = document.getElementById("qrWarning");
@@ -91,8 +77,8 @@ function renderQr(memberId) {
   // يحتوي الرمز على رقم العضو فقط، وليس على بياناته الشخصية.
   new QRCode(qrContainer, {
     text: memberId,
-    width: 156,
-    height: 156,
+    width: 104,
+    height: 104,
     colorDark: "#282321",
     colorLight: "#FFFFFF",
     correctLevel: QRCode.CorrectLevel.M
@@ -117,12 +103,6 @@ function renderMember(member) {
     "الآلة"
   ]);
 
-  const status = firstValue(
-    member,
-    ["status", "الحالة"],
-    "فعّال"
-  );
-
   if (!id || !fullName) {
     throw new Error(
       "بيانات العضو وصلت، لكنها لا تتضمن رقم العضوية والاسم بالشكل المتوقع."
@@ -135,16 +115,6 @@ function renderMember(member) {
 
   setText("memberId", id);
   setText("memberInstrument", normalizeInstrument(instrument));
-
-  const normalizedStatus = normalizeStatus(status);
-  const statusElement = document.getElementById("memberStatus");
-
-  setText("memberStatusText", normalizedStatus.text);
-
-  statusElement.classList.toggle(
-    "disabled",
-    normalizedStatus.disabled
-  );
 
   renderQr(String(id));
 

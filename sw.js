@@ -10,7 +10,7 @@
  * عند إضافة/حذف ملفات من قائمة PRECACHE غيّر رقم CACHE_VERSION.
  */
 
-const CACHE_VERSION = "v6";
+const CACHE_VERSION = "v8";
 const APP_CACHE = "hadir-app-" + CACHE_VERSION;
 const EXT_CACHE = "hadir-ext-" + CACHE_VERSION;
 
@@ -21,6 +21,7 @@ const PRECACHE = [
   "scan.html",
   "members.html",
   "member-card.html",
+  "all-cards.html",
   "add-member.html",
   "log.html",
   "manifest.webmanifest",
@@ -30,6 +31,7 @@ const PRECACHE = [
   "css/scan.css",
   "css/members.css",
   "css/member-card.css",
+  "css/all-cards.css",
   "css/add-member.css",
   "css/log.css",
   "js/config.js",
@@ -41,6 +43,7 @@ const PRECACHE = [
   "js/scan.js",
   "js/members.js",
   "js/member-card.js",
+  "js/all-cards.js",
   "js/add-member.js",
   "js/log.js",
   "assets/logo-256.webp",

@@ -1,0 +1,64 @@
+.export-container {
+  padding-bottom: 24px;
+}
+
+.export-panel {
+  margin-bottom: 18px;
+  padding: 18px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #E2D3D3;
+  border-radius: 18px;
+}
+
+.export-panel h2 {
+  margin: 0;
+  color: #5D1820;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.export-message {
+  margin: 8px 0 0;
+  color: #6B5A5B;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.export-message.error {
+  color: #BA1A1A;
+}
+
+.export-message.success {
+  color: #2F7334;
+}
+
+.export-progress {
+  height: 8px;
+  margin-top: 16px;
+  overflow: hidden;
+  background: #E9DCD5;
+  border-radius: 999px;
+}
+
+.export-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #8E3A44, #C9A24B);
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.export-download,
+.export-retry {
+  margin-top: 14px;
+  color: #FFFFFF;
+  background: #7A2E35;
+}
+
+.export-download:hover,
+.export-retry:hover {
+  background: #5D1820;
+}

@@ -11,6 +11,7 @@ const APP_PAGES = Object.freeze({
   scan: "scan.html",
   addMember: "add-member.html",
   memberCard: "member-card.html",
+  allCards: "all-cards.html",
   members: "members.html",
   member: "member.html",
   log: "log.html"
@@ -31,5 +32,7 @@ const SESSION_KEYS = Object.freeze({
  */
 const LIB_URLS = Object.freeze({
   html5Qrcode: "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js",
-  html2canvas: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+  html2canvas: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+  qrcode: "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
+  jszip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
 });

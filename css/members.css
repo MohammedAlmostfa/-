@@ -561,37 +561,6 @@ select.filter-input:focus {
   line-height: 1.6;
 }
 
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 24px;
-  padding: 2px 10px;
-  color: var(--green);
-  background: var(--green-soft);
-  border: 1px solid #D5EADB;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.5;
-  white-space: nowrap;
-}
-
-.status-pill::before {
-  content: "";
-  flex: 0 0 6px;
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  border-radius: 50%;
-}
-
-.status-pill.disabled {
-  color: var(--red);
-  background: var(--red-soft);
-  border-color: #F0DADA;
-}
-
 /* العضو المعطّل: تخفيف لون البطاقة */
 .member-card.disabled,
 .member-card.is-disabled {
